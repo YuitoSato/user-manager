@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT_NAME="interface"
+PROJECT_NAME="domain"
 
 cd ..
 

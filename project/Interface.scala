@@ -32,6 +32,8 @@ object Interface {
     libraryDependencies ++= dependencies,
     unmanagedResourceDirectories in Compile += baseDirectory.value / "resources"
   ).dependsOn(
-    Application.project
+    Application.project,
+    Domain.project,
+    Infrastructure.project
   )
 }

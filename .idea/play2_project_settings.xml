@@ -6,7 +6,7 @@
         <entry key="api">
           <value>
             <ProjectSettingsEntry>
-              <option name="confDir" value="$PROJECT_DIR$/api/app" />
+              <option name="sourceDir" value="$PROJECT_DIR$/api/app" />
               <option name="templateImports">
                 <list>
                   <option value="_root_.play.twirl.api.TwirlFeatureImports._" />
@@ -36,6 +36,7 @@
         <entry key="base-play-project">
           <value>
             <ProjectSettingsEntry>
+              <option name="sourceDir" value="$PROJECT_DIR$/app" />
               <option name="confDir" value="$PROJECT_DIR$/app" />
               <option name="playDistrPath" value="$USER_HOME$/.ivy2/cache/com.typesafe.play/play_2.12/jars/play_2.12-2.6.12.jar" />
               <option name="templateImports">
@@ -67,6 +68,7 @@
         <entry key="interface">
           <value>
             <ProjectSettingsEntry>
+              <option name="sourceDir" value="$PROJECT_DIR$/interface/app" />
               <option name="confDir" value="$PROJECT_DIR$/interface/app" />
               <option name="templateImports">
                 <list>

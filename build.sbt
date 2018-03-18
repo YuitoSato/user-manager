@@ -15,6 +15,10 @@ lazy val interface = Interface.project
 
 lazy val application = Application.project
 
+lazy val infrastructure = Infrastructure.project
+
+lazy val domain = Domain.project
+
 lazy val root = Project(
   "base-play-project",
   file(".")
@@ -22,8 +26,12 @@ lazy val root = Project(
   PlayScala
 ).dependsOn(
   interface,
-  application
+  application,
+  infrastructure,
+  domain
 ).aggregate(
   interface,
-  application
+  application,
+  infrastructure,
+  domain
 )

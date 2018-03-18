@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PROJECT_NAME="api"
+PROJECT_NAME="application"
 
 cd ..
 

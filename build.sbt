@@ -13,13 +13,17 @@ lazy val commonSettings = Seq(
 
 lazy val api = API.project
 
+lazy val application = Application.project
+
 lazy val root = Project(
   "base-play-project",
   file(".")
 ).enablePlugins(
   PlayScala
 ).dependsOn(
-  api
+  api,
+  application
 ).aggregate(
-  api
+  api,
+  application
 )

@@ -11,7 +11,7 @@ lazy val commonSettings = Seq(
   )
 )
 
-lazy val api = API.project
+lazy val interface = Interface.project
 
 lazy val application = Application.project
 
@@ -21,9 +21,9 @@ lazy val root = Project(
 ).enablePlugins(
   PlayScala
 ).dependsOn(
-  api,
+  interface,
   application
 ).aggregate(
-  api,
+  interface,
   application
 )

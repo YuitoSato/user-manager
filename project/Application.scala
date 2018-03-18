@@ -4,12 +4,12 @@ import sbt.Keys._
 object Application {
 
   val dependencies = Seq(
-    "org.scalaz"    %% "scalaz-core" % "7.2.12",
+    "org.scalaz"    %% "scalaz-core" % "7.2.12"
   )
 
   lazy val project = Project(
-    "ats-domain",
-    file("ats-domain")
+    "application",
+    file("application")
   ).settings(
     libraryDependencies ++= dependencies
   ).settings(

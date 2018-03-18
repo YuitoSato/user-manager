@@ -6,9 +6,9 @@ import play.sbt.PlayScala
 import play.sbt.PlayImport._
 import play.sbt.PlayImport.PlayKeys._
 
-object API {
+object Interface {
 
-  val apiDependencies = Seq(
+  val dependencies = Seq(
     cacheApi,
     filters,
     guice,
@@ -22,14 +22,14 @@ object API {
   )
 
   lazy val project = Project(
-    "api",
-    file("api")
+    "interface",
+    file("interface")
   ).enablePlugins(
     PlayScala
   ).settings(
     playDefaultPort := 9011
   ).settings(
-    libraryDependencies ++= apiDependencies,
+    libraryDependencies ++= dependencies,
     unmanagedResourceDirectories in Compile += baseDirectory.value / "resources"
   ).dependsOn(
     Application.project

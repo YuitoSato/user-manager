@@ -1,0 +1,13 @@
+#!/bin/bash
+
+PROJECT_NAME="infrastructure"
+
+cd ..
+
+if [ $# != 0 ]; then
+    OPTS=$@
+else
+    OPTS="shell"
+fi
+
+./sbt "project ${PROJECT_NAME}" $OPTS

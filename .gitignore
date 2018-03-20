@@ -17,3 +17,5 @@ server.pid
 .cache
 .idea/
 target/
+.project
+logs/

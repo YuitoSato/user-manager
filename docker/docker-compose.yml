@@ -1,0 +1,12 @@
+mysql:
+  container_name: yuitter-kai-mysql
+  image: mysql
+  environment:
+    MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  ports:
+    - "3307:3306"
+
+memcached:
+  image: memcached:1.4
+  ports:
+    - "11211:11211"

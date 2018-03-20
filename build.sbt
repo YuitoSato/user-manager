@@ -35,3 +35,4 @@ lazy val root = Project(
   infrastructure,
   domain
 )
+

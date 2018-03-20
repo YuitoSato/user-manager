@@ -1,6 +1,7 @@
 import sbt._
 import Keys._
 
+
 object Infrastructure {
 
   val dependencies = Seq(
@@ -8,6 +9,11 @@ object Infrastructure {
     "io.monix"           %% "shade"                % "1.10.0",
     "mysql"              %  "mysql-connector-java" % "5.1.36",
     "com.typesafe.slick" %% "slick"                % "3.2.0",
+
+    "org.scalikejdbc"    %% "scalikejdbc"          % "3.2.1",
+    "org.scalikejdbc"    %% "scalikejdbc-config"   % "3.2.1",
+
+    "org.slf4j"        %  "slf4j-simple" % "1.7.+",
 
     // For Test
     "org.scalatest" %% "scalatest"                 % "3.0.1"  % "test",
@@ -74,6 +80,7 @@ object Infrastructure {
     resourceDirectory in Compile := baseDirectory.value / "src" / "main" / "resources",
     resourceDirectory in Test := baseDirectory.value / "src" / "test" / "resources"
   ).settings(
-    slickCodegen := slickCodeGenerator()
+    slickCodegen := slickCodeGenerator(),
+    scalikejdbc.mapper.SbtPlugin.scalikejdbcSettings
   )
 }

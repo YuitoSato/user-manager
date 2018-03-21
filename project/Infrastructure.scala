@@ -15,6 +15,8 @@ object Infrastructure {
 
     "org.slf4j"        %  "slf4j-simple" % "1.7.+",
 
+    "com.typesafe.play" %% "play-json" % "2.6.7",
+
     // For Test
     "org.scalatest" %% "scalatest"                 % "3.0.1"  % "test",
     "org.mockito"   %  "mockito-core"              % "2.8.9"  % "test",
@@ -82,5 +84,8 @@ object Infrastructure {
   ).settings(
     slickCodegen := slickCodeGenerator(),
     scalikejdbc.mapper.SbtPlugin.scalikejdbcSettings
+  ).dependsOn(
+    Domain.project
   )
+
 }

@@ -22,6 +22,8 @@ object Application {
     scalaSource in Test := baseDirectory.value / "src" / "test" / "scala",
     resourceDirectory in Compile := baseDirectory.value / "src" / "main" / "resources",
     resourceDirectory in Test := baseDirectory.value / "src" / "test" / "resources"
+  ).dependsOn(
+    Domain.project
   )
 
 }

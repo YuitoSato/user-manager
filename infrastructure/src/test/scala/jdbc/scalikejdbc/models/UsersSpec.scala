@@ -3,9 +3,10 @@ package jdbc.scalikejdbc.models
 import scalikejdbc.specs2.mutable.AutoRollback
 import org.specs2.mutable._
 import scalikejdbc._
-import org.joda.time.{DateTime}
+import org.joda.time.DateTime
 import scalikejdbc.jodatime.JodaParameterBinderFactory._
 import scalikejdbc.jodatime.JodaTypeBinder._
+import usermanager.infrastructure.jdbc.scalikejdbc.models.Users
 
 
 class UsersSpec extends Specification {

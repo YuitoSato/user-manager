@@ -1,4 +1,5 @@
-package jdbc.slick.models
+package usermanager.infrastructure.jdbc.slick.models
+
 // AUTO-GENERATED Slick data model
 /** Stand-alone Slick data model for immediate use */
 object Tables extends {
@@ -9,9 +10,8 @@ object Tables extends {
 trait Tables {
   val profile: slick.jdbc.JdbcProfile
   import profile.api._
-  import slick.model.ForeignKeyAction
   // NOTE: GetResult mappers for plain SQL are only generated for tables where Slick knows how to map the types of all columns.
-  import slick.jdbc.{GetResult => GR}
+  import slick.jdbc.{ GetResult => GR }
 
   /** DDL for all tables. Call .create to execute. */
   lazy val schema: profile.SchemaDescription = Users.schema

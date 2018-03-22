@@ -1,4 +1,4 @@
-package usermanager.infrastructure.jdbc.scalikejdbc.models
+package usermanager.infrastructure.jdbc.scalikejdbc.user
 
 import scalikejdbc._
 import java.time.LocalDateTime

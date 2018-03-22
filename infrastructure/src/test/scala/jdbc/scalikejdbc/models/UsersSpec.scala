@@ -6,7 +6,7 @@ import scalikejdbc._
 import org.joda.time.DateTime
 import scalikejdbc.jodatime.JodaParameterBinderFactory._
 import scalikejdbc.jodatime.JodaTypeBinder._
-import usermanager.infrastructure.jdbc.scalikejdbc.models.Users
+import usermanager.infrastructure.jdbc.scalikejdbc.user.Users
 
 
 class UsersSpec extends Specification {

@@ -10,6 +10,7 @@ object ApplicationError {
     val code = "error.unexpected"
     val message: String = msg
   }
+
   object Unexpected {
     def apply(t: Throwable): Unexpected = new Unexpected(t.toString)
   }

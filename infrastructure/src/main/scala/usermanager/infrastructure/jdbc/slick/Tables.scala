@@ -1,4 +1,4 @@
-package usermanager.infrastructure.jdbc.slick.models
+package usermanager.infrastructure.jdbc.slick
 
 // AUTO-GENERATED Slick data model
 /** Stand-alone Slick data model for immediate use */

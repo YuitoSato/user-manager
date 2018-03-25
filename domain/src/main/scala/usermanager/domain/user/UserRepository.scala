@@ -1,15 +1,16 @@
 package usermanager.domain.user
 
+import usermanager.domain.transaction.Transaction
 import usermanager.domain.types.{ Email, Id }
 
-trait UserRepository[F[_]] {
+trait UserRepository {
 
-  def findById(userId: Id[User]): F[Option[User]]
+  def findById(userId: Id[User]): Transaction[Option[User]]
 
-  def findByEmail(email: Email[User]): F[Option[User]]
+  def findByEmail(email: Email[User]): Transaction[Option[User]]
 
-  def create(user: User): F[Unit]
+  def create(user: User): Transaction[Unit]
 
-  def update(user: User): F[Unit]
+  def update(user: User): Transaction[Unit]
 
 }

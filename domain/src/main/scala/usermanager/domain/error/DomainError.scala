@@ -1,5 +1,7 @@
 package usermanager.domain.error
 
+import usermanager.domain.types.Id
+
 sealed trait DomainError extends AbstractError
 
 object DomainError {
@@ -9,9 +11,17 @@ object DomainError {
     val code = "error.unexpected"
     val message: String = msg
   }
+
   object Unexpected {
     def apply(t: Throwable): Unexpected = new Unexpected(t.toString)
   }
+
+  case class NotFound(entityType: String, entityId: Id[_]) extends DomainError {
+    val code = "error.notFound"
+    val message = s"type: $entityType, id: $entityId is not found"
+  }
+
+
 //
 //  case class JsonError(error: JsError) extends Errors {
 //    val code = "error.json"

@@ -1,13 +1,14 @@
 package usermanager.domain.session
 
+import usermanager.domain.transaction.Transaction
 import usermanager.domain.types.Id
 
-trait SessionRepository[F[_]] {
+trait SessionRepository {
 
-  def findById(sessionId: Id[Session]): F[Option[Session]]
+  def findById(sessionId: Id[Session]): Transaction[Option[Session]]
 
-  def create(session: Session): F[Unit]
+  def create(session: Session): Transaction[Unit]
 
-  def delete(sessionId: Id[Session]): F[Unit]
+  def delete(sessionId: Id[Session]): Transaction[Unit]
 
 }

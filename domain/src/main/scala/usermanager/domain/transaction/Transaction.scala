@@ -1,9 +1,7 @@
 package usermanager.domain.transaction
 
-trait Transaction[+A] {
+trait Transaction
 
-  def map[B](f: A => B): Transaction[B]
+trait ReadTransaction extends Transaction
 
-  def flatMap[B](f: A => Transaction[B]): Transaction[B]
-
-}
+trait ReadWriteTransaction extends ReadTransaction

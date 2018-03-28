@@ -1,13 +1,14 @@
 package usermanager.infrastructure.jdbc.scalikejdbc.user
 
-import scalikejdbc._
 import java.time.LocalDateTime
+
+import scalikejdbc._
 
 case class Users(
   userId: String,
   userName: String,
-  password: String,
   email: String,
+  status: String,
   createdAt: LocalDateTime,
   updatedAt: LocalDateTime,
   versionNo: Int) {
@@ -23,14 +24,14 @@ object Users extends SQLSyntaxSupport[Users] {
 
   override val tableName = "USERS"
 
-  override val columns = Seq("USER_ID", "USER_NAME", "PASSWORD", "EMAIL", "CREATED_AT", "UPDATED_AT", "VERSION_NO")
+  override val columns = Seq("USER_ID", "USER_NAME", "EMAIL", "STATUS", "CREATED_AT", "UPDATED_AT", "VERSION_NO")
 
   def apply(u: SyntaxProvider[Users])(rs: WrappedResultSet): Users = apply(u.resultName)(rs)
   def apply(u: ResultName[Users])(rs: WrappedResultSet): Users = new Users(
     userId = rs.get(u.userId),
     userName = rs.get(u.userName),
-    password = rs.get(u.password),
     email = rs.get(u.email),
+    status = rs.get(u.status),
     createdAt = rs.get(u.createdAt),
     updatedAt = rs.get(u.updatedAt),
     versionNo = rs.get(u.versionNo)
@@ -75,8 +76,8 @@ object Users extends SQLSyntaxSupport[Users] {
   def create(
     userId: String,
     userName: String,
-    password: String,
     email: String,
+    status: String,
     createdAt: LocalDateTime,
     updatedAt: LocalDateTime,
     versionNo: Int)(implicit session: DBSession = autoSession): Users = {
@@ -84,8 +85,8 @@ object Users extends SQLSyntaxSupport[Users] {
       insert.into(Users).namedValues(
         column.userId -> userId,
         column.userName -> userName,
-        column.password -> password,
         column.email -> email,
+        column.status -> status,
         column.createdAt -> createdAt,
         column.updatedAt -> updatedAt,
         column.versionNo -> versionNo
@@ -95,8 +96,8 @@ object Users extends SQLSyntaxSupport[Users] {
     Users(
       userId = userId,
       userName = userName,
-      password = password,
       email = email,
+      status = status,
       createdAt = createdAt,
       updatedAt = updatedAt,
       versionNo = versionNo)
@@ -107,24 +108,24 @@ object Users extends SQLSyntaxSupport[Users] {
       Seq(
         'userId -> entity.userId,
         'userName -> entity.userName,
-        'password -> entity.password,
         'email -> entity.email,
+        'status -> entity.status,
         'createdAt -> entity.createdAt,
         'updatedAt -> entity.updatedAt,
         'versionNo -> entity.versionNo))
     SQL("""insert into USERS(
       USER_ID,
       USER_NAME,
-      PASSWORD,
       EMAIL,
+      STATUS,
       CREATED_AT,
       UPDATED_AT,
       VERSION_NO
     ) values (
       {userId},
       {userName},
-      {password},
       {email},
+      {status},
       {createdAt},
       {updatedAt},
       {versionNo}
@@ -136,8 +137,8 @@ object Users extends SQLSyntaxSupport[Users] {
       update(Users).set(
         column.userId -> entity.userId,
         column.userName -> entity.userName,
-        column.password -> entity.password,
         column.email -> entity.email,
+        column.status -> entity.status,
         column.createdAt -> entity.createdAt,
         column.updatedAt -> entity.updatedAt,
         column.versionNo -> entity.versionNo

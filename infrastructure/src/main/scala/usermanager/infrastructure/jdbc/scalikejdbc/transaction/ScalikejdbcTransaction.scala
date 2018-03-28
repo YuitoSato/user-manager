@@ -1,18 +1,11 @@
 package usermanager.infrastructure.jdbc.scalikejdbc.transaction
 
 import scalikejdbc.DBSession
-import usermanager.domain.transaction.Transaction
+import usermanager.domain.transaction.{ ReadTransaction, ReadWriteTransaction }
 
-import scala.concurrent.{ ExecutionContext, Future }
 
-class ScalikejdbcTransaction[+A](
-  value: DBSession => Future[A]
-)(
-  implicit ec: ExecutionContext
-) extends Transaction[A] {
+abstract class ScalikeJDBCTransaction(val session: DBSession)
 
-  override def map[B](f: A => B): Transaction[B] = ???
+class ScalikeJDBCReadTransaction(session: DBSession) extends ScalikeJDBCTransaction(session) with ReadTransaction
 
-  override def flatMap[B](f: A => Transaction[B]): Transaction[B] = ???
-
-}
+class ScalikeJDBCReadWriteTransaction(session: DBSession) extends ScalikeJDBCTransaction(session) with ReadWriteTransaction

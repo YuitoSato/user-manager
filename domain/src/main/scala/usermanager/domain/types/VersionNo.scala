@@ -1,6 +1,6 @@
 package usermanager.domain.types
 
-case class VersionNo[T](value: Int) extends AnyVal
+case class VersionNo[+T](value: Int) extends AnyVal
 
 object VersionNo {
 

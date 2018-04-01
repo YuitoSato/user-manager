@@ -11,6 +11,6 @@ object SessionWrite {
 
   implicit val writes: Writes[SessionWrite] = Json.writes[SessionWrite]
 
-  def fromDomain(domain: Session): SessionWrite = SessionWrite(domain.sessionId)
+  def fromDomain(domain: Session): SessionWrite = SessionWrite(domain.id)
 
 }

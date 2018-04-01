@@ -1,6 +1,6 @@
 package usermanager.domain.types
 
-case class Email[T](value: String) extends AnyVal {
+case class Email[+T](value: String) extends AnyVal {
 
   require(isValid)
 

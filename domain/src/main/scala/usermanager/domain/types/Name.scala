@@ -1,6 +1,6 @@
 package usermanager.domain.types
 
-case class Name[T](value: String) extends AnyVal {
+case class Name[+T](value: String) extends AnyVal {
 
   def isValid: Boolean = value.length <= Name.maxLength
 }

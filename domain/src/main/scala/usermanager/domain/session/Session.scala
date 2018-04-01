@@ -1,12 +1,14 @@
 package usermanager.domain.session
 
-import usermanager.domain.types.Id
-import usermanager.domain.user.User
+import usermanager.domain.base.Entity
+import usermanager.domain.types.{ Id, VersionNo }
+import usermanager.domain.user.AbstractUser
 
 case class Session(
-  sessionId: Id[Session]
-) {
+  id: Id[Session],
+  versionNo: VersionNo[Session]
+) extends Entity[Session] {
 
-  def userId: Id[User] = sessionId.asInstanceOf[Id[User]]
+  def userId: Id[AbstractUser] = id.asInstanceOf[Id[AbstractUser]]
 
 }

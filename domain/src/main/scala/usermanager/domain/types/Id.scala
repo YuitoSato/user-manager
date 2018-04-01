@@ -3,7 +3,7 @@ package usermanager.domain.types
 //import scalaz.\/
 import scalaz.syntax.std.ToOptionOps
 
-case class Id[T](value: String) extends ToOptionOps {
+case class Id[+T](value: String) extends ToOptionOps {
 
 //  /**
 //    * idでDBを検索したときに存在しなかったらエラーを返すメソッド

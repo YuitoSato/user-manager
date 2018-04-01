@@ -17,7 +17,7 @@ class SessionRepositoryCache (
 
   override def findById(sessionId: Id[Session]) = Try { cache.getJson[SessionRead](sessionId).map(_.toDomain) }
 
-  override def create(session: Session) = Try { cache.setJson(session.sessionId, SessionWrite.fromDomain(session), 24 hour) }
+  override def create(session: Session) = Try { cache.setJson(session.id, SessionWrite.fromDomain(session), 24 hour) }
 
   override def delete(sessionId: Id[Session]) = Try { cache.delete(sessionId) }
 

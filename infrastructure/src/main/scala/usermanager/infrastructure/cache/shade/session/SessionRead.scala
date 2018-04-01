@@ -1,14 +1,14 @@
 package usermanager.infrastructure.cache.shade.session
 
 import play.api.libs.json.{ Json, Reads }
-import usermanager.domain.session.Session
+import usermanager.domain.sessionuser.SessionUser
 
 class SessionRead(
   sessionId: String,
   versionNo: Int
 ) {
 
-  def toDomain: Session = Session(sessionId, versionNo)
+  def toDomain: SessionUser = SessionUser(sessionId, versionNo)
 
 }
 

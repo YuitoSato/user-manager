@@ -4,10 +4,11 @@ import play.api.libs.json.{ Json, Reads }
 import usermanager.domain.session.Session
 
 class SessionRead(
-  sessionId: String
+  sessionId: String,
+  versionNo: Int
 ) {
 
-  def toDomain: Session = Session(sessionId)
+  def toDomain: Session = Session(sessionId, versionNo)
 
 }
 

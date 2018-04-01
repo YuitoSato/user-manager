@@ -1,14 +1,17 @@
 package usermanager.domain.session
 
-import usermanager.domain.transaction.Transaction
 import usermanager.domain.types.Id
+
+import scala.concurrent.Future
 
 trait SessionRepository {
 
-  def findById(sessionId: Id[Session]): Transaction[Option[Session]]
+  def find(sessionId: Id[Session]): Future[Option[Session]]
 
-  def create(session: Session): Transaction[Unit]
+  def awaitFind(sessionId: Id[Session]): Option[Session]
 
-  def delete(sessionId: Id[Session]): Transaction[Unit]
+  def create(session: Session): Future[Unit]
+
+  def delete(sessionId: Id[Session]): Future[Boolean]
 
 }

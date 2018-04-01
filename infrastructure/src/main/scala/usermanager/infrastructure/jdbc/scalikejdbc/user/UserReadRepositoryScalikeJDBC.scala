@@ -2,9 +2,9 @@ package usermanager.infrastructure.jdbc.scalikejdbc.user
 
 import usermanager.domain.transaction.{ ReadTransaction, Task }
 import usermanager.domain.types.{ Email, Id }
-import usermanager.domain.user.AbstractUser
 import usermanager.domain.user.read.{ UserRead, UserReadRepository }
 import usermanager.infrastructure.jdbc.scalikejdbc.transaction.{ ScalikeJDBCTaskBuilder, ScalikeJDBCTaskRunner }
+import scalikejdbc._
 
 class UserReadRepositoryScalikeJDBC extends UserReadRepository
   with ScalikeJDBCTaskBuilder
@@ -18,6 +18,10 @@ class UserReadRepositoryScalikeJDBC extends UserReadRepository
     }
   }
 
-  override def findByEmail(email: Email[UserRead]): Task[ReadTransaction, Option[UserRead]] = ???
+  override def findByEmail(email: Email[UserRead]): Task[ReadTransaction, Option[UserRead]] = {
+    ask.map { implicit session =>
+      Users.findBy(sqls"where email = $email").map(_.toDomain)
+    }
+  }
 
 }

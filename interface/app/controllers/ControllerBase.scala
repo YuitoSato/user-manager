@@ -4,6 +4,7 @@ import play.api.libs.json._
 import play.api.mvc.{ Controller, Request }
 import syntax.ToEitherOps
 import usermanager.application.error.ApplicationError
+import usermanager.application.services.session.SessionService
 
 import scala.concurrent.ExecutionContext
 import scalaz.{ EitherT, Monad, \/ }

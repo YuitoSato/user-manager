@@ -14,7 +14,7 @@ trait ToResultOps extends Results {
 
   val logger = Logger(this.getClass)
 
-  implicit class ErrorToOps(error: ApplicationError) {
+  implicit class ErrorToOps(error: DomainError) {
 
     def toResult: mvc.Result = InternalServerError(Json.obj(
       "code" -> error.code,

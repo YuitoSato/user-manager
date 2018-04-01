@@ -1,8 +1,8 @@
 package usermanager.domain.syntax
 
 import usermanager.domain.error.DomainError
-import usermanager.domain.transaction.Transaction
 
+import scala.concurrent.Future
 import scalaz.{ EitherT, \/, \/- }
 import scalaz.syntax.std.ToOptionOps
 
@@ -14,11 +14,19 @@ trait ToEitherOps extends ToOptionOps {
     }
   }
 
-  implicit class TransactionOptToEitherOps[A](transactionOpt: Transaction[Option[A]]) {
-    def ifNotExists(f: => DomainError): EitherT[Transaction, DomainError, A] = transactionOpt.map(_ \/> f).et
+  implicit class FutureToEitherOps[A](fa: Future[A]) {
+    def et: EitherT[Future, DomainError, A] = {
+      val futureEither: Future[DomainError \/ A] = fa.map(\/-(_))
+      EitherT(futureEither)
+    }
   }
 
-  implicit class TransactionUnitToEitherOps[A](transactionUnit: Transaction[Unit]) {
-    def et: EitherT[Transaction, DomainError, Unit] = EitherT(transactionUnit.map(\/.right))
-  }
+
+//  implicit class TransactionOptToEitherOps[A](transactionOpt: Transaction[Option[A]]) {
+//    def ifNotExists(f: => DomainError): EitherT[Transaction, DomainError, A] = transactionOpt.map(_ \/> f).et
+//  }
+//
+//  implicit class TransactionUnitToEitherOps[A](transactionUnit: Transaction[Unit]) {
+//    def et: EitherT[Transaction, DomainError, Unit] = EitherT(transactionUnit.map(\/.right))
+//  }
 }

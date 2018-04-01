@@ -21,6 +21,11 @@ object DomainError {
     val message = s"type: $entityType, id: $entityId is not found"
   }
 
+  case class BadRequest(msg: String) extends DomainError {
+    val code = "error.badRequest"
+    val message: String = msg
+  }
+
 
 //
 //  case class JsonError(error: JsError) extends Errors {
@@ -52,11 +57,11 @@ object DomainError {
 //    val code = "error.cantDeleteInitialAccountFollowing"
 //    val message = "Initial account following record cannot be deleted."
 //  }
-//
-//  case object Unauthorized extends Errors {
-//    val code = "error.unauthorized"
-//    val message = s"Please login."
-//  }
+
+  case object Unauthorized extends DomainError {
+    val code = "error.unauthorized"
+    val message = s"Please login."
+  }
 //
 //  case object InvalidAccountIds extends Errors {
 //    val code = "error.invalidAccountIds"

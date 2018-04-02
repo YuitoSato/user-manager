@@ -5,15 +5,11 @@ import usermanager.domain.transaction.Transaction
 
 import scala.concurrent.ExecutionContext
 
-case class SlickTransaction[+A](
-  value: DBIO[A]
-)(
-  implicit ec: ExecutionContext
-) extends Transaction[A] {
+abstract class SlickTransaction[A](
+  val dbio: A => DBIO[A]
+)
 
-  override def map[B](f: A => B): SlickTransaction[B] = SlickTransaction(value.map(f))
+class SlickReadTransaction[A](dbio: A => DBIO[A]) extends SlickTransaction[A](dbio)
 
-  override def flatMap[B](f: A => Transaction[B]): SlickTransaction[B] = {
-    SlickTransaction(value.flatMap(f(_).asInstanceOf[SlickTransaction[B]].value))
-  }
-}
+class SlickReadWriteTransaction[A](dbio: A => DBIO[A])
+  extends SlickTransaction[A](dbio)

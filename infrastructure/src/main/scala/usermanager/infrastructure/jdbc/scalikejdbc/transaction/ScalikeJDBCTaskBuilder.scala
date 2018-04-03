@@ -5,12 +5,12 @@ import usermanager.domain.transaction._
 
 import scala.concurrent.{ ExecutionContext, Future }
 
-trait ScalikeJDBCTaskBuilder {
+class ScalikeJDBCTaskBuilder()(
+  implicit dBSession: DBSession
+) extends TransactionBuilder {
 
-  def ask: Task[Transaction, DBSession] =
-    new Task[Transaction, DBSession] {
-      def execute(transaction: Transaction)(implicit ec: ExecutionContext): Future[DBSession] =
-        Future.successful(transaction.asInstanceOf[ScalikeJDBCTransaction].session)
-    }
+  override def exec[A](value: A): Transaction[A] = {
+    ScalikeJDBCTransaction(Future.successful(value))
+  }
 
 }

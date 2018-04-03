@@ -1,11 +1,11 @@
 package usermanager.domain.user.write
 
-import usermanager.domain.transaction.{ ReadWriteTransaction, Task }
+import usermanager.domain.transaction.Transaction
 
 trait UserWriteRepository {
 
-  def create(user: UserWrite): Task[ReadWriteTransaction, Unit]
+  def create(user: UserWrite): Transaction[Unit]
 
-  def update(user: UserWrite): Task[ReadWriteTransaction, Unit]
+  def update(user: UserWrite): Transaction[Unit]
 
 }

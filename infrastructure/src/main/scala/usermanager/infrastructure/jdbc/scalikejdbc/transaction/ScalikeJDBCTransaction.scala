@@ -5,6 +5,8 @@ import usermanager.domain.transaction.async.AsyncTransaction
 
 import scala.concurrent.{ ExecutionContext, Future }
 
+
+// TODO DBSession => Future[A] にしてrun時まで遅延評価すべき
 case class ScalikeJDBCTransaction[A](
   value: Future[A]
 )(

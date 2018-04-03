@@ -1,15 +1,16 @@
 package usermanager.infrastructure.jdbc.scalikejdbc.transaction
 
 import scalikejdbc.{ DB, DBSession }
-import usermanager.domain.transaction.{ Transaction, TransactionRunner }
+import usermanager.domain.transaction.TransactionRunner
+import usermanager.domain.transaction.async.{ AsyncTransaction, AsyncTransactionRunner }
 
 import scala.concurrent.Future
 
-class ScalikeJDBCTaskRunner()(
+class ScalikeJDBCTransactionRunner()(
   implicit dBSession: DBSession
 ) extends TransactionRunner {
 
-  override def exec[A](transaction: Transaction[A]): Future[A] = {
+  override def exec[A](transaction: AsyncTransaction[A]): Future[A] = {
     DB localTx { implicit session =>
       transaction.asInstanceOf[ScalikeJDBCTransaction[A]].value
     }

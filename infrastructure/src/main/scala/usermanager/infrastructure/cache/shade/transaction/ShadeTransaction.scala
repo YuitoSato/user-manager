@@ -1,14 +1,13 @@
 package usermanager.infrastructure.cache.shade.transaction
 
-import usermanager.domain.transaction.Transaction
-
-import scala.util.Try
+import usermanager.domain.transaction.async.AsyncTransaction
 
 case class ShadeTransaction[+A](
-  value: Try[A]
-) extends Transaction[A] {
+  value: A
+) extends AsyncTransaction[A] {
 
-  override def map[B](f: A => B): Transaction[B] = ???
+  override def map[B](f: A => B): AsyncTransaction[B] = ShadeTransaction(f(value))
 
-  override def flatMap[B](f: A => Transaction[B]): Transaction[B] = ???
+  override def flatMap[B](f: A => AsyncTransaction[B]): AsyncTransaction[B] = f(ShadeTransaction(value))
+
 }

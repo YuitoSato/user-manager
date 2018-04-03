@@ -3,12 +3,12 @@ package usermanager.infrastructure.jdbc.scalikejdbc.user
 import usermanager.domain.transaction.{ ReadTransaction, Task }
 import usermanager.domain.types.{ Email, Id }
 import usermanager.domain.user.read.{ UserRead, UserReadRepository }
-import usermanager.infrastructure.jdbc.scalikejdbc.transaction.{ ScalikeJDBCTaskBuilder, ScalikeJDBCTaskRunner }
+import usermanager.infrastructure.jdbc.scalikejdbc.transaction.{ ScalikeJDBCTransactionBuilder, ScalikeJDBCTransactionRunner }
 import scalikejdbc._
 
 class UserReadRepositoryScalikeJDBC extends UserReadRepository
-  with ScalikeJDBCTaskBuilder
-  with ScalikeJDBCTaskRunner
+  with ScalikeJDBCTransactionBuilder
+  with ScalikeJDBCTransactionRunner
   with RichUserScalikeJDBC
 {
 

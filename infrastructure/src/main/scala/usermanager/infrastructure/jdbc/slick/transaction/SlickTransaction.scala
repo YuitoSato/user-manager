@@ -1,15 +1,25 @@
 package usermanager.infrastructure.jdbc.slick.transaction
 
 import slick.dbio.DBIO
-import usermanager.domain.transaction.Transaction
-
-import scala.concurrent.ExecutionContext
+import slick.jdbc.JdbcProfile
+import usermanager.domain.transaction.{ ReadTransaction, ReadWriteTransaction }
 
 abstract class SlickTransaction[A](
-  val dbio: A => DBIO[A]
+  val dbio: DBIO[A]
+)(
+  implicit val db: JdbcProfile#Backend#Database
 )
 
-class SlickReadTransaction[A](dbio: A => DBIO[A]) extends SlickTransaction[A](dbio)
 
-class SlickReadWriteTransaction[A](dbio: A => DBIO[A])
-  extends SlickTransaction[A](dbio)
+class SlickReadTransaction[A](
+  dbio: DBIO[A]
+)(
+  implicit override val db: JdbcProfile#Backend#Database
+) extends SlickTransaction[A](dbio) with ReadTransaction
+
+
+class SlickReadWriteTransaction[A](
+  dbio: DBIO[A]
+)(
+  implicit override val db: JdbcProfile#Backend#Database
+) extends SlickTransaction[A](dbio) with ReadWriteTransaction

@@ -1,6 +1,6 @@
 package usermanager.domain.error
 
-import usermanager.domain.result.AsyncTransactionResult
+import usermanager.domain.result.async.AsyncTransactionResult
 import usermanager.domain.transaction.async.AsyncTransaction
 
 import scala.concurrent.Future

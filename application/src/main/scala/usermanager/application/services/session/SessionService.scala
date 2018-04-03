@@ -3,7 +3,7 @@ package usermanager.application.services.session
 import javax.inject.Inject
 
 import usermanager.domain.error.{ DomainError, ErrorHandler }
-import usermanager.domain.result.SyncResult
+import usermanager.domain.result.sync.SyncResult
 import usermanager.domain.sessionuser.{ SessionUser, SessionUserRepository }
 import usermanager.domain.syntax.ToEitherOps
 import usermanager.domain.transaction.async.AsyncTransactionRunner
@@ -20,7 +20,7 @@ class SessionService @Inject()(
 ) extends ToEitherOps with ErrorHandler {
 
   def awaitFindById(sessionId: Id[SessionUser]): SyncResult[SessionUser] = {
-    sessionRepository.awaitFind(sessionId)
+    sessionRepository.awaitFind(sessionId) ifNotExists DomainError.NotFound("Seession", sessionId)
   }
 
   def findById(sessionId: Id[SessionUser]): EitherT[Future, DomainError, SessionUser] = {

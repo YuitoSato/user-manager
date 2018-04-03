@@ -12,7 +12,8 @@ package object result {
 
   type AsyncResult[A] = EitherT[Future, DomainError, A]
   type SyncResult[A] = DomainError \/ A
-  type TransactionResult[A] = EitherT[AsyncTransaction, DomainError, A]
+  type AsyncTransactionResult[A] = EitherT[AsyncTransaction, DomainError, A]
+
 
   object AsyncResult extends ToEitherOps {
 
@@ -41,17 +42,17 @@ package object result {
 
   object TransactionResult extends ToEitherOps {
 
-    def apply[A](dbio: AsyncTransaction[DomainError \/ A]): TransactionResult[A] = {
+    def apply[A](dbio: AsyncTransaction[DomainError \/ A]): AsyncTransactionResult[A] = {
       dbio.et
     }
 
-    def apply[A](value: A)(implicit builder: AsyncTransactionBuilder): TransactionResult[A] = {
+    def apply[A](value: A)(implicit builder: AsyncTransactionBuilder): AsyncTransactionResult[A] = {
       val a = builder.exec(value)
       val dbio: AsyncTransaction[DomainError \/ A] = builder.exec(value).map(\/.right)
       TransactionResult(dbio)
     }
 
-    def apply[A](either: DomainError \/ A)(implicit builder: AsyncTransactionBuilder): TransactionResult[A] = {
+    def apply[A](either: DomainError \/ A)(implicit builder: AsyncTransactionBuilder): AsyncTransactionResult[A] = {
       TransactionResult(builder.exec(either))
     }
   }

@@ -1,3 +1,3 @@
 package usermanager.domain.transaction
 
-trait Transaction[+A]
+trait TransactionRunner

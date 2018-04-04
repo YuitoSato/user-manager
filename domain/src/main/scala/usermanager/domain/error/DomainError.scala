@@ -26,6 +26,11 @@ object DomainError {
     val message: String = msg
   }
 
+  case object InvalidDISetting {
+    val code = "error.InvalidDI"
+    val message = "DI Setting is invalid"
+  }
+
 
 //
 //  case class JsonError(error: JsError) extends Errors {

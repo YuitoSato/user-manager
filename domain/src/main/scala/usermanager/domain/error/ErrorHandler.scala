@@ -1,10 +1,19 @@
 package usermanager.domain.error
 
+import usermanager.domain.result.async.AsyncTransactionResult
+import usermanager.domain.transaction.async.AsyncTransaction
+
 import scala.concurrent.Future
-import scalaz.{ -\/, EitherT, \/- }
 import scalaz.syntax.std.ToOptionOps
+import scalaz.{ -\/, EitherT, \/- }
 
 trait ErrorHandler extends ToOptionOps {
+
+  implicit class AsyncTransactionOptionErrorHandler[A](transactionOpt: AsyncTransaction[Option[A]]) {
+    def ifNotExists(f: => DomainError): AsyncTransactionResult[A] = {
+      EitherT(transactionOpt.map(_ \/> f))
+    }
+  }
 
   implicit class FutureOptionErrorHandler[A](futureOpt: Future[Option[A]]) {
     def ifNotExists(f: => DomainError): EitherT[Future, DomainError, A] = {
@@ -25,5 +34,7 @@ trait ErrorHandler extends ToOptionOps {
       }
     }
   }
+
+  implicit class OptionErrorHandler[A](opt: Option[])
 
 }

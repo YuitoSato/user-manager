@@ -15,7 +15,7 @@ package object result {
     def ifNotExists(f: => DomainError)(): TransactionResult[A] = {
       transaction match {
         case async: AsyncTransaction[Option[A]] => AsyncTransactionResult(async.map(_ \/> f))
-        case sync: SyncTransaction[Option[A]] => SyncTransactionResult(sync.map(_ \/> f))
+        case sync: AsyncTransaction[Option[A]] => SyncTransactionResult(sync.map(_ \/> f))
         case _ => throw new Exception("DI ERROR")
       }
     }

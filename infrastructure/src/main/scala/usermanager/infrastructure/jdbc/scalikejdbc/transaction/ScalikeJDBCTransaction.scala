@@ -3,20 +3,21 @@ package usermanager.infrastructure.jdbc.scalikejdbc.transaction
 import scalikejdbc.DBSession
 import usermanager.domain.transaction.async.AsyncTransaction
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.ExecutionContext
 
-
-// TODO DBSession => Future[A] にしてrun時まで遅延評価すべき
 case class ScalikeJDBCTransaction[A](
-  value: Future[A]
+  value: DBSession => A
 )(
   implicit val ec: ExecutionContext,
-  implicit val dBSession: DBSession
+  implicit val dbSession: DBSession
 ) extends AsyncTransaction[A] {
 
-  override def map[B](f: A => B): AsyncTransaction[B] = ScalikeJDBCTransaction(value.map(f))
+  override def map[B](f: A => B): ScalikeJDBCTransaction[B] = {
+    def run(session: DBSession) = f(value(session))
+    ScalikeJDBCTransaction(run)
+  }
 
-  override def flatMap[B](f: A => AsyncTransaction[B]): AsyncTransaction[B] =
-    ScalikeJDBCTransaction(value.flatMap(f(_).asInstanceOf[ScalikeJDBCTransaction[B]].value))
-
+  override def flatMap[B](f: A => AsyncTransaction[B]): ScalikeJDBCTransaction[B] = {
+    f(value).asInstanceOf[ScalikeJDBCTransaction[B]]
+  }
 }

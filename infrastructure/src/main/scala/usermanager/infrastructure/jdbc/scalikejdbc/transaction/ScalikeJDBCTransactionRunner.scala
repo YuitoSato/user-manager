@@ -12,9 +12,14 @@ class ScalikeJDBCTransactionRunner()(
 
   // TODO ここらへんはテコいれ。多分遅延評価にしないと動かない。
   override def exec[A](transactionResult: SyncTransactionResult[A]): SyncResult[A] = {
+    transactionResult.value
+
     transactionResult.map(a =>)
 
     val future = DB localTx { implicit session =>
+      val a = transactionResult.value
+
+
       transaction.asInstanceOf[ScalikeJDBCTransaction[A]].value
     }
     SyncResult(future)

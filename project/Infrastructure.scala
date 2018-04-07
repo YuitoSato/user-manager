@@ -20,6 +20,8 @@ object Infrastructure {
 
     "com.typesafe.play" %% "play-json" % "2.6.7",
 
+    "org.mindrot"        % "jbcrypt" % "0.4",
+
     // For Test
     "org.scalatest" %% "scalatest"                 % "3.0.1"  % "test",
     "org.mockito"   %  "mockito-core"              % "2.8.9"  % "test",

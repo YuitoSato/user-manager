@@ -1,9 +1,8 @@
 package usermanager.application.services.session
 
-import javax.inject.Inject
-
+import com.google.inject.Inject
 import usermanager.domain.error.{ DomainError, ErrorHandler }
-import usermanager.domain.sessionuser.{ SessionUser, SessionUserRepository }
+import usermanager.domain.aggregates.sessionuser.{ SessionUser, SessionUserRepository }
 import usermanager.domain.syntax.ToEitherOps
 import usermanager.domain.transaction.async.{ AsyncTransaction, AsyncTransactionBuilder }
 import usermanager.domain.transaction.sync.{ SyncTransaction, SyncTransactionBuilder }

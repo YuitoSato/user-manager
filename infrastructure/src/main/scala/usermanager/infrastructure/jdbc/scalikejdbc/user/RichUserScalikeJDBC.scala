@@ -1,6 +1,6 @@
 package usermanager.infrastructure.jdbc.scalikejdbc.user
 
-import usermanager.domain.user.read.UserRead
+import usermanager.domain.aggregates.user.read.UserRead
 
 trait RichUserScalikeJDBC {
 
@@ -8,9 +8,11 @@ trait RichUserScalikeJDBC {
     def toDomain: UserRead = {
       UserRead(
         id = user.userId,
+        userName = user.userName,
         email = user.email,
+        password = user.password,
         status = user.status,
-        versionNo = user.versionNo
+        versionNo = user.versionNo,
       )
     }
   }

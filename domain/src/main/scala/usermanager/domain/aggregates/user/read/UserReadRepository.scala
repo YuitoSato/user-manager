@@ -1,4 +1,4 @@
-package usermanager.domain.user.read
+package usermanager.domain.aggregates.user.read
 
 import usermanager.domain.transaction.sync.SyncTransaction
 import usermanager.domain.types.{ Email, Id }

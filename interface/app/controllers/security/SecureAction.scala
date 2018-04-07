@@ -4,29 +4,27 @@ import javax.inject.Inject
 
 import play.api.mvc._
 import syntax.ToResultOps
-import usermanager.application.services.session.SessionService
+import usermanager.application.scenarios.session.SessionScenario
 import usermanager.domain.error.DomainError
-import usermanager.domain.sessionuser.SessionUser
+import usermanager.domain.result.sync.SyncResult
+import usermanager.domain.aggregates.sessionuser.SessionUser
 import usermanager.domain.syntax.ToEitherOps
-import usermanager.domain.transaction.sync.{ SyncTransactionBuilder, SyncTransactionRunner }
 
 import scala.concurrent.Future
 import scalaz.syntax.std.ToOptionOps
 import scalaz.{ -\/, \/, \/- }
 
 class SecureAction @Inject() (
-  sessionService: SessionService
+  sessionScenario: SessionScenario
 )(
-  implicit syncTransactionBuilder: SyncTransactionBuilder,
-  implicit val syncTransactionRunner: SyncTransactionRunner,
   implicit val controllerComponents: ControllerComponents
 ) extends ToResultOps with ToEitherOps with ToOptionOps with BaseControllerHelpers {
 
   def findUserBySession(req: Request[_]): DomainError \/ SessionUser = {
     (for {
-      key <- syncTransactionBuilder.exec(req.session.get("session") \/> DomainError.BadRequest("session key is not found"))
-      user <- sessionService.awaitFindById(key)
-    } yield user).run.value
+      key <- SyncResult(req.session.get("session") \/> DomainError.BadRequest("session key is not found"))
+      user <- sessionScenario.awaitFindById(key)
+    } yield user).value
   }
 
   def apply(requestHandler: SecureRequest[AnyContent] => Result): Action[AnyContent] = {

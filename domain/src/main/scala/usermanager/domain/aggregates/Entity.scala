@@ -1,4 +1,4 @@
-package usermanager.domain.base
+package usermanager.domain.aggregates
 
 import usermanager.domain.types.{ Id, VersionNo }
 

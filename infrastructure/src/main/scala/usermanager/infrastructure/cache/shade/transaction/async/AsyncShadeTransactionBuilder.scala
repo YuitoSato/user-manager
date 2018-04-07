@@ -1,4 +1,4 @@
-package usermanager.infrastructure.cache.shade.transaction
+package usermanager.infrastructure.cache.shade.transaction.async
 
 import usermanager.domain.error.DomainError
 import usermanager.domain.syntax.ToEitherOps
@@ -7,13 +7,13 @@ import usermanager.domain.transaction.async.{ AsyncTransaction, AsyncTransaction
 import scala.concurrent.{ ExecutionContext, Future }
 import scalaz.{ \/, \/- }
 
-class ShadeTransactionBuilder()(implicit ec: ExecutionContext) extends AsyncTransactionBuilder with ToEitherOps {
+class AsyncShadeTransactionBuilder()(implicit ec: ExecutionContext) extends AsyncTransactionBuilder with ToEitherOps {
 
-  override def exec[A](value: \/[DomainError, A]): AsyncTransaction[A] = ShadeTransaction(Future.successful(value).et)
+  override def exec[A](value: \/[DomainError, A]): AsyncTransaction[A] = AsyncShadeTransaction(Future.successful(value).et)
 
   override def exec[A](value: A): AsyncTransaction[A] = {
     val either: Future[DomainError \/ A] = Future.successful(\/-(value))
-    ShadeTransaction(either.et)
+    AsyncShadeTransaction(either.et)
   }
 
 }

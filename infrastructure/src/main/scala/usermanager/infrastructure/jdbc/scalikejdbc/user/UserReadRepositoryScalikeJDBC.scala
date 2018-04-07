@@ -2,7 +2,7 @@ package usermanager.infrastructure.jdbc.scalikejdbc.user
 
 import scalikejdbc._
 import usermanager.domain.types.{ Email, Id }
-import usermanager.domain.user.read.{ UserRead, UserReadRepository }
+import usermanager.domain.aggregates.user.read.{ UserRead, UserReadRepository }
 import usermanager.infrastructure.jdbc.scalikejdbc.transaction.ScalikeJDBCTransaction
 
 import scalaz.\/

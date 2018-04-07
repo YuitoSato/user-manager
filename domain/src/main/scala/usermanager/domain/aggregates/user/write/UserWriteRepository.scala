@@ -1,4 +1,4 @@
-package usermanager.domain.user.write
+package usermanager.domain.aggregates.user.write
 
 import usermanager.domain.transaction.async.AsyncTransaction
 

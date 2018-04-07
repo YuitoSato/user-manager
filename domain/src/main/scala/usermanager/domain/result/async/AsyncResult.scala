@@ -10,7 +10,6 @@ import scalaz.{ -\/, EitherT, \/, \/- }
 
 case class AsyncResult[A](value: EitherT[Future, DomainError, A])(implicit ec: ExecutionContext) extends Result[A] with FutureInstances {
 
-
   override def map[B](f: A => B): AsyncResult[B] = AsyncResult(value.map(f))
 
   override def flatMap[B](f: A => Result[B]): AsyncResult[B] = {

@@ -17,16 +17,4 @@ trait RichUserScalikeJDBC {
     }
   }
 
-//  def userFromDomain(user: AbstractUser): Users = {
-//    Users(
-//      userId = user.userId,
-//      email = user.email,
-//      status = user.status,
-//      createdAt = user.createdAt,
-//      updatedAt = user.updatedAt,
-//      versionNo = user.versionNo
-//    )
-//    Users(user.userId, )
-//  }
-
 }

@@ -1,40 +1,32 @@
 package usermanager.domain.error
 
-import usermanager.domain.result.async.AsyncTransactionResult
-import usermanager.domain.transaction.async.AsyncTransaction
+import usermanager.domain.transaction.async.{ AsyncTransaction, AsyncTransactionBuilder }
+import usermanager.domain.transaction.sync.{ SyncTransaction, SyncTransactionBuilder }
 
-import scala.concurrent.Future
 import scalaz.syntax.std.ToOptionOps
-import scalaz.{ -\/, EitherT, \/- }
+import scalaz.{ -\/, \/- }
 
 trait ErrorHandler extends ToOptionOps {
 
   implicit class AsyncTransactionOptionErrorHandler[A](transactionOpt: AsyncTransaction[Option[A]]) {
-    def ifNotExists(f: => DomainError): AsyncTransactionResult[A] = {
-      EitherT(transactionOpt.map(_ \/> f))
+    def ifNotExists(f: => DomainError)(implicit builder: AsyncTransactionBuilder): AsyncTransaction[A] = {
+      transactionOpt.flatMap(opt => builder.exec(opt \/> f))
     }
   }
 
-  implicit class FutureOptionErrorHandler[A](futureOpt: Future[Option[A]]) {
-    def ifNotExists(f: => DomainError): EitherT[Future, DomainError, A] = {
-      EitherT(futureOpt.map(_ \/> f))
+  implicit class AsyncTransactionBooleanErrorHandler(transactionBool: AsyncTransaction[Boolean]) {
+    def ifFalse(f: => DomainError)(implicit builder: AsyncTransactionBuilder): AsyncTransaction[Unit] = {
+      transactionBool.flatMap(bool => {
+        val either = if (bool) \/-(()) else -\/(f)
+        builder.exec(either)
+      })
     }
   }
 
-  implicit class FutureBooleanErrorHandler(futureBool: Future[Boolean]) {
-    def ifFalse(f: => DomainError): EitherT[Future, DomainError, Unit] = {
-      EitherT {
-        futureBool.map(bool =>
-          if (bool) {
-            \/-(())
-          } else {
-            -\/(f)
-          }
-        )
-      }
+  implicit class SyncTransactionOptionErrorHandler[A](transactionOpt: SyncTransaction[Option[A]]) {
+    def ifNotExists(f: => DomainError)(implicit builder: SyncTransactionBuilder): SyncTransaction[A] = {
+      transactionOpt.flatMap(opt => builder.exec(opt \/> f))
     }
   }
-
-  implicit class OptionErrorHandler[A](opt: Option[])
 
 }

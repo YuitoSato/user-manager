@@ -9,7 +9,7 @@ case class SyncResult[+A](value: DomainError \/ A) extends Result[A] {
 
   override def map[B](f: A => B): SyncResult[B] = SyncResult(value.map(f))
 
-  override def flatMap[B](f: A => Result[B]): SyncResult[B] = f(value).asInstanceOf[SyncResult[B]]
+  override def flatMap[B](f: A => Result[B]): SyncResult[B] = SyncResult(value.flatMap(f(_).asInstanceOf[SyncResult[B]].value))
 
 }
 

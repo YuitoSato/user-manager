@@ -2,7 +2,12 @@ package usermanager.domain.error
 
 import usermanager.domain.types.Id
 
-sealed trait DomainError extends AbstractError
+sealed trait DomainError {
+
+  val code: String
+  val message: String
+
+}
 
 object DomainError {
 
@@ -31,12 +36,10 @@ object DomainError {
     val message = "DI Setting is invalid"
   }
 
-
-//
-//  case class JsonError(error: JsError) extends Errors {
-//    val code = "error.json"
-//    val message = s"Json error occured. error=$error"
-//  }
+  case class JsonError(msg: String) extends DomainError {
+    val code = "error.json"
+    val message = s"Json error occured. error=$msg"
+  }
 //
 //  case class EmailExistsError(email: Email[_]) extends Errors {
 //    val code = "error.emailExists"

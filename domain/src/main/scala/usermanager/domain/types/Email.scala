@@ -1,13 +1,14 @@
 package usermanager.domain.types
 
-case class Email[+T](value: String) extends AnyVal {
+case class Email[+T](value: String) extends AnyVal { self =>
 
-  require(isValid)
-
-  def isValid: Boolean = value.matches(Email.pattern) && value.length <= Email.maxLength
+//  require(Email.isValid(self))
 
 }
+
 object Email {
+
+  def isValid[T](value: Email[T]): Boolean = value.matches(Email.pattern) && value.length <= Email.maxLength
 
   val pattern = """^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"""
   val maxLength = 150

@@ -1,10 +1,19 @@
 package usermanager.infrastructure.cache.shade.transaction
 
-import usermanager.domain.transaction.TransactionBuilder
+import usermanager.domain.error.DomainError
+import usermanager.domain.syntax.ToEitherOps
 import usermanager.domain.transaction.async.{ AsyncTransaction, AsyncTransactionBuilder }
 
-class ShadeTransactionBuilder extends TransactionBuilder {
+import scala.concurrent.{ ExecutionContext, Future }
+import scalaz.{ \/, \/- }
 
-  override def exec[A](value: A): AsyncTransaction[A] = ShadeTransaction(value)
+class ShadeTransactionBuilder()(implicit ec: ExecutionContext) extends AsyncTransactionBuilder with ToEitherOps {
+
+  override def exec[A](value: \/[DomainError, A]): AsyncTransaction[A] = ShadeTransaction(Future.successful(value).et)
+
+  override def exec[A](value: A): AsyncTransaction[A] = {
+    val either: Future[DomainError \/ A] = Future.successful(\/-(value))
+    ShadeTransaction(either.et)
+  }
 
 }

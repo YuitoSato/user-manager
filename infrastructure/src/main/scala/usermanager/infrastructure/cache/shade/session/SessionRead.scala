@@ -3,7 +3,7 @@ package usermanager.infrastructure.cache.shade.session
 import play.api.libs.json.{ Json, Reads }
 import usermanager.domain.sessionuser.SessionUser
 
-class SessionRead(
+case class SessionRead(
   sessionId: String,
   versionNo: Int
 ) {
@@ -14,6 +14,6 @@ class SessionRead(
 
 object SessionRead {
 
-  implicit val reads: Reads[SessionWrite] = Json.reads[SessionWrite]
+  implicit val reads: Reads[SessionRead] = Json.reads[SessionRead]
 
 }

@@ -1,10 +1,12 @@
 package usermanager.infrastructure.cache.shade.transaction
 
-import usermanager.domain.transaction.async.AsyncTransaction
-import usermanager.domain.transaction.sync.SyncTransactionRunner
+import usermanager.domain.result.async.AsyncResult
+import usermanager.domain.transaction.async.{ AsyncTransaction, AsyncTransactionRunner }
 
-class ShadeTransactionRunner extends SyncTransactionRunner {
+import scala.concurrent.ExecutionContext
 
-  override def exec[A](transaction: AsyncTransaction[A]): A = transaction.asInstanceOf[ShadeTransaction].value
+class ShadeTransactionRunner()(implicit ec: ExecutionContext) extends AsyncTransactionRunner {
+
+  override def exec[A](transaction: AsyncTransaction[A]): AsyncResult[A] = AsyncResult(transaction.asInstanceOf[ShadeTransaction[A]].value)
 
 }

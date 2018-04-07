@@ -6,7 +6,9 @@ import play.api.mvc._
 import syntax.ToResultOps
 import usermanager.application.services.session.SessionService
 import usermanager.domain.error.DomainError
+import usermanager.domain.sessionuser.SessionUser
 import usermanager.domain.syntax.ToEitherOps
+import usermanager.domain.transaction.sync.{ SyncTransactionBuilder, SyncTransactionRunner }
 
 import scala.concurrent.Future
 import scalaz.syntax.std.ToOptionOps
@@ -14,21 +16,25 @@ import scalaz.{ -\/, \/, \/- }
 
 class SecureAction @Inject() (
   sessionService: SessionService
-) extends ToResultOps with ToEitherOps with ToOptionOps {
+)(
+  implicit syncTransactionBuilder: SyncTransactionBuilder,
+  implicit val syncTransactionRunner: SyncTransactionRunner,
+  implicit val controllerComponents: ControllerComponents
+) extends ToResultOps with ToEitherOps with ToOptionOps with BaseControllerHelpers {
 
-  def findUserBySession(req: Request[_]): DomainError \/ Session = {
-    for {
-      key <- req.session.get("session") \/> DomainError.BadRequest("session key is not found")
+  def findUserBySession(req: Request[_]): DomainError \/ SessionUser = {
+    (for {
+      key <- syncTransactionBuilder.exec(req.session.get("session") \/> DomainError.BadRequest("session key is not found"))
       user <- sessionService.awaitFindById(key)
-    } yield user
+    } yield user).run.value
   }
 
   def apply(requestHandler: SecureRequest[AnyContent] => Result): Action[AnyContent] = {
-    apply(BodyParsers.parse.anyContent)(requestHandler)
+    apply(controllerComponents.parsers.anyContent)(requestHandler)
   }
 
   def apply[A](bodyParser: BodyParser[A])(requestHandler: SecureRequest[A] => Result): Action[A] = {
-    Action(bodyParser) { req =>
+    controllerComponents.actionBuilder.apply(bodyParser) { req =>
       findUserBySession(req) match {
         case \/-(user) => requestHandler(SecureRequest(user, req))
         case -\/(e: DomainError.BadRequest) => e.toResult
@@ -38,11 +44,11 @@ class SecureAction @Inject() (
   }
 
   def async(requestHandler: SecureRequest[AnyContent] => Future[Result]): Action[AnyContent] = {
-    async(BodyParsers.parse.anyContent)(requestHandler)
+    async(controllerComponents.parsers.anyContent)(requestHandler)
   }
 
   def async[A](bodyParser: BodyParser[A])(requestHandler: SecureRequest[A] => Future[Result]): Action[A] = {
-    Action.async(bodyParser) { req =>
+    controllerComponents.actionBuilder.async(bodyParser) { req =>
       findUserBySession(req) match {
         case \/-(user) => requestHandler(SecureRequest(user, req))
         case -\/(e: DomainError.BadRequest) => Future.successful(e.toResult)
@@ -50,4 +56,5 @@ class SecureAction @Inject() (
       }
     }
   }
+
 }

@@ -2,26 +2,24 @@ package usermanager.infrastructure.jdbc.slick.transaction
 
 import javax.inject.Inject
 
-import models.domain.Errors
 import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
-import repositories.transaction.TransactionRunner
 import slick.driver.JdbcProfile
-import syntax.{ DBResult, Result, ToEitherOps }
+import usermanager.domain.result.async.AsyncResult
+import usermanager.domain.syntax.ToEitherOps
+import usermanager.domain.transaction.async.{ AsyncTransaction, AsyncTransactionRunner }
 
 import scala.concurrent.ExecutionContext
-import scalaz.{ Cont, \/ }
 
 class SlickTransactionRunner @Inject()(
   val dbConfigProvider: DatabaseConfigProvider
 )(
   implicit ec: ExecutionContext
-) extends TransactionRunner with HasDatabaseConfigProvider[JdbcProfile] with ToEitherOps {
+) extends AsyncTransactionRunner
+  with HasDatabaseConfigProvider[JdbcProfile]
+  with ToEitherOps {
 
-  override def exec[A](result: DBResult[A]): Result[A] = {
-    val dbio = result.run.asInstanceOf[SlickTransaction[Errors \/ A]].value
-    val a = db
-    db.run(dbio).et
+  override def exec[A](transaction: AsyncTransaction[A]): AsyncResult[A] = {
+    AsyncResult(db.run(transaction.asInstanceOf[SlickTransaction[A]].value.run).et)
   }
 
-  Cont
 }

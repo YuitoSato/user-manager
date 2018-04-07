@@ -7,9 +7,9 @@ case class UserRead(
   id: Id[UserRead],
   userName: Name[UserRead],
   email: Email[UserRead],
+  password: HashedPassword[UserRead],
   status: Status,
   versionNo: VersionNo[UserRead],
-  password: HashedPassword[UserRead]
 ) {
 
   def toSessionUser: SessionUser = {

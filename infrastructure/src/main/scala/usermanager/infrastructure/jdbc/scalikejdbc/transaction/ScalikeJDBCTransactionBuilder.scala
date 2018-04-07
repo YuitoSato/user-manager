@@ -1,17 +1,23 @@
 package usermanager.infrastructure.jdbc.scalikejdbc.transaction
 
 import scalikejdbc.DBSession
-import usermanager.domain.transaction._
-import usermanager.domain.transaction.async.{ AsyncTransaction, AsyncTransactionBuilder }
+import usermanager.domain.error.DomainError
+import usermanager.domain.transaction.sync.{ SyncTransaction, SyncTransactionBuilder }
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scalaz.{ \/, \/- }
 
 class ScalikeJDBCTransactionBuilder()(
-  implicit dBSession: DBSession
-) extends AsyncTransactionBuilder {
+  implicit dbSession: DBSession
+) extends SyncTransactionBuilder {
 
-  override def exec[A](value: A): AsyncTransaction[A] = {
-    ScalikeJDBCTransaction(Future.successful(value))
+  override def exec[A](value: \/[DomainError, A]): SyncTransaction[A] = {
+    def v(dbSession: DBSession) = value
+    ScalikeJDBCTransaction(v)
+  }
+
+  override def exec[A](value: A): SyncTransaction[A] = {
+    def v(dbSession: DBSession) = \/-(value)
+    ScalikeJDBCTransaction(v)
   }
 
 }

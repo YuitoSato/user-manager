@@ -1,0 +1,12 @@
+package usermanager.infrastructure.cache.shade.transaction.sync
+
+import usermanager.domain.result.sync.SyncResult
+import usermanager.domain.transaction.sync.{ SyncTransaction, SyncTransactionRunner }
+
+import scala.concurrent.ExecutionContext
+
+class SyncShadeTransactionRunner()(implicit ec: ExecutionContext) extends SyncTransactionRunner {
+
+  override def exec[A](transaction: SyncTransaction[A]): SyncResult[A] = SyncResult(transaction.asInstanceOf[SyncShadeTransaction[A]].value)
+
+}

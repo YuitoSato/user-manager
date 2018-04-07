@@ -8,6 +8,7 @@ case class Users(
   userId: String,
   userName: String,
   email: String,
+  password: String,
   status: String,
   createdAt: LocalDateTime,
   updatedAt: LocalDateTime,
@@ -24,13 +25,14 @@ object Users extends SQLSyntaxSupport[Users] {
 
   override val tableName = "USERS"
 
-  override val columns = Seq("USER_ID", "USER_NAME", "EMAIL", "STATUS", "CREATED_AT", "UPDATED_AT", "VERSION_NO")
+  override val columns = Seq("USER_ID", "USER_NAME", "EMAIL", "PASSWORD", "STATUS", "CREATED_AT", "UPDATED_AT", "VERSION_NO")
 
   def apply(u: SyntaxProvider[Users])(rs: WrappedResultSet): Users = apply(u.resultName)(rs)
   def apply(u: ResultName[Users])(rs: WrappedResultSet): Users = new Users(
     userId = rs.get(u.userId),
     userName = rs.get(u.userName),
     email = rs.get(u.email),
+    password = rs.get(u.password),
     status = rs.get(u.status),
     createdAt = rs.get(u.createdAt),
     updatedAt = rs.get(u.updatedAt),
@@ -77,6 +79,7 @@ object Users extends SQLSyntaxSupport[Users] {
     userId: String,
     userName: String,
     email: String,
+    password: String,
     status: String,
     createdAt: LocalDateTime,
     updatedAt: LocalDateTime,
@@ -86,6 +89,7 @@ object Users extends SQLSyntaxSupport[Users] {
         column.userId -> userId,
         column.userName -> userName,
         column.email -> email,
+        column.password -> password,
         column.status -> status,
         column.createdAt -> createdAt,
         column.updatedAt -> updatedAt,
@@ -97,6 +101,7 @@ object Users extends SQLSyntaxSupport[Users] {
       userId = userId,
       userName = userName,
       email = email,
+      password = password,
       status = status,
       createdAt = createdAt,
       updatedAt = updatedAt,
@@ -109,6 +114,7 @@ object Users extends SQLSyntaxSupport[Users] {
         'userId -> entity.userId,
         'userName -> entity.userName,
         'email -> entity.email,
+        'password -> entity.password,
         'status -> entity.status,
         'createdAt -> entity.createdAt,
         'updatedAt -> entity.updatedAt,
@@ -117,6 +123,7 @@ object Users extends SQLSyntaxSupport[Users] {
       USER_ID,
       USER_NAME,
       EMAIL,
+      PASSWORD,
       STATUS,
       CREATED_AT,
       UPDATED_AT,
@@ -125,6 +132,7 @@ object Users extends SQLSyntaxSupport[Users] {
       {userId},
       {userName},
       {email},
+      {password},
       {status},
       {createdAt},
       {updatedAt},
@@ -138,6 +146,7 @@ object Users extends SQLSyntaxSupport[Users] {
         column.userId -> entity.userId,
         column.userName -> entity.userName,
         column.email -> entity.email,
+        column.password -> entity.password,
         column.status -> entity.status,
         column.createdAt -> entity.createdAt,
         column.updatedAt -> entity.updatedAt,

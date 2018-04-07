@@ -2,20 +2,26 @@ package usermanager.infrastructure.jdbc.slick.transaction
 
 import javax.inject.Inject
 
-import repositories.transaction.{ Transaction, TransactionBuilder }
 import slick.dbio.DBIO
+import usermanager.domain.error.DomainError
+import usermanager.domain.syntax.ToEitherOps
+import usermanager.domain.transaction.async.AsyncTransactionBuilder
 
 import scala.concurrent.ExecutionContext
+import scalaz.{ \/, \/- }
 
 class SlickTransactionBuilder @Inject()(
   implicit ec: ExecutionContext
-) extends TransactionBuilder {
+) extends AsyncTransactionBuilder with ToEitherOps {
 
   override def exec[A](value: A): SlickTransaction[A] = {
-    SlickTransaction(DBIO.successful(value))
+    val dbio: DBIO[DomainError \/ A] = DBIO.successful(\/-(value))
+    SlickTransaction(dbio.et)
   }
 
-  override def sequence[A](list: List[Transaction[A]]): Transaction[List[A]] = {
-    SlickTransaction(DBIO.sequence(list.map(t => t.asInstanceOf[SlickTransaction[A]].value)))
+  override def exec[A](value: \/[DomainError, A]): SlickTransaction[A] = {
+    val dbio: DBIO[DomainError \/ A] = DBIO.successful(value)
+    SlickTransaction(dbio.et)
   }
+
 }

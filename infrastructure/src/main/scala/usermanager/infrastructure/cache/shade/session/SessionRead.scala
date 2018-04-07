@@ -1,19 +1,25 @@
 package usermanager.infrastructure.cache.shade.session
 
 import play.api.libs.json.{ Json, Reads }
-import usermanager.domain.sessionuser.SessionUser
+import usermanager.domain.aggregates.sessionuser.SessionUser
 
-class SessionRead(
+case class SessionRead(
   sessionId: String,
-  versionNo: Int
-) {
+  userName: String
+) extends {
 
-  def toDomain: SessionUser = SessionUser(sessionId, versionNo)
+  def toDomain: SessionUser = {
+    SessionUser(
+      id = sessionId,
+      userName = userName,
+      versionNo = 0
+    )
+  }
 
 }
 
 object SessionRead {
 
-  implicit val reads: Reads[SessionWrite] = Json.reads[SessionWrite]
+  implicit val reads: Reads[SessionRead] = Json.reads[SessionRead]
 
 }

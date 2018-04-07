@@ -1,37 +1,36 @@
 package usermanager.application.services.session
 
-import javax.inject.Inject
-
+import com.google.inject.Inject
 import usermanager.domain.error.{ DomainError, ErrorHandler }
-import usermanager.domain.result.sync.SyncResult
-import usermanager.domain.sessionuser.{ SessionUser, SessionUserRepository }
+import usermanager.domain.aggregates.sessionuser.{ SessionUser, SessionUserRepository }
 import usermanager.domain.syntax.ToEitherOps
-import usermanager.domain.transaction.async.AsyncTransactionRunner
-import usermanager.domain.transaction.sync.SyncTransactionRunner
+import usermanager.domain.transaction.async.{ AsyncTransaction, AsyncTransactionBuilder }
+import usermanager.domain.transaction.sync.{ SyncTransaction, SyncTransactionBuilder }
 import usermanager.domain.types.Id
 
-import scala.concurrent.Future
-import scalaz.{ EitherT, \/ }
+import scala.concurrent.ExecutionContext
 
 class SessionService @Inject()(
   sessionRepository: SessionUserRepository,
-  syncTransactionRunner: SyncTransactionRunner,
-  asyncTransactionRunner: AsyncTransactionRunner
+)(
+  implicit ec: ExecutionContext,
+  implicit val asyncTransactionBuilder: AsyncTransactionBuilder,
+  implicit val syncTransactionBuilder: SyncTransactionBuilder
 ) extends ToEitherOps with ErrorHandler {
 
-  def awaitFindById(sessionId: Id[SessionUser]): SyncResult[SessionUser] = {
-    sessionRepository.awaitFind(sessionId) ifNotExists DomainError.NotFound("Seession", sessionId)
+  def awaitFindById(sessionId: Id[SessionUser]): SyncTransaction[SessionUser] = {
+    sessionRepository.awaitFind(sessionId) ifNotExists DomainError.NotFound("Session", sessionId)
   }
 
-  def findById(sessionId: Id[SessionUser]): EitherT[Future, DomainError, SessionUser] = {
+  def findById(sessionId: Id[SessionUser]): AsyncTransaction[SessionUser] = {
     sessionRepository.find(sessionId) ifNotExists DomainError.NotFound("Session", sessionId)
   }
 
-  def create(session: SessionUser): EitherT[Future, DomainError, Unit] = {
-    sessionRepository.create(session).et
+  def create(session: SessionUser): AsyncTransaction[Unit] = {
+    sessionRepository.create(session)
   }
 
-  def delete(sessionId: Id[SessionUser]): EitherT[Future, DomainError, Unit] = {
+  def delete(sessionId: Id[SessionUser]): AsyncTransaction[Unit] = {
     sessionRepository.delete(sessionId) ifFalse DomainError.NotFound("Session", sessionId)
   }
 

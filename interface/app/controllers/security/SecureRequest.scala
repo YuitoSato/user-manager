@@ -1,7 +1,7 @@
 package controllers.security
 
 import play.api.mvc.{ Request, WrappedRequest }
-import usermanager.domain.sessionuser.SessionUser
+import usermanager.domain.aggregates.sessionuser.SessionUser
 
 case class SecureRequest[A](
   sessionUser: SessionUser,

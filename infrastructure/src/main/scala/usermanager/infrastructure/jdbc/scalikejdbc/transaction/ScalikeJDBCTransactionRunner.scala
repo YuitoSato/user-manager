@@ -1,27 +1,16 @@
 package usermanager.infrastructure.jdbc.scalikejdbc.transaction
 
 import scalikejdbc.{ DB, DBSession }
-import usermanager.domain.result.async.AsyncTransactionResult
-import usermanager.domain.result.sync.{ SyncResult, SyncTransactionResult }
-import usermanager.domain.transaction.TransactionRunner
-import usermanager.domain.transaction.async.AsyncTransaction
+import usermanager.domain.result.sync.SyncResult
+import usermanager.domain.transaction.sync.{ SyncTransaction, SyncTransactionRunner }
 
 class ScalikeJDBCTransactionRunner()(
   implicit dBSession: DBSession
-) extends TransactionRunner {
+) extends SyncTransactionRunner {
 
-  // TODO ここらへんはテコいれ。多分遅延評価にしないと動かない。
-  override def exec[A](transactionResult: SyncTransactionResult[A]): SyncResult[A] = {
-    transactionResult.value
-
-    transactionResult.map(a =>)
-
-    val future = DB localTx { implicit session =>
-      val a = transactionResult.value
-
-
-      transaction.asInstanceOf[ScalikeJDBCTransaction[A]].value
+  override def exec[A](transaction: SyncTransaction[A]): SyncResult[A] = SyncResult {
+    DB localTx { implicit session =>
+      transaction.asInstanceOf[ScalikeJDBCTransaction[A]].value(session)
     }
-    SyncResult(future)
   }
 }

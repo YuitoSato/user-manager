@@ -1,7 +1,7 @@
 package usermanager.application.scenarios.session
 
-import javax.inject.Inject
-
+import com.google.inject.name.Named
+import com.google.inject.{ Inject, Singleton }
 import usermanager.application.services.session.SessionService
 import usermanager.domain.result.async.AsyncResult
 import usermanager.domain.result.sync.SyncResult
@@ -12,12 +12,13 @@ import usermanager.domain.types.Id
 
 import scala.concurrent.ExecutionContext
 
+@Singleton
 class SessionScenario @Inject()(
-  sessionService: SessionService
+  sessionService: SessionService,
+  @Named("cache.shade") implicit val syncTransactionRunner: SyncTransactionRunner,
+  @Named("cache.shade") implicit val asyncTransactionRunner: AsyncTransactionRunner
 )(
   implicit ec: ExecutionContext,
-  implicit val syncTransactionRunner: SyncTransactionRunner,
-  implicit val asyncTransactionRunner: AsyncTransactionRunner
 ) {
 
   def awaitFindById(sessionId: Id[SessionUser]): SyncResult[SessionUser] = {

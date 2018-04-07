@@ -1,7 +1,7 @@
-package usermanager.infrastructure.jdbc.scalikejdbc.user
+package usermanager.infrastructure.rdb.scalikejdbc.user
 
 import usermanager.domain.aggregates.user.write.{ UserWrite, UserWriteRepository }
-import usermanager.infrastructure.jdbc.scalikejdbc.transaction.{ ScalikeJDBCTransactionBuilder, ScalikeJDBCTransactionRunner }
+import usermanager.infrastructure.rdb.scalikejdbc.transaction.{ ScalikeJDBCTransactionBuilder, ScalikeJDBCTransactionRunner }
 
 class UserWriteRepositoryScalikeJDBC extends UserWriteRepository
   with RichUserScalikeJDBC

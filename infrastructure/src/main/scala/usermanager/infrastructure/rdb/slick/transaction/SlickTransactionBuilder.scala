@@ -1,4 +1,4 @@
-package usermanager.infrastructure.jdbc.slick.transaction
+package usermanager.infrastructure.rdb.slick.transaction
 
 import javax.inject.Inject
 

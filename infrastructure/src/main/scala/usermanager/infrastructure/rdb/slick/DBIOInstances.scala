@@ -1,4 +1,4 @@
-package usermanager.infrastructure.jdbc.slick
+package usermanager.infrastructure.rdb.slick
 
 import slick.dbio.DBIO
 

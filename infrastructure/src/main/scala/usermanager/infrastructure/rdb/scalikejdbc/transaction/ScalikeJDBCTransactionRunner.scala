@@ -1,4 +1,4 @@
-package usermanager.infrastructure.jdbc.scalikejdbc.transaction
+package usermanager.infrastructure.rdb.scalikejdbc.transaction
 
 import scalikejdbc.{ DB, DBSession }
 import usermanager.domain.result.sync.SyncResult

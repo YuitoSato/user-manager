@@ -1,10 +1,10 @@
-package usermanager.infrastructure.jdbc.slick.transaction
+package usermanager.infrastructure.rdb.slick.transaction
 
 import slick.dbio.DBIO
 import usermanager.domain.error.DomainError
 import usermanager.domain.syntax.ToEitherOps
 import usermanager.domain.transaction.async.AsyncTransaction
-import usermanager.infrastructure.jdbc.slick.DBIOInstances
+import usermanager.infrastructure.rdb.slick.DBIOInstances
 
 import scala.concurrent.ExecutionContext
 import scalaz.EitherT

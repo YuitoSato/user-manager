@@ -1,7 +1,11 @@
 package usermanager.domain.aggregates.user.read
 
 import usermanager.domain.aggregates.sessionuser.SessionUser
+import usermanager.domain.error.DomainError
+import usermanager.domain.helpers.HashHelper
 import usermanager.domain.types._
+
+import scalaz.{ -\/, \/, \/- }
 
 case class UserRead(
   id: Id[UserRead],
@@ -18,6 +22,14 @@ case class UserRead(
       userName = userName.value,
       versionNo = 1
     )
+  }
+
+  def authenticate(plainPassword: String)(implicit hashHelper: HashHelper): DomainError \/ Unit = {
+    if (hashHelper.checkPassword(plainPassword, password)) {
+      -\/(DomainError.Unauthorized)
+    } else {
+      \/-(())
+    }
   }
 
 }

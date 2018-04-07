@@ -6,7 +6,7 @@ class UserWrite(
   id: Id[UserWrite],
   userName: Name[UserWrite],
   email: Email[UserWrite],
+  password: Password[UserWrite],
   status: Status,
   versionNo: VersionNo[UserWrite],
-  password: Password[UserWrite]
 )

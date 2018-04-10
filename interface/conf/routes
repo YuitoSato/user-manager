@@ -10,4 +10,9 @@ GET     /                           controllers.HomeController.index
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 # Session
++nocsrf
 POST    /api/session                controllers.SessionController.create
+
+# User
++nocsrf
+POST    /api/user                   controllers.UserController.create

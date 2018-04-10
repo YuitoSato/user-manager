@@ -5,7 +5,6 @@ import play.sbt.PlayImport._
 object Application {
 
   val dependencies = Seq(
-    jdbc,
     guice,
 
     "org.scalaz"    %% "scalaz-core" % "7.2.12",

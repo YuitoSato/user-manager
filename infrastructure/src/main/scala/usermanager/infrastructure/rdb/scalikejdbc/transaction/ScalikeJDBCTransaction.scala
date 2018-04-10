@@ -19,4 +19,5 @@ case class ScalikeJDBCTransaction[A](
     def v(session: DBSession) = value(session).map(f).asInstanceOf[ScalikeJDBCTransaction[B]].value(session)
     ScalikeJDBCTransaction(v)
   }
+
 }

@@ -1,5 +1,7 @@
 package usermanager.infrastructure.rdb.scalikejdbc.user
 
+import javax.inject.Inject
+
 import scalikejdbc._
 import usermanager.domain.types.{ Email, Id }
 import usermanager.domain.aggregates.user.read.{ UserRead, UserReadRepository }
@@ -7,7 +9,7 @@ import usermanager.infrastructure.rdb.scalikejdbc.transaction.ScalikeJDBCTransac
 
 import scalaz.\/
 
-class UserReadRepositoryScalikeJDBC extends UserReadRepository with RichUserScalikeJDBC {
+class UserReadRepositoryScalikeJDBC @Inject() extends UserReadRepository with RichUserScalikeJDBC {
 
   override def find(userId: Id[UserRead]): ScalikeJDBCTransaction[Option[UserRead]] = {
     def run(dbSession: DBSession) = \/.right(Users.find(userId)(dbSession).map(_.toDomain))

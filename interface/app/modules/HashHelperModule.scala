@@ -9,7 +9,7 @@ class HashHelperModule extends AbstractModule {
 
   override def configure(): Unit = {
     bind(classOf[HashHelper])
-      .annotatedWith(Names.named("cache.shade"))
+      .annotatedWith(Names.named("bcrypt.mindrot"))
       .to(classOf[JBcrypt])
   }
 

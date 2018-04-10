@@ -2,6 +2,7 @@ package modules
 
 import com.google.inject.AbstractModule
 import com.google.inject.name.Names
+import play.api.{ Configuration, Environment }
 import usermanager.domain.transaction.async.{ AsyncTransactionBuilder, AsyncTransactionRunner }
 import usermanager.domain.transaction.sync.{ SyncTransactionBuilder, SyncTransactionRunner }
 import usermanager.infrastructure.cache.shade.transaction.async.{ AsyncShadeTransactionBuilder, AsyncShadeTransactionRunner }
@@ -9,7 +10,7 @@ import usermanager.infrastructure.cache.shade.transaction.sync.{ SyncShadeTransa
 import usermanager.infrastructure.rdb.scalikejdbc.transaction.{ ScalikeJDBCTransactionBuilder, ScalikeJDBCTransactionRunner }
 import usermanager.infrastructure.rdb.slick.transaction.{ SlickTransactionBuilder, SlickTransactionRunner }
 
-class TransactionModule extends AbstractModule {
+class TransactionModule(environment: Environment, configuration: Configuration) extends AbstractModule {
 
   override def configure(): Unit = {
     // SyncTransactionRunner
@@ -25,12 +26,12 @@ class TransactionModule extends AbstractModule {
       .annotatedWith(Names.named("rdb.scalikejdbc"))
       .to(classOf[ScalikeJDBCTransactionBuilder])
     bind(classOf[SyncTransactionBuilder])
-      .annotatedWith(Names.named("shade.cache"))
+      .annotatedWith(Names.named("cache.shade"))
       .to(classOf[SyncShadeTransactionBuilder])
 
     // AsyncTransactionRunner
     bind(classOf[AsyncTransactionRunner])
-      .annotatedWith(Names.named("shade.cache"))
+      .annotatedWith(Names.named("cache.shade"))
       .to(classOf[AsyncShadeTransactionRunner])
     bind(classOf[AsyncTransactionRunner])
       .annotatedWith(Names.named("rdb.slick"))
@@ -38,10 +39,10 @@ class TransactionModule extends AbstractModule {
 
     // AsyncTransactionBuilder
     bind(classOf[AsyncTransactionBuilder])
-      .annotatedWith(Names.named("shade.cache"))
+      .annotatedWith(Names.named("cache.shade"))
       .to(classOf[AsyncShadeTransactionBuilder])
     bind(classOf[AsyncTransactionBuilder])
-      .annotatedWith(Names.named("shade.cache"))
+      .annotatedWith(Names.named("rdb.slick"))
       .to(classOf[SlickTransactionBuilder])
 
   }

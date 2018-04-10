@@ -1,11 +1,11 @@
 package usermanager.domain.aggregates.user.write
 
-import usermanager.domain.transaction.async.AsyncTransaction
+import usermanager.domain.transaction.sync.SyncTransaction
 
 trait UserWriteRepository {
 
-  def create(user: UserWrite): AsyncTransaction[Unit]
+  def create(user: UserWrite): SyncTransaction[Unit]
 
-  def update(user: UserWrite): AsyncTransaction[Unit]
+  def update(user: UserWrite): SyncTransaction[Unit]
 
 }

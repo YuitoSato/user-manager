@@ -1,12 +1,14 @@
 import sbt._
 import sbt.Keys._
+import play.sbt.PlayImport._
 
 object Application {
 
   val dependencies = Seq(
-    "org.scalaz"    %% "scalaz-core" % "7.2.12",
+    jdbc,
+    guice,
 
-    "com.google.inject" % "guice" % "3.0",
+    "org.scalaz"    %% "scalaz-core" % "7.2.12",
 
     // For Test
     "org.scalatest" %% "scalatest"                 % "3.0.1"  % "test",

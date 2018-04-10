@@ -1,5 +1,7 @@
 package usermanager.infrastructure.cache.shade.transaction.sync
 
+import javax.inject.Inject
+
 import usermanager.domain.error.DomainError
 import usermanager.domain.syntax.ToEitherOps
 import usermanager.domain.transaction.sync.{ SyncTransaction, SyncTransactionBuilder }
@@ -7,7 +9,7 @@ import usermanager.domain.transaction.sync.{ SyncTransaction, SyncTransactionBui
 import scala.concurrent.ExecutionContext
 import scalaz.{ \/, \/- }
 
-class SyncShadeTransactionBuilder()(implicit ec: ExecutionContext) extends SyncTransactionBuilder with ToEitherOps {
+class SyncShadeTransactionBuilder @Inject()(implicit ec: ExecutionContext) extends SyncTransactionBuilder with ToEitherOps {
 
   override def exec[A](value: \/[DomainError, A]): SyncTransaction[A] = SyncShadeTransaction(value)
 

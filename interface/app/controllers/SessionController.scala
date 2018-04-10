@@ -1,7 +1,7 @@
 package controllers
 
-import com.google.inject.Inject
-import com.google.inject.name.Named
+import javax.inject.{ Inject, Named }
+
 import commands.LoginCommand
 import play.api.libs.json.JsValue
 import play.api.mvc.{ Action, ControllerComponents }

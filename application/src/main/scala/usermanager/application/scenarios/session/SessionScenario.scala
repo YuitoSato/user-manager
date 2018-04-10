@@ -1,18 +1,17 @@
 package usermanager.application.scenarios.session
 
-import com.google.inject.name.Named
-import com.google.inject.{ Inject, Singleton }
+import javax.inject.{ Inject, Named }
+
 import usermanager.application.services.session.SessionService
+import usermanager.domain.aggregates.sessionuser.SessionUser
 import usermanager.domain.result.async.AsyncResult
 import usermanager.domain.result.sync.SyncResult
-import usermanager.domain.aggregates.sessionuser.SessionUser
 import usermanager.domain.transaction.async.AsyncTransactionRunner
 import usermanager.domain.transaction.sync.SyncTransactionRunner
 import usermanager.domain.types.Id
 
 import scala.concurrent.ExecutionContext
 
-@Singleton
 class SessionScenario @Inject()(
   sessionService: SessionService,
   @Named("cache.shade") implicit val syncTransactionRunner: SyncTransactionRunner,

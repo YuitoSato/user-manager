@@ -1,9 +1,10 @@
 package usermanager.infrastructure.rdb.scalikejdbc.user
 
-import usermanager.domain.aggregates.user.write.{ UserWrite, UserWriteRepository }
-import usermanager.infrastructure.rdb.scalikejdbc.transaction.{ ScalikeJDBCTransactionBuilder, ScalikeJDBCTransactionRunner }
+import javax.inject.Inject
 
-class UserWriteRepositoryScalikeJDBC extends UserWriteRepository
+import usermanager.domain.aggregates.user.write.{ UserWrite, UserWriteRepository }
+
+class UserWriteRepositoryScalikeJDBC @Inject() extends UserWriteRepository
   with RichUserScalikeJDBC
 {
   override def create(user: UserWrite) = ???

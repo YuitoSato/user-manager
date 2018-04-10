@@ -1,5 +1,7 @@
 package usermanager.infrastructure.cache.shade.session
 
+import javax.inject.Inject
+
 import usermanager.domain.error.DomainError
 import usermanager.domain.aggregates.sessionuser.{ SessionUser, SessionUserRepository }
 import usermanager.domain.syntax.ToEitherOps
@@ -14,7 +16,7 @@ import scala.concurrent.duration._
 import scala.concurrent.{ ExecutionContext, Future }
 import scalaz.{ \/, \/- }
 
-class SessionUserRepositoryCache(
+class SessionUserRepositoryCache @Inject()(
   implicit ec: ExecutionContext
 ) extends SessionUserRepository with ToEitherOps {
 

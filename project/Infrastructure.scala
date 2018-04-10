@@ -1,26 +1,28 @@
 import sbt._
 import Keys._
+import play.sbt.PlayImport._
+import play.sbt.PlayScala
 
 
 object Infrastructure {
 
   val dependencies = Seq(
+    jdbc,
     "org.scalaz"         %% "scalaz-core"           % "7.2.12",
     "io.monix"           %% "shade"                 % "1.10.0",
     "mysql"              %  "mysql-connector-java"  % "5.1.36",
 
     "com.typesafe.slick" %% "slick"                 % "3.2.0",
     "com.typesafe.play"  %% "play-slick"            % "3.0.1",
-    "com.typesafe.play"  %% "play-slick-evolutions" % "3.0.1",
+//    "com.typesafe.play"  %% "play-slick-evolutions" % "3.0.1",
 
-    "org.scalikejdbc"    %% "scalikejdbc"          % "3.2.1",
-    "org.scalikejdbc"    %% "scalikejdbc-config"   % "3.2.1",
+    "org.scalikejdbc"    %% "scalikejdbc"           % "3.2.1",
+    "org.scalikejdbc"    %% "scalikejdbc-config"    % "3.2.1",
+    "org.scalikejdbc"    %% "scalikejdbc-play-initializer" % "2.6.0-scalikejdbc-3.2",
 
-    "org.slf4j"        %  "slf4j-simple" % "1.7.+",
+    "com.typesafe.play"  %% "play-json"             % "2.6.7",
 
-    "com.typesafe.play" %% "play-json" % "2.6.7",
-
-    "org.mindrot"        % "jbcrypt" % "0.4",
+    "org.mindrot"        % "jbcrypt"                % "0.4",
 
     // For Test
     "org.scalatest" %% "scalatest"                 % "3.0.1"  % "test",
@@ -79,6 +81,8 @@ object Infrastructure {
   lazy val project = Project(
     "infrastructure",
     file("infrastructure")
+  ).enablePlugins(
+    PlayScala
   ).settings(
     libraryDependencies ++= dependencies
   ).settings(

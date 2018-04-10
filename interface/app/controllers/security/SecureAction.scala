@@ -5,9 +5,9 @@ import javax.inject.Inject
 import play.api.mvc._
 import syntax.ToResultOps
 import usermanager.application.scenarios.session.SessionScenario
+import usermanager.domain.aggregates.sessionuser.SessionUser
 import usermanager.domain.error.DomainError
 import usermanager.domain.result.sync.SyncResult
-import usermanager.domain.aggregates.sessionuser.SessionUser
 import usermanager.domain.syntax.ToEitherOps
 
 import scala.concurrent.Future

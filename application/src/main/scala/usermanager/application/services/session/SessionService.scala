@@ -1,7 +1,7 @@
 package usermanager.application.services.session
 
-import com.google.inject.name.Named
-import com.google.inject.{ Inject, Singleton }
+import javax.inject.{ Inject, Named }
+
 import usermanager.domain.error.{ DomainError, ErrorHandler }
 import usermanager.domain.aggregates.sessionuser.{ SessionUser, SessionUserRepository }
 import usermanager.domain.syntax.ToEitherOps
@@ -11,9 +11,8 @@ import usermanager.domain.types.Id
 
 import scala.concurrent.ExecutionContext
 
-@Singleton
 class SessionService @Inject()(
-  sessionRepository: SessionUserRepository,
+  @Named("cache.shade") sessionRepository: SessionUserRepository,
   @Named("cache.shade") implicit val asyncTransactionBuilder: AsyncTransactionBuilder,
   @Named("cache.shade") implicit val syncTransactionBuilder: SyncTransactionBuilder
 )(

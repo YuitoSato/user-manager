@@ -19,8 +19,8 @@ class SessionController @Inject()(
   userScenario: UserScenario,
 )(
   implicit val ec: ExecutionContext,
-  @Named("bcrypt.mindrot") implicit val hashHelper: HashHelper,
-  implicit val controllerComponents: ControllerComponents
+  implicit val controllerComponents: ControllerComponents,
+  @Named("bcrypt.mindrot") implicit val hashHelper: HashHelper
 ) extends ControllerBase with ToResultOps with FutureInstances {
 
   def create: Action[JsValue] = controllerComponents.actionBuilder.async(parse.json) { implicit req =>

@@ -6,6 +6,6 @@ trait UserWriteRepository {
 
   def create(user: UserWrite): SyncTransaction[Unit]
 
-  def update(user: UserWrite): SyncTransaction[Unit]
+//  def update(user: UserWrite): SyncTransaction[Unit]
 
 }

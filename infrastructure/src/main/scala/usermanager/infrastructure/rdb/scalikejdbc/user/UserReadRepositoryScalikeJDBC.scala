@@ -17,7 +17,7 @@ class UserReadRepositoryScalikeJDBC @Inject() extends UserReadRepository with Ri
   }
 
   override def findByEmail(email: Email[UserRead]): ScalikeJDBCTransaction[Option[UserRead]] = {
-    def run(dBSession: DBSession) = \/.right(Users.findBy(sqls.where.eq(Users.syntax("users").email, email))(dBSession).map(_.toDomain))
+    def run(dBSession: DBSession) = \/.right(Users.findBy(sqls.eq(Users.syntax("u").email, email.value))(dBSession).map(_.toDomain))
     ScalikeJDBCTransaction(run)
   }
 

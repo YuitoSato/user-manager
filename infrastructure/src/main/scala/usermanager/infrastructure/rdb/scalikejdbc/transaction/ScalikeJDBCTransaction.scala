@@ -16,7 +16,7 @@ case class ScalikeJDBCTransaction[A](
   }
 
   override def flatMap[B](f: A => SyncTransaction[B]): SyncTransaction[B] = {
-    def v(session: DBSession) = value(session).map(f).asInstanceOf[ScalikeJDBCTransaction[B]].value(session)
+    def v(session: DBSession) = value(session).map(f).flatMap(_.asInstanceOf[ScalikeJDBCTransaction[B]].value(session))
     ScalikeJDBCTransaction(v)
   }
 

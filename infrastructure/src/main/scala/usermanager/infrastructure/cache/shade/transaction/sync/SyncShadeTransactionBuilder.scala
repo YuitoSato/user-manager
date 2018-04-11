@@ -11,9 +11,9 @@ import scalaz.{ \/, \/- }
 
 class SyncShadeTransactionBuilder @Inject()(implicit ec: ExecutionContext) extends SyncTransactionBuilder with ToEitherOps {
 
-  override def exec[A](value: \/[DomainError, A]): SyncTransaction[A] = SyncShadeTransaction(value)
+  override def execute[A](value: \/[DomainError, A]): SyncTransaction[A] = SyncShadeTransaction(value)
 
-  override def exec[A](value: A): SyncTransaction[A] = {
+  override def execute[A](value: A): SyncTransaction[A] = {
     SyncShadeTransaction(\/-(value))
   }
 

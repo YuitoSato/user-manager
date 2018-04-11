@@ -14,12 +14,12 @@ class SlickTransactionBuilder @Inject()(
   implicit ec: ExecutionContext
 ) extends AsyncTransactionBuilder with ToEitherOps {
 
-  override def exec[A](value: A): SlickTransaction[A] = {
+  override def execute[A](value: A): SlickTransaction[A] = {
     val dbio: DBIO[DomainError \/ A] = DBIO.successful(\/-(value))
     SlickTransaction(dbio.et)
   }
 
-  override def exec[A](value: \/[DomainError, A]): SlickTransaction[A] = {
+  override def execute[A](value: \/[DomainError, A]): SlickTransaction[A] = {
     val dbio: DBIO[DomainError \/ A] = DBIO.successful(value)
     SlickTransaction(dbio.et)
   }

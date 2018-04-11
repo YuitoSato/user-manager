@@ -29,9 +29,10 @@ class UserScenario @Inject()(
   def create(user: UserWrite): SyncResult[Unit] = {
     val error = user.copy(id = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     (for {
-      _ <- userService.create(user)
+      _ <- userService.create(user.copy(id = "11"))
+      _ <- userService.create(user.copy(id = "22"))
       _ <- userService.create(error)
-      _ <- userService.create(user)
+      _ <- userService.create(user.copy(id = "44"))
     } yield ()).run
   }
 

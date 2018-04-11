@@ -7,8 +7,8 @@ import scalaz.\/
 
 trait SyncTransactionBuilder extends TransactionBuilder {
 
-  def exec[A](value: DomainError \/ A): SyncTransaction[A]
+  def execute[A](value: DomainError \/ A): SyncTransaction[A]
 
-  def exec[A](value: A): SyncTransaction[A]
+  def execute[A](value: A): SyncTransaction[A]
 
 }

@@ -12,13 +12,22 @@ import scalaz.\/
 class UserReadRepositoryScalikeJDBC @Inject() extends UserReadRepository with RichUserScalikeJDBC {
 
   override def find(userId: Id[UserRead]): ScalikeJDBCTransaction[Option[UserRead]] = {
-    def run(dbSession: DBSession) = \/.right(Users.find(userId)(dbSession).map(_.toDomain))
-    ScalikeJDBCTransaction(run)
+    def exec(dbSession: DBSession) = {
+      \/.right(
+        Users.find(userId)(dbSession).map(_.toDomain)
+      )
+    }
+    ScalikeJDBCTransaction(exec)
+
   }
 
   override def findByEmail(email: Email[UserRead]): ScalikeJDBCTransaction[Option[UserRead]] = {
-    def run(dBSession: DBSession) = \/.right(Users.findBy(sqls.eq(Users.syntax("u").email, email.value))(dBSession).map(_.toDomain))
-    ScalikeJDBCTransaction(run)
+    def exec(dBSession: DBSession) = {
+      \/.right(
+        Users.findBy(sqls.eq(Users.syntax("u").email, email.value))(dBSession).map(_.toDomain)
+      )
+    }
+    ScalikeJDBCTransaction(exec)
   }
 
 }

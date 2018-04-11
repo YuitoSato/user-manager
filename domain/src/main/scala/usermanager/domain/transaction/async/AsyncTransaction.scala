@@ -9,6 +9,6 @@ trait AsyncTransaction[A] extends Transaction[A] { self =>
 
   def flatMap[B](f: A => AsyncTransaction[B]): AsyncTransaction[B]
 
-  def run(implicit runner: AsyncTransactionRunner): AsyncResult[A] = runner.exec(self)
+  def run(implicit runner: AsyncTransactionRunner): AsyncResult[A] = runner.execute(self)
 
 }

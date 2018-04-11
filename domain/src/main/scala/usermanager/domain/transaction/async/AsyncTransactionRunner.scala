@@ -5,6 +5,6 @@ import usermanager.domain.transaction.TransactionRunner
 
 trait AsyncTransactionRunner extends TransactionRunner {
 
-  def exec[A](transaction: AsyncTransaction[A]): AsyncResult[A]
+  def execute[A](transaction: AsyncTransaction[A]): AsyncResult[A]
 
 }

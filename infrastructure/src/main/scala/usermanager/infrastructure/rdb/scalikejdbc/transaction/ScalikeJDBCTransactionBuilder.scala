@@ -10,14 +10,14 @@ import scalaz.{ \/, \/- }
 
 class ScalikeJDBCTransactionBuilder @Inject() extends SyncTransactionBuilder {
 
-  override def exec[A](value: \/[DomainError, A]): SyncTransaction[A] = {
-    def v(dbSession: DBSession) = value
-    ScalikeJDBCTransaction(v)
+  override def execute[A](value: \/[DomainError, A]): SyncTransaction[A] = {
+    def exec(dbSession: DBSession) = value
+    ScalikeJDBCTransaction(exec)
   }
 
-  override def exec[A](value: A): SyncTransaction[A] = {
-    def v(dbSession: DBSession) = \/-(value)
-    ScalikeJDBCTransaction(v)
+  override def execute[A](value: A): SyncTransaction[A] = {
+    def exec(dbSession: DBSession) = \/-(value)
+    ScalikeJDBCTransaction(exec)
   }
 
 }

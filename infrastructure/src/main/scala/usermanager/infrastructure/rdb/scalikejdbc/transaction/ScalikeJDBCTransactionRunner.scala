@@ -8,9 +8,11 @@ import usermanager.domain.transaction.sync.{ SyncTransaction, SyncTransactionRun
 
 class ScalikeJDBCTransactionRunner @Inject() extends SyncTransactionRunner {
 
-  override def exec[A](transaction: SyncTransaction[A]): SyncResult[A] = SyncResult {
-    DB localTx { implicit session =>
-      transaction.asInstanceOf[ScalikeJDBCTransaction[A]].value(session)
+  override def execute[A](transaction: SyncTransaction[A]): SyncResult[A] = SyncResult {
+    println("hogehoge")
+    val a = DB localTx { session =>
+      transaction.asInstanceOf[ScalikeJDBCTransaction[A]].execute(session)
     }
+    a
   }
 }

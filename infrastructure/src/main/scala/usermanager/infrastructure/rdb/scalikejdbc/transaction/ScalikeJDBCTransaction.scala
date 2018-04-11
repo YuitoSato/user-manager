@@ -7,17 +7,17 @@ import usermanager.domain.transaction.sync.SyncTransaction
 import scalaz.{ \/, \/- }
 
 case class ScalikeJDBCTransaction[A](
-  value: DBSession => DomainError \/ A
+  execute: DBSession => DomainError \/ A
 ) extends SyncTransaction[A] {
 
   override def map[B](f: A => B): ScalikeJDBCTransaction[B] = {
-    def v(session: DBSession) = value(session).map(f)
-    ScalikeJDBCTransaction(v)
+    def exec(session: DBSession) = execute(session).map(f)
+    ScalikeJDBCTransaction(exec)
   }
 
   override def flatMap[B](f: A => SyncTransaction[B]): SyncTransaction[B] = {
-    def v(session: DBSession) = value(session).map(f).flatMap(_.asInstanceOf[ScalikeJDBCTransaction[B]].value(session))
-    ScalikeJDBCTransaction(v)
+    def exec(session: DBSession) = execute(session).map(f).flatMap(_.asInstanceOf[ScalikeJDBCTransaction[B]].execute(session))
+    ScalikeJDBCTransaction(exec)
   }
 
 }

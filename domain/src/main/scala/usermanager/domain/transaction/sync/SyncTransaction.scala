@@ -9,6 +9,6 @@ trait SyncTransaction[A] extends Transaction[A] { self =>
 
   def flatMap[B](f: A => SyncTransaction[B]): SyncTransaction[B]
 
-  def run(implicit syncTransactionRunner: SyncTransactionRunner): SyncResult[A] = syncTransactionRunner.exec(self)
+  def run(implicit syncTransactionRunner: SyncTransactionRunner): SyncResult[A] = syncTransactionRunner.execute(self)
 
 }

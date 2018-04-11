@@ -9,6 +9,6 @@ import scala.concurrent.ExecutionContext
 
 class SyncShadeTransactionRunner @Inject()(implicit ec: ExecutionContext) extends SyncTransactionRunner {
 
-  override def exec[A](transaction: SyncTransaction[A]): SyncResult[A] = SyncResult(transaction.asInstanceOf[SyncShadeTransaction[A]].value)
+  override def execute[A](transaction: SyncTransaction[A]): SyncResult[A] = SyncResult(transaction.asInstanceOf[SyncShadeTransaction[A]].value)
 
 }

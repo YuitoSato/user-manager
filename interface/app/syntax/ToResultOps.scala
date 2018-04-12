@@ -4,7 +4,7 @@ import play.api.libs.json.{ Json, Writes }
 import play.api.{ Logger, mvc }
 import play.api.mvc.Results
 import usermanager.domain.error.DomainError
-import usermanager.domain.result.async.AsyncResult
+import usermanager.domain.result.AsyncResult
 
 import scala.concurrent.{ ExecutionContext, Future }
 import scalaz.{ -\/, \/- }

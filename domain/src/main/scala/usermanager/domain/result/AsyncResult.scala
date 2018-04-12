@@ -1,24 +1,27 @@
-package usermanager.domain.result.async
+package usermanager.domain.result
 
 import usermanager.domain.error.DomainError
-import usermanager.domain.result.Result
 import usermanager.domain.syntax.ToEitherOps
 
 import scala.concurrent.{ ExecutionContext, Future }
 import scalaz.std.FutureInstances
 import scalaz.{ -\/, EitherT, \/, \/- }
 
-case class AsyncResult[A](value: EitherT[Future, DomainError, A])(implicit ec: ExecutionContext) extends Result[A] with FutureInstances {
+case class AsyncResult[A](value: EitherT[Future, DomainError, A])(implicit ec: ExecutionContext) extends FutureInstances {
 
-  override def map[B](f: A => B): AsyncResult[B] = AsyncResult(value.map(f))
+  def map[B](f: A => B): AsyncResult[B] = AsyncResult(value.map(f))
 
-  override def flatMap[B](f: A => Result[B]): AsyncResult[B] = {
-    AsyncResult(value.flatMap(f(_).asInstanceOf[AsyncResult[B]].value))
+  def flatMap[B](f: A => AsyncResult[B]): AsyncResult[B] = {
+    AsyncResult(value.flatMap(f(_).value))
   }
 
 }
 
 object AsyncResult extends ToEitherOps {
+
+  def apply[A](value: DomainError \/ A)(implicit ec: ExecutionContext): AsyncResult[A] = {
+    AsyncResult(Future.successful(value).et)
+  }
 
   def apply[A](value: A)(implicit ec: ExecutionContext): AsyncResult[A] = {
     val either: DomainError \/ A = \/-(value)

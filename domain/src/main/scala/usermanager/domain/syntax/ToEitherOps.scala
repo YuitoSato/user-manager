@@ -13,6 +13,13 @@ trait ToEitherOps {
       EitherT(fa)
     }
   }
+//
+//  implicit class ObjectToEitherOps[A](value: A) {
+//    def et: EitherT[Future, DomainError, A] = {
+//      val either: DomainError \/ A = \/-(value)
+//      EitherT(Future.successful(either))
+//    }
+//  }
 
 //  implicit class TransactionOptToEitherOps[A](transactionOpt: Transaction[Option[A]]) {
 //    def ifNotExists(f: => DomainError): EitherT[Transaction, DomainError, A] = transactionOpt.map(_ \/> f).et

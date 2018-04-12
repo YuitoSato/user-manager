@@ -2,15 +2,13 @@ package usermanager.infrastructure.cache.shade.session
 
 import javax.inject.Inject
 
-import usermanager.domain.error.DomainError
 import usermanager.domain.aggregates.sessionuser.{ SessionUser, SessionUserRepository }
+import usermanager.domain.error.DomainError
 import usermanager.domain.syntax.ToEitherOps
-import usermanager.domain.transaction.async.AsyncTransaction
-import usermanager.domain.transaction.sync.SyncTransaction
+import usermanager.domain.transaction.Transaction
 import usermanager.domain.types.Id
 import usermanager.infrastructure.cache.shade.ShadeCache
-import usermanager.infrastructure.cache.shade.transaction.async.AsyncShadeTransaction
-import usermanager.infrastructure.cache.shade.transaction.sync.SyncShadeTransaction
+import usermanager.infrastructure.cache.shade.transaction.AsyncShadeTransaction
 
 import scala.concurrent.duration._
 import scala.concurrent.{ ExecutionContext, Future }
@@ -22,21 +20,17 @@ class SessionUserRepositoryCache @Inject()(
 
   val cache: ShadeCache = new ShadeCache
 
-  override def awaitFind(sessionId: Id[SessionUser]): SyncTransaction[Option[SessionUser]] = {
-    SyncShadeTransaction(\/-(cache.awaitGetJson[SessionRead](sessionId).map(_.toDomain)))
-  }
-
-  override def find(sessionId: Id[SessionUser]): AsyncTransaction[Option[SessionUser]] = {
+  override def find(sessionId: Id[SessionUser]): Transaction[Option[SessionUser]] = {
     val future: Future[DomainError \/ Option[SessionUser]] = cache.getJson[SessionRead](sessionId).map(_.map(_.toDomain)).map(\/-(_))
     AsyncShadeTransaction(future.et)
   }
 
-  override def create(session: SessionUser): AsyncTransaction[Unit] = {
+  override def create(session: SessionUser): Transaction[Unit] = {
     val future: Future[DomainError \/ Unit] = cache.setJson(session.id, SessionWrite.fromDomain(session), 24 hour).map(\/-(_))
     AsyncShadeTransaction(future.et)
   }
 
-  override def delete(sessionId: Id[SessionUser]): AsyncTransaction[Boolean] = {
+  override def delete(sessionId: Id[SessionUser]): Transaction[Boolean] = {
     val future: Future[DomainError \/ Boolean] = cache.delete(sessionId).map(\/-(_))
     AsyncShadeTransaction(future.et)
   }

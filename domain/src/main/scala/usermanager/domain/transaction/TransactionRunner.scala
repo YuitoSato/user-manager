@@ -1,3 +1,9 @@
 package usermanager.domain.transaction
 
-trait TransactionRunner
+import usermanager.domain.result.AsyncResult
+
+trait TransactionRunner {
+
+  def execute[A](transaction: Transaction[A]): AsyncResult[A]
+
+}

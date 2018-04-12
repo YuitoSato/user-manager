@@ -5,14 +5,14 @@ import javax.inject.Inject
 import slick.dbio.DBIO
 import usermanager.domain.error.DomainError
 import usermanager.domain.syntax.ToEitherOps
-import usermanager.domain.transaction.async.AsyncTransactionBuilder
+import usermanager.domain.transaction.TransactionBuilder
 
 import scala.concurrent.ExecutionContext
 import scalaz.{ \/, \/- }
 
 class SlickTransactionBuilder @Inject()(
   implicit ec: ExecutionContext
-) extends AsyncTransactionBuilder with ToEitherOps {
+) extends TransactionBuilder with ToEitherOps {
 
   override def execute[A](value: A): SlickTransaction[A] = {
     val dbio: DBIO[DomainError \/ A] = DBIO.successful(\/-(value))

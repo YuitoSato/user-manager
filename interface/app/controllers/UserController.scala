@@ -26,7 +26,7 @@ class UserController @Inject()(
   def create: Action[JsValue] = controllerComponents.actionBuilder.async(parse.json) { implicit req =>
     (for {
       user <- deserializeAsync[UserCreateCommand]
-      _ <- userScenario.create(user.toEntity).toAsync
+      _ <- userScenario.create(user.toEntity)
     } yield ()).toResult
   }
 }

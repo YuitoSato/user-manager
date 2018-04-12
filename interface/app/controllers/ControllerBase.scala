@@ -5,8 +5,8 @@ import play.api.libs.json._
 import play.api.mvc.{ BaseController, ControllerComponents, Request }
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.domain.error.DomainError
-import usermanager.domain.result.async.AsyncResult
 import usermanager.domain.aggregates.sessionuser.SessionUser
+import usermanager.domain.result.AsyncResult
 import usermanager.domain.syntax.ToEitherOps
 
 import scala.concurrent.{ ExecutionContext, Future }

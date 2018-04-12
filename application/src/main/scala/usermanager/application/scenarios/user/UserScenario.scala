@@ -5,28 +5,28 @@ import com.google.inject.name.Named
 import usermanager.application.services.user.UserService
 import usermanager.domain.aggregates.user.read.UserRead
 import usermanager.domain.aggregates.user.write.UserWrite
-import usermanager.domain.result.sync.SyncResult
-import usermanager.domain.transaction.sync.SyncTransactionRunner
+import usermanager.domain.result.AsyncResult
+import usermanager.domain.transaction.TransactionRunner
 import usermanager.domain.types.{ Email, Id }
 
 import scala.concurrent.ExecutionContext
 
 class UserScenario @Inject()(
   userService: UserService,
-  @Named("rdb.scalikejdbc") implicit val syncTransactionRunner: SyncTransactionRunner
+  @Named("rdb.scalikejdbc") implicit val transactionRunner: TransactionRunner
 )(
   implicit ec: ExecutionContext,
 ) {
 
-  def findById(userId: Id[UserRead]): SyncResult[UserRead] = {
+  def findById(userId: Id[UserRead]): AsyncResult[UserRead] = {
     userService.findById(userId).run
   }
 
-  def findByEmail(email: Email[UserRead]): SyncResult[UserRead] = {
+  def findByEmail(email: Email[UserRead]): AsyncResult[UserRead] = {
     userService.findByEmail(email).run
   }
 
-  def create(user: UserWrite): SyncResult[Unit] = {
+  def create(user: UserWrite): AsyncResult[Unit] = {
     val error = user.copy(id = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     (for {
       _ <- userService.create(user.copy(id = "11"))

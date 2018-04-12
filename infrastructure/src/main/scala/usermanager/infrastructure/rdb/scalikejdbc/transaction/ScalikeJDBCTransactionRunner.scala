@@ -3,14 +3,19 @@ package usermanager.infrastructure.rdb.scalikejdbc.transaction
 import javax.inject.Inject
 
 import scalikejdbc.DB
-import usermanager.domain.result.sync.SyncResult
-import usermanager.domain.transaction.sync.{ SyncTransaction, SyncTransactionRunner }
+import usermanager.domain.result.AsyncResult
+import usermanager.domain.syntax.{ ToEitherOps, ToFutureOps }
+import usermanager.domain.transaction.{ Transaction, TransactionRunner }
 
-class ScalikeJDBCTransactionRunner @Inject() extends SyncTransactionRunner {
+import scala.concurrent.ExecutionContext
 
-  override def execute[A](transaction: SyncTransaction[A]): SyncResult[A] = SyncResult {
-    DB localTx { session =>
+class ScalikeJDBCTransactionRunner @Inject()(
+  implicit val ec: ExecutionContext
+) extends TransactionRunner with ToEitherOps with ToFutureOps {
+
+  override def execute[A](transaction: Transaction[A]): AsyncResult[A] = AsyncResult {
+    (DB localTx { session =>
       transaction.asInstanceOf[ScalikeJDBCTransaction[A]].execute(session)
-    }
+    }).future.et
   }
 }

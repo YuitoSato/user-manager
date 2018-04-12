@@ -13,7 +13,7 @@ class UserWriteRepositoryScalikeJDBC @Inject() extends UserWriteRepository
   with RichUserScalikeJDBC {
 
   override def create(user: UserWrite): ScalikeJDBCTransaction[Unit] = {
-    def exec(dbSession: DBSession) = \/-(
+    ScalikeJDBCTransaction.from { session: DBSession =>
       Users.create(
         userId = user.id,
         userName = user.userName,
@@ -23,9 +23,8 @@ class UserWriteRepositoryScalikeJDBC @Inject() extends UserWriteRepository
         createdAt = LocalDateTime.now,
         updatedAt = LocalDateTime.now,
         versionNo = user.versionNo
-      )(dbSession)
-    )
-    ScalikeJDBCTransaction(exec).map(_ => ())
+      )(session)
+    }.map(_ => ())
   }
 
 //  override def update(user: UserWrite) = ???

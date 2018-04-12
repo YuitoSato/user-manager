@@ -35,7 +35,7 @@ object Infrastructure {
   def slickCodeGenerator(): Unit = {
     println("Generate Slick Code Task")
 
-    val basePath = "infrastructure"
+    val basePath = "interface"
 
     import com.typesafe.config.ConfigFactory
     import collection.JavaConverters._

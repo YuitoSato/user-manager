@@ -7,10 +7,11 @@ import syntax.ToResultOps
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.domain.aggregates.sessionuser.SessionUser
 import usermanager.domain.error.DomainError
-import usermanager.domain.result.AsyncResult
 import usermanager.domain.syntax.ToEitherOps
+import usermanager.domain
 
 import scala.concurrent.{ ExecutionContext, Future }
+import scalaz.std.FutureInstances
 import scalaz.syntax.std.ToOptionOps
 import scalaz.{ -\/, EitherT, \/- }
 
@@ -19,28 +20,14 @@ case class SecureAction @Inject() (
 )(
   implicit val controllerComponents: ControllerComponents,
   implicit val ec: ExecutionContext
-) extends ToResultOps with ToEitherOps with ToOptionOps with BaseControllerHelpers {
+) extends ToResultOps with ToEitherOps with ToOptionOps with BaseControllerHelpers with FutureInstances {
 
   def findUserBySession(req: Request[_]): EitherT[Future, DomainError, SessionUser] = {
-    (for {
-      key <- AsyncResult(req.session.get("session") \/> DomainError.BadRequest("session key is not found"))
+    for {
+      key <- domain.result.Result(req.session.get("session") \/> DomainError.BadRequest("session key is not found"))
       user <- sessionScenario.findById(key)
-    } yield user).value
+    } yield user
   }
-//
-//  def apply(requestHandler: SecureRequest[AnyContent] => Result): Future[Action[AnyContent]] = {
-//    Future.successful(apply(controllerComponents.parsers.anyContent)(requestHandler))
-//  }
-//
-//  def apply[A](bodyParser: BodyParser[A])(requestHandler: SecureRequest[A] => Result): Action[A] = {
-//    controllerComponents.actionBuilder.apply(bodyParser) { req =>
-//      findUserBySession(req) match {
-//        case \/-(user) => requestHandler(SecureRequest(user, req))
-//        case -\/(e: DomainError.BadRequest) => e.toResult
-//        case -\/(_) => DomainError.Unauthorized.toResult
-//      }
-//    }
-//  }
 
   def async(requestHandler: SecureRequest[AnyContent] => Future[Result]): Action[AnyContent] = {
     async(controllerComponents.parsers.anyContent)(requestHandler)

@@ -1,10 +1,10 @@
 package syntax
 
 import play.api.libs.json.{ Json, Writes }
-import play.api.{ Logger, mvc }
 import play.api.mvc.Results
+import play.api.{ Logger, mvc }
 import usermanager.domain.error.DomainError
-import usermanager.domain.result.AsyncResult
+import usermanager.domain.result.Result
 
 import scala.concurrent.{ ExecutionContext, Future }
 import scalaz.{ -\/, \/- }
@@ -40,7 +40,7 @@ trait ToResultOps extends Results {
 //    }
   }
 
-  implicit class AsyncResultToResultOpts[A](asyncResult: AsyncResult[A]) {
+  implicit class ResultToResultOpts[A](result: Result[A]) {
 
     def toResult(implicit ec: ExecutionContext, writes: Writes[A]): Future[mvc.Result] = {
       toResult { value =>
@@ -49,7 +49,7 @@ trait ToResultOps extends Results {
     }
 
     def toResult(f: A => mvc.Result)(implicit ec: ExecutionContext): Future[mvc.Result] = {
-      asyncResult.value.run
+      result.run
         .recover {
           case t =>
             -\/(DomainError.Unexpected(t))

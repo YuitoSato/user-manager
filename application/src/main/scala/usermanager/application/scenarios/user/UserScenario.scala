@@ -5,7 +5,7 @@ import com.google.inject.name.Named
 import usermanager.application.services.user.UserService
 import usermanager.domain.aggregates.user.read.UserRead
 import usermanager.domain.aggregates.user.write.UserWrite
-import usermanager.domain.result.AsyncResult
+import usermanager.domain.result.Result
 import usermanager.domain.transaction.TransactionRunner
 import usermanager.domain.types.{ Email, Id }
 
@@ -18,15 +18,15 @@ class UserScenario @Inject()(
   implicit ec: ExecutionContext,
 ) {
 
-  def findById(userId: Id[UserRead]): AsyncResult[UserRead] = {
+  def findById(userId: Id[UserRead]): Result[UserRead] = {
     userService.findById(userId).run
   }
 
-  def findByEmail(email: Email[UserRead]): AsyncResult[UserRead] = {
+  def findByEmail(email: Email[UserRead]): Result[UserRead] = {
     userService.findByEmail(email).run
   }
 
-  def create(user: UserWrite): AsyncResult[Unit] = {
+  def create(user: UserWrite): Result[Unit] = {
     val error = user.copy(id = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     (for {
       _ <- userService.create(user.copy(id = "11"))

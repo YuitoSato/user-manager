@@ -9,7 +9,7 @@ import syntax.ToResultOps
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.application.scenarios.user.UserScenario
 import usermanager.domain.helpers.HashHelper
-import usermanager.domain.result.AsyncResult
+import usermanager.domain.result.Result
 
 import scala.concurrent.ExecutionContext
 import scalaz.std.FutureInstances
@@ -27,7 +27,7 @@ class SessionController @Inject()(
     (for {
       login <- deserializeAsync[LoginCommand]
       user <- userScenario.findByEmail(login.email)
-      _ <- AsyncResult(user.authenticate(login.password))
+      _ <- Result(user.authenticate(login.password))
       _ <- sessionScenario.create(user.toSessionUser)
     } yield()).toResult
   }

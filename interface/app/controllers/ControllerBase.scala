@@ -4,9 +4,9 @@ import controllers.security.{ SecureAction, SecureRequest }
 import play.api.libs.json._
 import play.api.mvc.{ BaseController, ControllerComponents, Request }
 import usermanager.application.scenarios.session.SessionScenario
-import usermanager.domain.error.DomainError
 import usermanager.domain.aggregates.sessionuser.SessionUser
-import usermanager.domain.result.AsyncResult
+import usermanager.domain.error.DomainError
+import usermanager.domain.result.Result
 import usermanager.domain.syntax.ToEitherOps
 
 import scala.concurrent.{ ExecutionContext, Future }
@@ -35,7 +35,7 @@ trait ControllerBase extends BaseController with ToEitherOps { self =>
     monad.point(either)
   }
 
-  def deserializeAsync[A](implicit req: Request[JsValue], reads: Reads[A], monad: Monad[Future]): AsyncResult[A] = {
-    AsyncResult(deserializeFuture(req, reads, monad).et)
+  def deserializeAsync[A](implicit req: Request[JsValue], reads: Reads[A], monad: Monad[Future]): Result[A] = {
+    deserializeFuture(req, reads, monad).et
   }
 }

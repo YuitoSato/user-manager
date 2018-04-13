@@ -36,8 +36,6 @@ class UserReadRepositorySlick @Inject()(
     either
     val a = Users.result.headOption
     SlickTransaction(either.et)
-
-
   }
 
   override def findByEmail(email: Email[UserRead]): Transaction[Option[UserRead]] = {

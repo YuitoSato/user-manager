@@ -1,6 +1,6 @@
 package usermanager.application.services.user
 
-import javax.inject.{ Inject, Named }
+import javax.inject.{ Inject, Named, Singleton }
 
 import usermanager.domain.aggregates.user.read.{ UserRead, UserReadRepository }
 import usermanager.domain.aggregates.user.write.{ UserWrite, UserWriteRepository }
@@ -10,10 +10,11 @@ import usermanager.domain.types.{ Email, Id }
 
 import scala.concurrent.ExecutionContext
 
+@Singleton
 class UserService @Inject()(
-  @Named("rdb.scalikejdbc") userReadRepository: UserReadRepository,
-  @Named("rdb.scalikejdbc") userWriteRepository: UserWriteRepository,
-  @Named("rdb.scalikejdbc") implicit val transactionBuilder: TransactionBuilder
+  @Named("rdb.slick") userReadRepository: UserReadRepository,
+  @Named("rdb.slick") userWriteRepository: UserWriteRepository,
+  @Named("rdb.slick") implicit val transactionBuilder: TransactionBuilder
 )(
   implicit ec: ExecutionContext,
 ) extends ErrorHandler {

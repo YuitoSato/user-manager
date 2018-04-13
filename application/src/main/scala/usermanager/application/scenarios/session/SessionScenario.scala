@@ -1,6 +1,6 @@
 package usermanager.application.scenarios.session
 
-import javax.inject.{ Inject, Named }
+import javax.inject.{ Inject, Named, Singleton }
 
 import usermanager.application.services.session.SessionService
 import usermanager.domain.aggregates.sessionuser.SessionUser
@@ -10,6 +10,7 @@ import usermanager.domain.types.Id
 
 import scala.concurrent.ExecutionContext
 
+@Singleton
 class SessionScenario @Inject()(
   sessionService: SessionService,
   @Named("cache.shade") implicit val transactionRunner: TransactionRunner

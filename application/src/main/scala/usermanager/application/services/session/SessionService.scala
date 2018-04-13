@@ -1,6 +1,6 @@
 package usermanager.application.services.session
 
-import javax.inject.{ Inject, Named }
+import javax.inject.{ Inject, Named, Singleton }
 
 import usermanager.domain.aggregates.sessionuser.{ SessionUser, SessionUserRepository }
 import usermanager.domain.error.{ DomainError, ErrorHandler }
@@ -10,6 +10,7 @@ import usermanager.domain.types.Id
 
 import scala.concurrent.ExecutionContext
 
+@Singleton
 class SessionService @Inject()(
   @Named("cache.shade") sessionRepository: SessionUserRepository,
   @Named("cache.shade") implicit val transactionBuilder: TransactionBuilder

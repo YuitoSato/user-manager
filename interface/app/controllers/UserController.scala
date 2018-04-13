@@ -1,6 +1,6 @@
 package controllers
 
-import javax.inject.{ Inject, Named }
+import javax.inject.{ Inject, Named, Singleton }
 
 import commands.UserCreateCommand
 import play.api.libs.json.JsValue
@@ -13,6 +13,7 @@ import usermanager.domain.helpers.{ HashHelper, UUIDGenerator }
 import scala.concurrent.ExecutionContext
 import scalaz.std.FutureInstances
 
+@Singleton
 class UserController @Inject()(
   userScenario: UserScenario,
   val sessionScenario: SessionScenario

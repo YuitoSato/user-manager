@@ -8,6 +8,7 @@ import usermanager.domain.aggregates.user.read.UserReadRepository
 import usermanager.domain.aggregates.user.write.UserWriteRepository
 import usermanager.infrastructure.cache.shade.session.SessionUserRepositoryCache
 import usermanager.infrastructure.rdb.scalikejdbc.user.{ UserReadRepositoryScalikeJDBC, UserWriteRepositoryScalikeJDBC }
+import usermanager.infrastructure.rdb.slick.user.{ UserReadRepositorySlick, UserWriteRepositorySlick }
 
 class RepositoryModule(environment: Environment, configuration: Configuration) extends AbstractModule {
 
@@ -16,11 +17,18 @@ class RepositoryModule(environment: Environment, configuration: Configuration) e
     bind(classOf[UserReadRepository])
       .annotatedWith(Names.named("rdb.scalikejdbc"))
       .to(classOf[UserReadRepositoryScalikeJDBC])
+    bind(classOf[UserReadRepository])
+      .annotatedWith(Names.named("rdb.slick"))
+      .to(classOf[UserReadRepositorySlick])
 
     // UserWriteRepository
     bind(classOf[UserWriteRepository])
       .annotatedWith(Names.named("rdb.scalikejdbc"))
       .to(classOf[UserWriteRepositoryScalikeJDBC])
+    bind(classOf[UserWriteRepository])
+      .annotatedWith(Names.named("rdb.slick"))
+      .to(classOf[UserWriteRepositorySlick])
+
 
     // SessionUserRepository
     bind(classOf[SessionUserRepository])

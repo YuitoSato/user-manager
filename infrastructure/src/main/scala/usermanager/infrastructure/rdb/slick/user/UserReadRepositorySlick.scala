@@ -23,8 +23,21 @@ class UserReadRepositorySlick @Inject()(
       .filter(_.userId === userId.value.bind)
       .result
       .headOption
+      .map(opt => \/-(opt.map(_.toEntity))).transactionally
+
+    val either2: DBIO[DomainError \/ Option[UserRead]] = Users
+      .filter(_.userId === userId.value.bind)
+      .result
+      .headOption
       .map(opt => \/-(opt.map(_.toEntity)))
+
+    either2
+
+    either
+    val a = Users.result.headOption
     SlickTransaction(either.et)
+
+
   }
 
   override def findByEmail(email: Email[UserRead]): Transaction[Option[UserRead]] = {

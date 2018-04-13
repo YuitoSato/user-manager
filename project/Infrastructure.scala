@@ -14,7 +14,6 @@ object Infrastructure {
 
     "com.typesafe.slick" %% "slick"                 % "3.2.0",
     "com.typesafe.play"  %% "play-slick"            % "3.0.1",
-//    "com.typesafe.play"  %% "play-slick-evolutions" % "3.0.1",
 
     "org.scalikejdbc"    %% "scalikejdbc"           % "3.2.1",
     "org.scalikejdbc"    %% "scalikejdbc-config"    % "3.2.1",

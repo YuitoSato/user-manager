@@ -1,5 +1,7 @@
 package usermanager.application.scenarios.user
 
+import javax.inject.Singleton
+
 import com.google.inject.Inject
 import com.google.inject.name.Named
 import usermanager.application.services.user.UserService
@@ -11,9 +13,10 @@ import usermanager.domain.types.{ Email, Id }
 
 import scala.concurrent.ExecutionContext
 
+@Singleton
 class UserScenario @Inject()(
   userService: UserService,
-  @Named("rdb.scalikejdbc") implicit val transactionRunner: TransactionRunner
+  @Named("rdb.slick") implicit val transactionRunner: TransactionRunner
 )(
   implicit ec: ExecutionContext,
 ) {
@@ -29,10 +32,10 @@ class UserScenario @Inject()(
   def create(user: UserWrite): Result[Unit] = {
     val error = user.copy(id = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     (for {
-      _ <- userService.create(user.copy(id = "11"))
-      _ <- userService.create(user.copy(id = "22"))
+      _ <- userService.create(user.copy(id = "111"))
+      _ <- userService.create(user.copy(id = "221"))
       _ <- userService.create(error)
-      _ <- userService.create(user.copy(id = "44"))
+      _ <- userService.create(user.copy(id = "444"))
     } yield ()).run
   }
 

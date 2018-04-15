@@ -9,6 +9,7 @@ import syntax.ToResultOps
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.application.scenarios.user.UserScenario
 import usermanager.domain.helpers.{ HashHelper, UUIDGenerator }
+import usermanager.domain.result.ResultBuilder
 
 import scala.concurrent.ExecutionContext
 import scalaz.std.FutureInstances
@@ -21,6 +22,7 @@ class UserController @Inject()(
   implicit val ec: ExecutionContext,
   implicit val controllerComponents: ControllerComponents,
   implicit val uuidGenerator: UUIDGenerator,
+  implicit val resultBuilder: ResultBuilder,
   @Named("bcrypt.mindrot") implicit val hashHelper: HashHelper
 ) extends ControllerBase with ToResultOps with FutureInstances {
 

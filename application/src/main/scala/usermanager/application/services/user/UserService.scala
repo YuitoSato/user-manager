@@ -16,7 +16,7 @@ class UserService @Inject()(
   @Named("rdb.slick") userWriteRepository: UserWriteRepository,
   @Named("rdb.slick") implicit val transactionBuilder: TransactionBuilder
 )(
-  implicit ec: ExecutionContext,
+  implicit ec: ExecutionContext
 ) extends ErrorHandler {
 
   def findById(userId: Id[UserRead]): Transaction[UserRead] = {

@@ -9,7 +9,7 @@ import syntax.ToResultOps
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.application.scenarios.user.UserScenario
 import usermanager.domain.helpers.HashHelper
-import usermanager.domain.result.Result
+import usermanager.domain.result.{ Result, ResultBuilder }
 
 import scala.concurrent.ExecutionContext
 import scalaz.std.FutureInstances
@@ -21,6 +21,7 @@ class SessionController @Inject()(
 )(
   implicit val ec: ExecutionContext,
   implicit val controllerComponents: ControllerComponents,
+  implicit val resultBuilder: ResultBuilder,
   @Named("bcrypt.mindrot") implicit val hashHelper: HashHelper
 ) extends ControllerBase with ToResultOps with FutureInstances {
 

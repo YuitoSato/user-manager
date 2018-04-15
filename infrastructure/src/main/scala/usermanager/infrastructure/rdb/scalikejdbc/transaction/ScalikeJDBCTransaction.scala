@@ -21,6 +21,8 @@ case class ScalikeJDBCTransaction[A](
     ScalikeJDBCTransaction(exec)
   }
 
+  override def foreach(f: A => Unit): Unit = map(f)
+
 }
 
 object ScalikeJDBCTransaction {

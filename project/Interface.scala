@@ -9,6 +9,7 @@ import play.sbt.PlayImport.PlayKeys._
 object Interface {
 
   val dependencies = Seq(
+    guice,
     cacheApi,
     filters,
     guice,

@@ -33,3 +33,9 @@ case class UserRead(
   }
 
 }
+
+object UserRead {
+
+  val ID: String = "UserRead"
+
+}

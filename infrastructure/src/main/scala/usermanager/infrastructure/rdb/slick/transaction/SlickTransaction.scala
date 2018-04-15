@@ -23,4 +23,6 @@ case class SlickTransaction[A](
     SlickTransaction(value.flatMap(f(_).asInstanceOf[SlickTransaction[B]].value))
   }
 
+  override def foreach(f: A => Unit): Unit = value.map(f)
+
 }

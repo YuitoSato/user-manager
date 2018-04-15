@@ -6,7 +6,7 @@ import play.api.mvc.{ BaseController, ControllerComponents, Request }
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.domain.aggregates.sessionuser.SessionUser
 import usermanager.domain.error.DomainError
-import usermanager.domain.result.Result
+import usermanager.domain.result.{ AsyncResult, Result, ResultBuilder }
 import usermanager.domain.syntax.ToEitherOps
 
 import scala.concurrent.{ ExecutionContext, Future }
@@ -18,6 +18,7 @@ trait ControllerBase extends BaseController with ToEitherOps { self =>
 
   implicit val ec: ExecutionContext
   implicit val controllerComponents: ControllerComponents
+  implicit val resultBuilder: ResultBuilder
 
   implicit val unitWrites: Writes[Unit] = new Writes[Unit] {
     def writes(value: Unit): JsValue = JsNull
@@ -36,6 +37,6 @@ trait ControllerBase extends BaseController with ToEitherOps { self =>
   }
 
   def deserializeAsync[A](implicit req: Request[JsValue], reads: Reads[A], monad: Monad[Future]): Result[A] = {
-    deserializeFuture(req, reads, monad).et
+    AsyncResult(deserializeFuture(req, reads, monad).et)
   }
 }

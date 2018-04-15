@@ -5,7 +5,7 @@ import javax.inject.Inject
 import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
 import slick.jdbc.JdbcProfile
 import slick.jdbc.MySQLProfile.api._
-import usermanager.domain.result.Result
+import usermanager.domain.result.{ AsyncResult, Result }
 import usermanager.domain.syntax.ToEitherOps
 import usermanager.domain.transaction.{ Transaction, TransactionRunner }
 
@@ -20,7 +20,7 @@ class SlickTransactionRunner @Inject()(
   with ToEitherOps
 {
 
-  override def execute[A](transaction: Transaction[A]): Result[A] = {
+  override def execute[A](transaction: Transaction[A]): Result[A] = AsyncResult {
     val dbio = transaction.asInstanceOf[SlickTransaction[A]].value.run
     db.run(dbio.transactionally).et
   }

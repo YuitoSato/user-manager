@@ -17,4 +17,6 @@ case class AsyncShadeTransaction[A](
 
   override def flatMap[B](f: A => Transaction[B]): Transaction[B] = AsyncShadeTransaction(value.flatMap(f(_).asInstanceOf[AsyncShadeTransaction[B]].value))
 
+  override def foreach(f: A => Unit): Unit = map(f)
+
 }

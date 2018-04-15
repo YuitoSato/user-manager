@@ -8,6 +8,8 @@ trait Transaction[A] { self =>
 
   def flatMap[B](f: A => Transaction[B]): Transaction[B]
 
+  def foreach(f: A => Unit): Unit
+
   def run(implicit runner: TransactionRunner): Result[A] = runner.execute(self)
 
 }

@@ -1,12 +1,12 @@
 package usermanager.domain.transaction
 import usermanager.domain.error.DomainError
 
-import scalaz.\/
+import scalaz.{ \/, \/- }
 
 class MockTransactionBuilder extends TransactionBuilder {
 
-  override def execute[A](value: \/[DomainError, A]) = ???
+  override def execute[A](value: \/[DomainError, A]): Transaction[A] = MockTransaction(value)
 
-  override def execute[A](value: A) = ???
-  
+  override def execute[A](value: A): Transaction[A] = MockTransaction(\/-(value))
+
 }

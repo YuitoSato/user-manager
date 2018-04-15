@@ -1,15 +1,14 @@
 package usermanager.application.scenarios.user
 
+import usermanager.application.scenarios.ScenarioBase
 import usermanager.application.services.user.UserService
 import usermanager.domain.aggregates.user.User
 import usermanager.domain.result.Result
-import usermanager.domain.transaction.TransactionRunner
 import usermanager.domain.types.{ Email, Id }
 
-trait UserScenario {
+trait UserScenario extends ScenarioBase {
 
   val userService: UserService
-  implicit val transactionRunner: TransactionRunner
 
   def findById(userId: Id[User]): Result[User] = {
     userService.findById(userId).run

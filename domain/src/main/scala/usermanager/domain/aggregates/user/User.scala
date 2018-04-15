@@ -26,9 +26,9 @@ case class User(
 
   def authenticate(plainPassword: String)(implicit hashHelper: HashHelper): DomainError \/ Unit = {
     if (hashHelper.checkPassword(plainPassword, password)) {
-      -\/(DomainError.Unauthorized)
-    } else {
       \/-(())
+    } else {
+      -\/(DomainError.Unauthorized)
     }
   }
 
@@ -36,6 +36,6 @@ case class User(
 
 object User {
 
-  val TYPE: String = "UserRead"
+  val TYPE: String = "User"
 
 }

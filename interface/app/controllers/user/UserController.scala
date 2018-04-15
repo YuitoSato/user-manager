@@ -1,37 +1,36 @@
-package controllers
+package controllers.user
 
 import javax.inject.{ Inject, Named, Singleton }
 
-import commands.LoginCommand
+import commands.UserCreateCommand
+import controllers.ControllerBase
 import play.api.libs.json.JsValue
 import play.api.mvc.{ Action, ControllerComponents }
 import syntax.ToResultOps
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.application.scenarios.user.UserScenario
-import usermanager.domain.helpers.HashHelper
-import usermanager.domain.result.{ Result, ResultBuilder }
+import usermanager.domain.helpers.{ HashHelper, UUIDGenerator }
+import usermanager.domain.result.ResultBuilder
 
 import scala.concurrent.ExecutionContext
 import scalaz.std.FutureInstances
 
 @Singleton
-class SessionController @Inject()(
-  val sessionScenario: SessionScenario,
+class UserController @Inject()(
   userScenario: UserScenario,
+  val sessionScenario: SessionScenario
 )(
   implicit val ec: ExecutionContext,
   implicit val controllerComponents: ControllerComponents,
+  implicit val uuidGenerator: UUIDGenerator,
   implicit val resultBuilder: ResultBuilder,
-  @Named("bcrypt.mindrot") implicit val hashHelper: HashHelper
+  implicit val hashHelper: HashHelper
 ) extends ControllerBase with ToResultOps with FutureInstances {
 
   def create: Action[JsValue] = controllerComponents.actionBuilder.async(parse.json) { implicit req =>
     (for {
-      login <- deserializeAsync[LoginCommand]
-      user <- userScenario.findByEmail(login.email)
-      _ <- Result(user.authenticate(login.password))
-      _ <- sessionScenario.create(user.toSessionUser)
-    } yield()).toResult
+      user <- deserializeAsync[UserCreateCommand]
+      _ <- userScenario.create(user.toEntity)
+    } yield ()).toResult
   }
-
 }

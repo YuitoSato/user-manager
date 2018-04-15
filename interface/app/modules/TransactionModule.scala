@@ -2,6 +2,7 @@ package modules
 
 import com.google.inject.AbstractModule
 import com.google.inject.name.Names
+import di._
 import play.api.{ Configuration, Environment }
 import usermanager.domain.transaction.{ TransactionBuilder, TransactionRunner }
 import usermanager.infrastructure.cache.shade.transaction.{ AsyncShadeTransactionBuilder, AsyncShadeTransactionRunner }
@@ -13,24 +14,24 @@ class TransactionModule(environment: Environment, configuration: Configuration) 
   override def configure(): Unit = {
     // TransactionRunner
     bind(classOf[TransactionRunner])
-      .annotatedWith(Names.named("rdb.scalikejdbc"))
+      .annotatedWith(Names.named(RDB.Scalikejdbc))
       .to(classOf[ScalikeJDBCTransactionRunner])
     bind(classOf[TransactionRunner])
-      .annotatedWith(Names.named("cache.shade"))
+      .annotatedWith(Names.named(Cache.Shade))
       .to(classOf[AsyncShadeTransactionRunner])
     bind(classOf[TransactionRunner])
-      .annotatedWith(Names.named("rdb.slick"))
+      .annotatedWith(Names.named(RDB.Slick))
       .to(classOf[SlickTransactionRunner])
 
     // TransactionBuilder
     bind(classOf[TransactionBuilder])
-      .annotatedWith(Names.named("rdb.scalikejdbc"))
+      .annotatedWith(Names.named(RDB.Scalikejdbc))
       .to(classOf[ScalikeJDBCTransactionBuilder])
     bind(classOf[TransactionBuilder])
-      .annotatedWith(Names.named("cache.shade"))
+      .annotatedWith(Names.named(Cache.Shade))
       .to(classOf[AsyncShadeTransactionBuilder])
     bind(classOf[TransactionBuilder])
-      .annotatedWith(Names.named("rdb.slick"))
+      .annotatedWith(Names.named(RDB.Slick))
       .to(classOf[SlickTransactionBuilder])
   }
 

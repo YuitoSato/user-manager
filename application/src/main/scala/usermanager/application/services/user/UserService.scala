@@ -1,34 +1,29 @@
 package usermanager.application.services.user
 
-import javax.inject.{ Inject, Named, Singleton }
-
-import usermanager.domain.aggregates.user.read.{ UserRead, UserReadRepository }
-import usermanager.domain.aggregates.user.write.{ UserWrite, UserWriteRepository }
+import usermanager.domain.aggregates.user.{ User, UserRepository }
 import usermanager.domain.error.{ DomainError, ErrorHandler }
 import usermanager.domain.transaction.{ Transaction, TransactionBuilder }
 import usermanager.domain.types.{ Email, Id }
 
-import scala.concurrent.ExecutionContext
+trait UserService extends ErrorHandler {
 
-@Singleton
-class UserService @Inject()(
-  @Named("rdb.slick") userReadRepository: UserReadRepository,
-  @Named("rdb.slick") userWriteRepository: UserWriteRepository,
-  @Named("rdb.slick") implicit val transactionBuilder: TransactionBuilder
-)(
-  implicit ec: ExecutionContext
-) extends ErrorHandler {
+  val userRepository: UserRepository
+  implicit val transactionBuilder: TransactionBuilder
 
-  def findById(userId: Id[UserRead]): Transaction[UserRead] = {
-    userReadRepository.find(userId) ifNotExists DomainError.NotFound("UserRead", userId)
+  def findById(userId: Id[User]): Transaction[User] = {
+    userRepository.find(userId) ifNotExists DomainError.NotFound(User.TYPE, userId)
   }
 
-  def findByEmail(email: Email[UserRead]): Transaction[UserRead] = {
-    userReadRepository.findByEmail(email) ifNotExists DomainError.NotFound("Session", email.value)
+  def findByEmail(email: Email[User]): Transaction[User] = {
+    userRepository.findByEmail(email) ifNotExists DomainError.EmailNotFound(email)
   }
 
-  def create(user: UserWrite): Transaction[Unit] = {
-    userWriteRepository.create(user)
+  def assertEmailNotExists(email: Email[User]): Transaction[Unit] = {
+    userRepository.findByEmail(email) ifExists DomainError.EmailExists(email)
+  }
+
+  def create(user: User): Transaction[Unit] = {
+    userRepository.create(user)
   }
 
 }

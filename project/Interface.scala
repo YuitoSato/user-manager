@@ -18,9 +18,14 @@ object Interface {
 
     // For Test
     "org.scalatest" %% "scalatest"                 % "3.0.1"  % "test",
-    "org.mockito"   % "mockito-core"               % "2.8.9"  % "test",
-    "org.scalaz"    %% "scalaz-scalacheck-binding" % "7.2.12" % "test"
+    "org.mockito"   % "mockito-core"               % "2.8.9"  % "test"
+  )
 
+  val overrides = Seq(
+    "com.typesafe.akka" %% "akka-actor" % "2.5.6",
+    "com.typesafe.akka" %% "akka-stream" % "2.5.6",
+    "com.google.guava" % "guava" % "22.0",
+    "org.slf4j" % "slf4j-api" % "1.7.25"
   )
 
   lazy val project = Project(
@@ -32,10 +37,11 @@ object Interface {
     playDefaultPort := 9011
   ).settings(
     libraryDependencies ++= dependencies,
+    dependencyOverrides ++= overrides,
     unmanagedResourceDirectories in Compile += baseDirectory.value / "resources",
   ).dependsOn(
-    Application.project,
-    Domain.project,
-    Infrastructure.project
+    Application.project % "test->test;compile->compile",
+    Domain.project % "test->test;compile->compile",
+    Infrastructure.project % "test->test;compile->compile"
   )
 }

@@ -1,4 +1,4 @@
-package usermanager.domain.aggregates.user.read
+package usermanager.domain.aggregates.user
 
 import usermanager.domain.aggregates.sessionuser.SessionUser
 import usermanager.domain.error.DomainError
@@ -7,13 +7,13 @@ import usermanager.domain.types._
 
 import scalaz.{ -\/, \/, \/- }
 
-case class UserRead(
-  id: Id[UserRead],
-  userName: Name[UserRead],
-  email: Email[UserRead],
-  password: HashedPassword[UserRead],
+case class User(
+  id: Id[User],
+  userName: Name[User],
+  email: Email[User],
+  password: HashedPassword[User],
   status: Status,
-  versionNo: VersionNo[UserRead],
+  versionNo: VersionNo[User],
 ) {
 
   def toSessionUser: SessionUser = {
@@ -26,16 +26,16 @@ case class UserRead(
 
   def authenticate(plainPassword: String)(implicit hashHelper: HashHelper): DomainError \/ Unit = {
     if (hashHelper.checkPassword(plainPassword, password)) {
-      -\/(DomainError.Unauthorized)
-    } else {
       \/-(())
+    } else {
+      -\/(DomainError.Unauthorized)
     }
   }
 
 }
 
-object UserRead {
+object User {
 
-  val ID: String = "UserRead"
+  val TYPE: String = "User"
 
 }

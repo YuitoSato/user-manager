@@ -5,21 +5,41 @@ import java.time.LocalDateTime
 import javax.inject.Inject
 
 import slick.jdbc.MySQLProfile.api._
-import usermanager.domain.aggregates.user.write.{ UserWrite, UserWriteRepository }
+import usermanager.domain.aggregates.user.{ User, UserRepository }
 import usermanager.domain.error.DomainError
 import usermanager.domain.syntax.ToEitherOps
 import usermanager.domain.transaction.Transaction
+import usermanager.domain.types.{ Email, Id }
 import usermanager.infrastructure.rdb.slick.Tables._
 import usermanager.infrastructure.rdb.slick.transaction.SlickTransaction
 
 import scala.concurrent.ExecutionContext
 import scalaz.{ \/, \/- }
 
-class UserWriteRepositorySlick @Inject()(
+class UserRepositorySlick @Inject()(
   implicit val ec: ExecutionContext
-) extends UserWriteRepository with RichUserSlick with ToEitherOps {
+) extends UserRepository with RichUserSlick with ToEitherOps {
 
-  override def create(user: UserWrite): Transaction[Unit] = {
+  override def find(userId: Id[User]): Transaction[Option[User]] = {
+    val either: DBIO[DomainError \/ Option[User]] = Users
+      .filter(_.userId === userId.value.bind)
+      .result
+      .headOption
+      .map(opt => \/-(opt.map(_.toEntity))).transactionally
+    SlickTransaction(either.et)
+  }
+
+  override def findByEmail(email: Email[User]): Transaction[Option[User]] = {
+    val either: DBIO[DomainError \/ Option[User]] = Users
+      .filter(_.email === email.value.bind)
+      .result
+      .headOption
+      .map(opt => \/-(opt.map(_.toEntity)))
+    SlickTransaction(either.et)
+  }
+
+
+  override def create(user: User): Transaction[Unit] = {
     val dbio: DBIO[DomainError \/ Unit]= (Users += UsersRow(
       userId = user.id,
       userName = user.userName,
@@ -32,5 +52,4 @@ class UserWriteRepositorySlick @Inject()(
     )).map(_ => \/-(()))
     SlickTransaction(dbio.et)
   }
-
 }

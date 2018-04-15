@@ -4,31 +4,21 @@ import com.google.inject.AbstractModule
 import com.google.inject.name.Names
 import play.api.{ Configuration, Environment }
 import usermanager.domain.aggregates.sessionuser.SessionUserRepository
-import usermanager.domain.aggregates.user.read.UserReadRepository
-import usermanager.domain.aggregates.user.write.UserWriteRepository
+import usermanager.domain.aggregates.user.UserRepository
 import usermanager.infrastructure.cache.shade.session.SessionUserRepositoryCache
-import usermanager.infrastructure.rdb.scalikejdbc.user.{ UserReadRepositoryScalikeJDBC, UserWriteRepositoryScalikeJDBC }
-import usermanager.infrastructure.rdb.slick.user.{ UserReadRepositorySlick, UserWriteRepositorySlick }
+import usermanager.infrastructure.rdb.scalikejdbc.user.UserRepositoryScalikeJDBC
+import usermanager.infrastructure.rdb.slick.user.UserRepositorySlick
 
 class RepositoryModule(environment: Environment, configuration: Configuration) extends AbstractModule {
 
   override def configure(): Unit = {
-    // UserReadRepository
-    bind(classOf[UserReadRepository])
+    // UserRepository
+    bind(classOf[UserRepository])
       .annotatedWith(Names.named("rdb.scalikejdbc"))
-      .to(classOf[UserReadRepositoryScalikeJDBC])
-    bind(classOf[UserReadRepository])
+      .to(classOf[UserRepositoryScalikeJDBC])
+    bind(classOf[UserRepository])
       .annotatedWith(Names.named("rdb.slick"))
-      .to(classOf[UserReadRepositorySlick])
-
-    // UserWriteRepository
-    bind(classOf[UserWriteRepository])
-      .annotatedWith(Names.named("rdb.scalikejdbc"))
-      .to(classOf[UserWriteRepositoryScalikeJDBC])
-    bind(classOf[UserWriteRepository])
-      .annotatedWith(Names.named("rdb.slick"))
-      .to(classOf[UserWriteRepositorySlick])
-
+      .to(classOf[UserRepositorySlick])
 
     // SessionUserRepository
     bind(classOf[SessionUserRepository])

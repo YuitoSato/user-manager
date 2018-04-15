@@ -1,8 +1,8 @@
 package usermanager.domain.aggregates.sessionuser
 
 import usermanager.domain.aggregates.Entity
+import usermanager.domain.aggregates.user.User
 import usermanager.domain.types.{ Id, Name, VersionNo }
-import usermanager.domain.aggregates.user.read.UserRead
 
 case class SessionUser(
   id: Id[SessionUser],
@@ -10,6 +10,12 @@ case class SessionUser(
   versionNo: VersionNo[SessionUser]
 ) extends Entity[SessionUser] {
 
-  def userId: Id[UserRead] = id.asInstanceOf[Id[UserRead]]
+  def userId: Id[User] = id.asInstanceOf[Id[User]]
+
+}
+
+object SessionUser {
+
+  val TYPE = "SessionUser"
 
 }

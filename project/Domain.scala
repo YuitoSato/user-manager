@@ -8,8 +8,7 @@ object Domain {
 
     // For Test
     "org.scalatest" %% "scalatest"                 % "3.0.1"  % "test",
-    "org.mockito"   % "mockito-core"               % "2.8.9"  % "test",
-    "org.scalaz"    %% "scalaz-scalacheck-binding" % "7.2.12" % "test"
+    "org.mockito"   % "mockito-core"               % "2.8.9"  % "test"
   )
 
   lazy val project = Project(

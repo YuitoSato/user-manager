@@ -1,12 +1,12 @@
 package usermanager.infrastructure.rdb.scalikejdbc.user
 
-import usermanager.domain.aggregates.user.read.UserRead
+import usermanager.domain.aggregates.user.User
 
 trait RichUserScalikeJDBC {
 
   implicit class RichUser(user: Users) {
-    def toEntity: UserRead = {
-      UserRead(
+    def toEntity: User = {
+      User(
         id = user.userId,
         userName = user.userName,
         email = user.email,

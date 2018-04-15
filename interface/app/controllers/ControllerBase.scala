@@ -3,6 +3,7 @@ package controllers
 import controllers.security.{ SecureAction, SecureRequest }
 import play.api.libs.json._
 import play.api.mvc.{ BaseController, ControllerComponents, Request }
+import syntax.ToResultOps
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.domain.aggregates.sessionuser.SessionUser
 import usermanager.domain.error.DomainError
@@ -10,9 +11,15 @@ import usermanager.domain.result.{ AsyncResult, Result, ResultBuilder }
 import usermanager.domain.syntax.ToEitherOps
 
 import scala.concurrent.{ ExecutionContext, Future }
+import scalaz.std.FutureInstances
 import scalaz.{ Monad, \/ }
 
-trait ControllerBase extends BaseController  with ToEitherOps { self =>
+trait ControllerBase
+  extends BaseController
+    with ToEitherOps
+    with ToResultOps
+    with FutureInstances {
+  self =>
 
   def sessionScenario: SessionScenario
 

@@ -1,14 +1,14 @@
 package usermanager.application.services.user
 
+import usermanager.application.services.ServiceBase
 import usermanager.domain.aggregates.user.{ User, UserRepository }
-import usermanager.domain.error.{ DomainError, ErrorHandler }
-import usermanager.domain.transaction.{ Transaction, TransactionBuilder }
+import usermanager.domain.error.DomainError
+import usermanager.domain.transaction.Transaction
 import usermanager.domain.types.{ Email, Id }
 
-trait UserService extends ErrorHandler {
+trait UserService extends ServiceBase {
 
   val userRepository: UserRepository
-  implicit val transactionBuilder: TransactionBuilder
 
   def findById(userId: Id[User]): Transaction[User] = {
     userRepository.find(userId) ifNotExists DomainError.NotFound(User.TYPE, userId)

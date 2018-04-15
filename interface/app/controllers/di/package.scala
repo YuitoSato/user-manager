@@ -1,3 +1,5 @@
+package controllers
+
 package object di {
 
   case object RDB {

@@ -2,7 +2,6 @@ package controllers.di
 
 import javax.inject.{ Inject, Named, Singleton }
 
-import di._
 import usermanager.application.services.user.UserService
 import usermanager.domain.aggregates.user.UserRepository
 import usermanager.domain.transaction.TransactionBuilder

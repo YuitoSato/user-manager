@@ -2,7 +2,7 @@ package modules
 
 import com.google.inject.AbstractModule
 import com.google.inject.name.Names
-import di._
+import controllers.di.{ Cache, RDB }
 import play.api.{ Configuration, Environment }
 import usermanager.domain.transaction.{ TransactionBuilder, TransactionRunner }
 import usermanager.infrastructure.cache.shade.transaction.{ AsyncShadeTransactionBuilder, AsyncShadeTransactionRunner }

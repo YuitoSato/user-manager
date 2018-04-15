@@ -1,25 +1,18 @@
 package usermanager.application.services.session
 
-import javax.inject.{ Inject, Named, Singleton }
-
 import usermanager.domain.aggregates.sessionuser.{ SessionUser, SessionUserRepository }
 import usermanager.domain.error.{ DomainError, ErrorHandler }
 import usermanager.domain.syntax.ToEitherOps
 import usermanager.domain.transaction.{ Transaction, TransactionBuilder }
 import usermanager.domain.types.Id
 
-import scala.concurrent.ExecutionContext
+trait SessionService extends ToEitherOps with ErrorHandler {
 
-@Singleton
-class SessionService @Inject()(
-  @Named("cache.shade") sessionRepository: SessionUserRepository,
-  @Named("cache.shade") implicit val transactionBuilder: TransactionBuilder
-)(
-  implicit ec: ExecutionContext,
-) extends ToEitherOps with ErrorHandler {
+  val sessionRepository: SessionUserRepository
+  implicit val transactionBuilder: TransactionBuilder
 
   def findById(sessionId: Id[SessionUser]): Transaction[SessionUser] = {
-    sessionRepository.find(sessionId) ifNotExists DomainError.NotFound("Session", sessionId)
+    sessionRepository.find(sessionId) ifNotExists DomainError.NotFound(SessionUser.TYPE, sessionId)
   }
 
   def create(session: SessionUser): Transaction[Unit] = {
@@ -27,7 +20,7 @@ class SessionService @Inject()(
   }
 
   def delete(sessionId: Id[SessionUser]): Transaction[Unit] = {
-    sessionRepository.delete(sessionId) ifFalse DomainError.NotFound("Session", sessionId)
+    sessionRepository.delete(sessionId) ifFalse DomainError.NotFound(SessionUser.TYPE, sessionId)
   }
 
 }

@@ -1,8 +1,9 @@
-package controllers
+package controllers.session
 
-import javax.inject.{ Inject, Named, Singleton }
+import javax.inject.{ Inject, Singleton }
 
 import commands.LoginCommand
+import controllers.ControllerBase
 import play.api.libs.json.JsValue
 import play.api.mvc.{ Action, ControllerComponents }
 import syntax.ToResultOps
@@ -22,7 +23,7 @@ class SessionController @Inject()(
   implicit val ec: ExecutionContext,
   implicit val controllerComponents: ControllerComponents,
   implicit val resultBuilder: ResultBuilder,
-  @Named("bcrypt.mindrot") implicit val hashHelper: HashHelper
+  implicit val hashHelper: HashHelper
 ) extends ControllerBase with ToResultOps with FutureInstances {
 
   def create: Action[JsValue] = controllerComponents.actionBuilder.async(parse.json) { implicit req =>

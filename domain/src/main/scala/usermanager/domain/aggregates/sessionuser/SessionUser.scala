@@ -13,3 +13,9 @@ case class SessionUser(
   def userId: Id[UserRead] = id.asInstanceOf[Id[UserRead]]
 
 }
+
+object SessionUser {
+
+  val TYPE = "SessionUser"
+
+}

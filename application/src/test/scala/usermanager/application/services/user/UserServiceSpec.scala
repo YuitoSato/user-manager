@@ -1,27 +1,16 @@
 package usermanager.application.services.user
 
-import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{ FunSpec, MustMatchers }
-import usermanager.domain.aggregates.user.read.{ MockUserRead, MockUserReadRepository, UserRead }
-import usermanager.domain.aggregates.user.write.UserWriteRepository
+import usermanager.domain.aggregates.user.read.{ MockUserRead, UserRead }
+import usermanager.domain.aggregates.user.write.MockUserWrite
 import usermanager.domain.error.DomainError
-import usermanager.domain.transaction.{ MockTransaction, MockTransactionBuilder }
+import usermanager.domain.transaction.MockTransaction
 
 import scalaz.{ -\/, \/- }
 
-class UserServiceSpec extends FunSpec with MustMatchers with MockitoSugar {
+class UserServiceSpec extends FunSpec with MustMatchers {
 
-  val readRepository = new MockUserReadRepository
-
-  val writeRepository: UserWriteRepository = mock[UserWriteRepository]
-
-  val builder = new MockTransactionBuilder
-
-  val service: UserService = new UserService {
-    val userReadRepository: MockUserReadRepository = readRepository
-    val userWriteRepository: UserWriteRepository = writeRepository
-    implicit val transactionBuilder: MockTransactionBuilder = builder
-  }
+  val service: UserService = new MockUserService
 
   describe("findById") {
     describe("when user exists") {
@@ -34,10 +23,18 @@ class UserServiceSpec extends FunSpec with MustMatchers with MockitoSugar {
 
     describe("when user does not exist") {
       it("returns NotFound error") {
-        val failure = MockTransaction(-\/(DomainError.NotFound(UserRead.ID, "NotFoundId")))
+        val failure = MockTransaction(-\/(DomainError.NotFound(UserRead.TYPE, "NotFoundId")))
         val transaction = service.findById("NotFoundId")
         transaction mustBe failure
       }
+    }
+  }
+
+  describe("create") {
+    it("returns unit transaction") {
+      val success = MockTransaction(\/-(()))
+      val transaction = service.create(MockUserWrite())
+      transaction mustBe success
     }
   }
 }

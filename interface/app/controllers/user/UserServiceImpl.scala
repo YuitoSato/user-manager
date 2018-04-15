@@ -8,12 +8,13 @@ import usermanager.domain.aggregates.user.write.UserWriteRepository
 import usermanager.domain.transaction.TransactionBuilder
 
 import scala.concurrent.ExecutionContext
+import di._
 
 @Singleton
 class UserServiceImpl @Inject()(
-  @Named("rdb.slick") val userReadRepository: UserReadRepository,
-  @Named("rdb.slick") val userWriteRepository: UserWriteRepository,
-  @Named("rdb.slick") implicit val transactionBuilder: TransactionBuilder
+  @Named(RDB.Scalikejdbc) val userReadRepository: UserReadRepository,
+  @Named(RDB.Scalikejdbc) val userWriteRepository: UserWriteRepository,
+  @Named(RDB.Scalikejdbc) implicit val transactionBuilder: TransactionBuilder
 )(
   implicit ec: ExecutionContext
 ) extends UserService

@@ -1,4 +1,4 @@
-package usermanager.application.builders
+package builders
 
 import javax.inject.{ Inject, Singleton }
 

@@ -24,7 +24,7 @@ class UserController @Inject()(
   implicit val controllerComponents: ControllerComponents,
   implicit val uuidGenerator: UUIDGenerator,
   implicit val resultBuilder: ResultBuilder,
-  @Named("bcrypt.mindrot") implicit val hashHelper: HashHelper
+  implicit val hashHelper: HashHelper
 ) extends ControllerBase with ToResultOps with FutureInstances {
 
   def create: Action[JsValue] = controllerComponents.actionBuilder.async(parse.json) { implicit req =>

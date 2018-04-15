@@ -1,4 +1,4 @@
-package controllers.session
+package controllers.di
 
 import javax.inject.{ Inject, Named }
 

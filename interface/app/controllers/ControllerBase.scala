@@ -12,7 +12,7 @@ import usermanager.domain.syntax.ToEitherOps
 import scala.concurrent.{ ExecutionContext, Future }
 import scalaz.{ Monad, \/ }
 
-trait ControllerBase extends BaseController with ToEitherOps { self =>
+trait ControllerBase extends BaseController  with ToEitherOps { self =>
 
   def sessionScenario: SessionScenario
 

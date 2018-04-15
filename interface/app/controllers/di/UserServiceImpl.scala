@@ -1,4 +1,4 @@
-package controllers.user
+package controllers.di
 
 import javax.inject.{ Inject, Named, Singleton }
 

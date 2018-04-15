@@ -1,6 +1,5 @@
 package usermanager.domain.aggregates.user
 
-import usermanager.domain.aggregates.user.{ User, UserRepository }
 import usermanager.domain.transaction.{ MockTransaction, Transaction }
 import usermanager.domain.types.{ Email, Id }
 

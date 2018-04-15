@@ -1,6 +1,5 @@
 package usermanager.domain.aggregates.user
 
-import usermanager.domain.aggregates.user.User
 import usermanager.domain.types._
 
 object MockUser {

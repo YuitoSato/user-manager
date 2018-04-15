@@ -26,7 +26,13 @@ object Infrastructure {
     "org.scalatest"   %% "scalatest"        % "3.0.1" % "test",
     "org.mockito"     %  "mockito-core"     % "2.8.9" % "test",
     "org.scalikejdbc" %% "scalikejdbc-test" % "3.2.1" % "test"
+  )
 
+  val overrides = Seq(
+    "com.typesafe.akka" %% "akka-actor" % "2.5.6",
+    "com.typesafe.akka" %% "akka-stream" % "2.5.6",
+    "com.google.guava" % "guava" % "22.0",
+    "org.slf4j" % "slf4j-api" % "1.7.25"
   )
 
   val slickCodegen = TaskKey[Unit]("slick-codegen", "Generate Slick Codee!!!")
@@ -83,7 +89,8 @@ object Infrastructure {
   ).enablePlugins(
     PlayScala
   ).settings(
-    libraryDependencies ++= dependencies
+    libraryDependencies ++= dependencies,
+    dependencyOverrides ++= overrides
   ).settings(
     scalaSource in Compile := baseDirectory.value / "src" / "main" / "scala",
     scalaSource in Test := baseDirectory.value / "src" / "test" / "scala",

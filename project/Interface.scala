@@ -21,6 +21,13 @@ object Interface {
     "org.mockito"   % "mockito-core"               % "2.8.9"  % "test"
   )
 
+  val overrides = Seq(
+    "com.typesafe.akka" %% "akka-actor" % "2.5.6",
+    "com.typesafe.akka" %% "akka-stream" % "2.5.6",
+    "com.google.guava" % "guava" % "22.0",
+    "org.slf4j" % "slf4j-api" % "1.7.25"
+  )
+
   lazy val project = Project(
     "interface",
     file("interface")
@@ -30,6 +37,7 @@ object Interface {
     playDefaultPort := 9011
   ).settings(
     libraryDependencies ++= dependencies,
+    dependencyOverrides ++= overrides,
     unmanagedResourceDirectories in Compile += baseDirectory.value / "resources",
   ).dependsOn(
     Application.project % "test->test;compile->compile",

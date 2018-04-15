@@ -11,6 +11,13 @@ trait ErrorHandler extends ToOptionOps {
     def ifNotExists(f: => DomainError)(implicit builder: TransactionBuilder): Transaction[A] = {
       transactionOpt.flatMap(opt => builder.execute(opt \/> f))
     }
+
+    def ifExists(f: => DomainError)(implicit builder: TransactionBuilder): Transaction[Unit] = {
+      transactionOpt.flatMap(opt => builder.execute(opt match {
+        case Some(_) => -\/(f)
+        case None => \/-()
+      }))
+    }
   }
 
   implicit class TransactionBooleanErrorHandler(transactionBool: Transaction[Boolean]) {

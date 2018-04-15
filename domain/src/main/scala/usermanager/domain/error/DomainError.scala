@@ -1,6 +1,6 @@
 package usermanager.domain.error
 
-import usermanager.domain.types.Id
+import usermanager.domain.types.{ Email, Id }
 
 sealed trait DomainError {
 
@@ -26,6 +26,11 @@ object DomainError {
     val message = s"type: $entityType, id: $entityId is not found"
   }
 
+  case class EmailNotFound(email: Email[_]) extends DomainError {
+    val code = "error.emailNotFound"
+    val message = s"$email is not found"
+  }
+
   case class BadRequest(msg: String) extends DomainError {
     val code = "error.badRequest"
     val message: String = msg
@@ -39,6 +44,11 @@ object DomainError {
   case class JsonError(msg: String) extends DomainError {
     val code = "error.json"
     val message = s"Json error occured. error=$msg"
+  }
+
+  case class EmailExists(email: Email[_]) extends DomainError {
+    val code = "error.emailExists"
+    val message = s"$email already exists"
   }
 //
 //  case class EmailExistsError(email: Email[_]) extends Errors {

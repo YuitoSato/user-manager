@@ -1,12 +1,10 @@
 package usermanager.application.services.user
-import usermanager.domain.aggregates.user.read.{ MockUserReadRepository, UserReadRepository }
-import usermanager.domain.aggregates.user.write.{ MockUserWriteRepository, UserWriteRepository }
+import usermanager.domain.aggregates.user.{ MockUserRepository, UserRepository }
 import usermanager.domain.transaction.{ MockTransactionBuilder, TransactionBuilder }
 
 class MockUserService extends UserService {
 
-  override val userReadRepository: UserReadRepository = new MockUserReadRepository
-  override val userWriteRepository: UserWriteRepository = new MockUserWriteRepository
+  override val userRepository: UserRepository = new MockUserRepository
   override implicit val transactionBuilder: TransactionBuilder = new MockTransactionBuilder
 
 }

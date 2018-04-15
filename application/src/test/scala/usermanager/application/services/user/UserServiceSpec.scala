@@ -1,8 +1,7 @@
 package usermanager.application.services.user
 
 import org.scalatest.{ FunSpec, MustMatchers }
-import usermanager.domain.aggregates.user.MockUser
-import usermanager.domain.aggregates.user.write.MockUserWrite
+import usermanager.domain.aggregates.user.{ MockUser, User }
 import usermanager.domain.error.DomainError
 import usermanager.domain.transaction.MockTransaction
 
@@ -33,7 +32,7 @@ class UserServiceSpec extends FunSpec with MustMatchers {
   describe("create") {
     it("returns unit transaction") {
       val success = MockTransaction(\/-(()))
-      val transaction = service.create(MockUserWrite())
+      val transaction = service.create(MockUser())
       transaction mustBe success
     }
   }

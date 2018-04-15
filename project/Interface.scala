@@ -18,9 +18,7 @@ object Interface {
 
     // For Test
     "org.scalatest" %% "scalatest"                 % "3.0.1"  % "test",
-    "org.mockito"   % "mockito-core"               % "2.8.9"  % "test",
-    "org.scalaz"    %% "scalaz-scalacheck-binding" % "7.2.12" % "test"
-
+    "org.mockito"   % "mockito-core"               % "2.8.9"  % "test"
   )
 
   lazy val project = Project(
@@ -34,8 +32,8 @@ object Interface {
     libraryDependencies ++= dependencies,
     unmanagedResourceDirectories in Compile += baseDirectory.value / "resources",
   ).dependsOn(
-    Application.project,
-    Domain.project,
-    Infrastructure.project
+    Application.project % "test->test;compile->compile",
+    Domain.project % "test->test;compile->compile",
+    Infrastructure.project % "test->test;compile->compile"
   )
 }

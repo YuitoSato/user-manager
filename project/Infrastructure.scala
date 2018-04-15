@@ -3,7 +3,6 @@ import Keys._
 import play.sbt.PlayImport._
 import play.sbt.PlayScala
 
-
 object Infrastructure {
 
   val dependencies = Seq(
@@ -24,9 +23,10 @@ object Infrastructure {
     "org.mindrot"        % "jbcrypt"                % "0.4",
 
     // For Test
-    "org.scalatest" %% "scalatest"                 % "3.0.1"  % "test",
-    "org.mockito"   %  "mockito-core"              % "2.8.9"  % "test",
-    "org.scalaz"    %% "scalaz-scalacheck-binding" % "7.2.12" % "test"
+    "org.scalatest"   %% "scalatest"        % "3.0.1" % "test",
+    "org.mockito"     %  "mockito-core"     % "2.8.9" % "test",
+    "org.scalikejdbc" %% "scalikejdbc-test" % "3.2.1" % "test"
+
   )
 
   val slickCodegen = TaskKey[Unit]("slick-codegen", "Generate Slick Codee!!!")
@@ -93,7 +93,7 @@ object Infrastructure {
     slickCodegen := slickCodeGenerator(),
     scalikejdbc.mapper.SbtPlugin.scalikejdbcSettings
   ).dependsOn(
-    Domain.project
+    Domain.project % "test->test;compile->compile"
   )
 
 }

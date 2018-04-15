@@ -1,8 +1,9 @@
-package controllers
+package controllers.user
 
 import javax.inject.{ Inject, Named, Singleton }
 
 import commands.UserCreateCommand
+import controllers.ControllerBase
 import play.api.libs.json.JsValue
 import play.api.mvc.{ Action, ControllerComponents }
 import syntax.ToResultOps

@@ -15,4 +15,4 @@ POST    /api/session                controllers.SessionController.create
 
 # User
 +nocsrf
-POST    /api/user                   controllers.UserController.create
+POST    /api/user                   controllers.user.UserController.create

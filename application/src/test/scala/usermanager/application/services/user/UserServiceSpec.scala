@@ -7,12 +7,9 @@ import usermanager.domain.aggregates.user.write.UserWriteRepository
 import usermanager.domain.error.DomainError
 import usermanager.domain.transaction.{ MockTransaction, MockTransactionBuilder }
 
-import scala.concurrent.ExecutionContext
 import scalaz.{ -\/, \/- }
 
 class UserServiceSpec extends FunSpec with MustMatchers with MockitoSugar {
-
-  implicit val ec: ExecutionContext = ExecutionContext.Implicits.global
 
   val readRepository = new MockUserReadRepository
 
@@ -20,11 +17,11 @@ class UserServiceSpec extends FunSpec with MustMatchers with MockitoSugar {
 
   val builder = new MockTransactionBuilder
 
-  val service = new UserService(
-    userReadRepository = readRepository,
-    userWriteRepository = writeRepository,
-    transactionBuilder = builder
-  )
+  val service: UserService = new UserService {
+    val userReadRepository: MockUserReadRepository = readRepository
+    val userWriteRepository: UserWriteRepository = writeRepository
+    implicit val transactionBuilder: MockTransactionBuilder = builder
+  }
 
   describe("findById") {
     describe("when user exists") {

@@ -1,23 +1,16 @@
 package usermanager.application.services.user
 
-import javax.inject.{ Inject, Named, Singleton }
-
 import usermanager.domain.aggregates.user.read.{ UserRead, UserReadRepository }
 import usermanager.domain.aggregates.user.write.{ UserWrite, UserWriteRepository }
 import usermanager.domain.error.{ DomainError, ErrorHandler }
 import usermanager.domain.transaction.{ Transaction, TransactionBuilder }
 import usermanager.domain.types.{ Email, Id }
 
-import scala.concurrent.ExecutionContext
+trait UserService extends ErrorHandler {
 
-@Singleton
-class UserService @Inject()(
-  @Named("rdb.slick") userReadRepository: UserReadRepository,
-  @Named("rdb.slick") userWriteRepository: UserWriteRepository,
-  @Named("rdb.slick") implicit val transactionBuilder: TransactionBuilder
-)(
-  implicit ec: ExecutionContext
-) extends ErrorHandler {
+  val userReadRepository: UserReadRepository
+  val userWriteRepository: UserWriteRepository
+  implicit val transactionBuilder: TransactionBuilder
 
   def findById(userId: Id[UserRead]): Transaction[UserRead] = {
     userReadRepository.find(userId) ifNotExists DomainError.NotFound("UserRead", userId)

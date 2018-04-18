@@ -36,4 +36,5 @@ class UserServiceSpec extends FunSpec with MustMatchers {
       transaction mustBe success
     }
   }
+
 }

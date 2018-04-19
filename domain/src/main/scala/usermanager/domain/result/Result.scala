@@ -1,9 +1,10 @@
 package usermanager.domain.result
 
 import usermanager.domain.error.DomainError
-import usermanager.domain.syntax.ToEitherOps
+import usermanager.domain.syntax.{ ToEitherOps, ToFutureOps }
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.duration.Duration
+import scala.concurrent.{ Await, ExecutionContext, Future }
 import scalaz.std.FutureInstances
 import scalaz.{ -\/, EitherT, \/, \/- }
 
@@ -32,7 +33,12 @@ case class SyncResult[A](
   override def map[B](f: A => B): Result[B] = SyncResult(value.map(f))
 
   override def flatMap[B](f: A => Result[B]): Result[B] = {
-    SyncResult(value.flatMap(f(_).asInstanceOf[SyncResult[B]].value))
+    SyncResult(
+      value.flatMap(f(_) match {
+        case sync: SyncResult[B] => sync.value
+        case async: AsyncResult[B] => Await.result(async.value.run, Duration.Inf)
+      })
+    )
   }
 }
 
@@ -53,12 +59,17 @@ case class AsyncResult[A](
   value: EitherT[Future, DomainError, A]
 )(
   implicit ec: ExecutionContext
-) extends FutureInstances with Result[A] {
+) extends FutureInstances with Result[A] with ToFutureOps with ToEitherOps {
 
   override def map[B](f: A => B): Result[B] = AsyncResult(value.map(f))
 
   override def flatMap[B](f: A => Result[B]): Result[B] = {
-    AsyncResult(value.flatMap(f(_).asInstanceOf[AsyncResult[B]].value))
+    AsyncResult(
+      value.flatMap(f(_) match {
+        case async: AsyncResult[B] => async.value
+        case sync: SyncResult[B] => sync.value.future.et
+      })
+    )
   }
 
 }

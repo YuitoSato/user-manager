@@ -1,9 +1,9 @@
 package usermanager.domain.transaction
 
-import usermanager.domain.result.MockResult
+import usermanager.domain.result.SyncResult
 
 class MockTransactionRunner extends TransactionRunner {
 
-  override def execute[A](transaction: Transaction[A]) = MockResult(transaction.asInstanceOf[MockTransaction[A]].value)
+  override def execute[A](transaction: Transaction[A]) = SyncResult(transaction.asInstanceOf[MockTransaction[A]].value)
 
 }

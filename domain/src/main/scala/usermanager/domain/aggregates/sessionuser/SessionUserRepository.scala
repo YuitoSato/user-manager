@@ -1,6 +1,7 @@
 package usermanager.domain.aggregates.sessionuser
 
 import usermanager.domain.transaction.Transaction
+import usermanager.domain.transaction.delete.Deleted
 import usermanager.domain.types.Id
 
 trait SessionUserRepository {
@@ -9,6 +10,6 @@ trait SessionUserRepository {
 
   def create(session: SessionUser): Transaction[Unit]
 
-  def delete(sessionId: Id[SessionUser]): Transaction[Boolean]
+  def delete(sessionId: Id[SessionUser]): Transaction[Deleted]
 
 }

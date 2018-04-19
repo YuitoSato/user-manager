@@ -7,7 +7,7 @@ import scala.concurrent.{ ExecutionContext, Future }
 import scalaz.std.FutureInstances
 import scalaz.{ -\/, EitherT, \/, \/- }
 
-trait Result[A] {
+sealed trait Result[A] {
 
   def map[B](f: A => B): Result[B]
 

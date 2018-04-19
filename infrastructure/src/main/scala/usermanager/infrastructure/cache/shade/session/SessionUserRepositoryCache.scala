@@ -6,6 +6,7 @@ import usermanager.domain.aggregates.sessionuser.{ SessionUser, SessionUserRepos
 import usermanager.domain.error.DomainError
 import usermanager.domain.syntax.ToEitherOps
 import usermanager.domain.transaction.Transaction
+import usermanager.domain.transaction.delete.Deleted
 import usermanager.domain.types.Id
 import usermanager.infrastructure.cache.shade.ShadeCache
 import usermanager.infrastructure.cache.shade.transaction.AsyncShadeTransaction
@@ -30,8 +31,8 @@ class SessionUserRepositoryCache @Inject()(
     AsyncShadeTransaction(future.et)
   }
 
-  override def delete(sessionId: Id[SessionUser]): Transaction[Boolean] = {
-    val future: Future[DomainError \/ Boolean] = cache.delete(sessionId).map(\/-(_))
+  override def delete(sessionId: Id[SessionUser]): Transaction[Deleted] = {
+    val future: Future[DomainError \/ Deleted] = cache.delete(sessionId).map(\/-(_))
     AsyncShadeTransaction(future.et)
   }
 

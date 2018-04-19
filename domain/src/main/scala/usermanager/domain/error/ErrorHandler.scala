@@ -1,5 +1,6 @@
 package usermanager.domain.error
 
+import usermanager.domain.transaction.delete.Deleted
 import usermanager.domain.transaction.{ Transaction, TransactionBuilder }
 
 import scalaz.syntax.std.ToOptionOps
@@ -20,10 +21,10 @@ trait ErrorHandler extends ToOptionOps {
     }
   }
 
-  implicit class TransactionBooleanErrorHandler(transactionBool: Transaction[Boolean]) {
-    def ifFalse(f: => DomainError)(implicit builder: TransactionBuilder): Transaction[Unit] = {
-      transactionBool.flatMap(bool => {
-        val either = if (bool) \/-(()) else -\/(f)
+  implicit class TransactionBooleanErrorHandler(transactionDeleted: Transaction[Deleted]) {
+    def ifNotDeleted(f: => DomainError)(implicit builder: TransactionBuilder): Transaction[Unit] = {
+      transactionDeleted.flatMap(deleted => {
+        val either = if (deleted) \/-(()) else -\/(f)
         builder.execute(either)
       })
     }

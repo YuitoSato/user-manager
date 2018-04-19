@@ -19,7 +19,7 @@ trait SessionService extends ServiceBase {
   }
 
   def delete(sessionId: Id[SessionUser]): Transaction[Unit] = {
-    sessionRepository.delete(sessionId) ifFalse DomainError.NotFound(SessionUser.TYPE, sessionId)
+    sessionRepository.delete(sessionId) ifNotDeleted DomainError.NotFound(SessionUser.TYPE, sessionId)
   }
 
 }

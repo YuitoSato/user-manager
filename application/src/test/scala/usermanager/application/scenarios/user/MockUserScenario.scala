@@ -1,4 +1,4 @@
-package usermanager.application.services.scenario
+package usermanager.application.scenarios.user
 
 import usermanager.application.scenarios.user.UserScenario
 import usermanager.application.services.user.MockUserService

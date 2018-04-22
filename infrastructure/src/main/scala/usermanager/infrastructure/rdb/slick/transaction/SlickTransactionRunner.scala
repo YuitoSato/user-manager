@@ -21,7 +21,7 @@ class SlickTransactionRunner @Inject()(
 {
 
   override def execute[A](transaction: Transaction[A]): Result[A] = AsyncResult {
-    val dbio = transaction.asInstanceOf[SlickTransaction[A]].value.run
+    val dbio = transaction.asInstanceOf[SlickTransaction[A]].execute().run
     db.run(dbio.transactionally).et
   }
 

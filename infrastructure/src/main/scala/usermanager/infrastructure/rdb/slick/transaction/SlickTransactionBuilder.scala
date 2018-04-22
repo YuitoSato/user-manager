@@ -16,12 +16,14 @@ class SlickTransactionBuilder @Inject()(
 
   override def execute[A](value: A): SlickTransaction[A] = {
     val dbio: DBIO[DomainError \/ A] = DBIO.successful(\/-(value))
-    SlickTransaction(dbio.et)
+    val exec = () => dbio.et
+    SlickTransaction(exec)
   }
 
   override def execute[A](value: \/[DomainError, A]): SlickTransaction[A] = {
     val dbio: DBIO[DomainError \/ A] = DBIO.successful(value)
-    SlickTransaction(dbio.et)
+    val exec = () => dbio.et
+    SlickTransaction(exec)
   }
 
 }

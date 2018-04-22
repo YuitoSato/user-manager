@@ -28,8 +28,8 @@ Resultというひとつの処理の結果を抽象化したモデルを返す�
 Service層のメソッドを複数呼び出してTransactionを合成してもよい。
 原則再利用を想定しない。
 
-## Domain層
+# Domain層
 エンティティと依存性逆転のためリポジトリインターフェイスを内包する。
 
-## Infrastructure層
+# Infrastructure層
 Domain層のRespositoryとTransactionを実装する。

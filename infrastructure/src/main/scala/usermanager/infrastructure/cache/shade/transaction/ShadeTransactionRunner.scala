@@ -7,8 +7,8 @@ import usermanager.domain.transaction.{ Transaction, TransactionRunner }
 
 import scala.concurrent.ExecutionContext
 
-class AsyncShadeTransactionRunner @Inject()(implicit ec: ExecutionContext) extends TransactionRunner {
+class ShadeTransactionRunner @Inject()(implicit ec: ExecutionContext) extends TransactionRunner {
 
-  override def execute[A](transaction: Transaction[A]): Result[A]  = AsyncResult(transaction.asInstanceOf[AsyncShadeTransaction[A]].value)
+  override def execute[A](transaction: Transaction[A]): Result[A]  = AsyncResult(transaction.asInstanceOf[ShadeTransaction[A]].execute())
 
 }

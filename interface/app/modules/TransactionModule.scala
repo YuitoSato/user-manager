@@ -5,7 +5,7 @@ import com.google.inject.name.Names
 import controllers.di.{ Cache, RDB }
 import play.api.{ Configuration, Environment }
 import usermanager.domain.transaction.{ TransactionBuilder, TransactionRunner }
-import usermanager.infrastructure.cache.shade.transaction.{ AsyncShadeTransactionBuilder, AsyncShadeTransactionRunner }
+import usermanager.infrastructure.cache.shade.transaction.{ ShadeTransactionBuilder, ShadeTransactionRunner }
 import usermanager.infrastructure.rdb.scalikejdbc.transaction.{ ScalikeJDBCTransactionBuilder, ScalikeJDBCTransactionRunner }
 import usermanager.infrastructure.rdb.slick.transaction.{ SlickTransactionBuilder, SlickTransactionRunner }
 
@@ -18,7 +18,7 @@ class TransactionModule(environment: Environment, configuration: Configuration) 
       .to(classOf[ScalikeJDBCTransactionRunner])
     bind(classOf[TransactionRunner])
       .annotatedWith(Names.named(Cache.Shade))
-      .to(classOf[AsyncShadeTransactionRunner])
+      .to(classOf[ShadeTransactionRunner])
     bind(classOf[TransactionRunner])
       .annotatedWith(Names.named(RDB.Slick))
       .to(classOf[SlickTransactionRunner])
@@ -29,7 +29,7 @@ class TransactionModule(environment: Environment, configuration: Configuration) 
       .to(classOf[ScalikeJDBCTransactionBuilder])
     bind(classOf[TransactionBuilder])
       .annotatedWith(Names.named(Cache.Shade))
-      .to(classOf[AsyncShadeTransactionBuilder])
+      .to(classOf[ShadeTransactionBuilder])
     bind(classOf[TransactionBuilder])
       .annotatedWith(Names.named(RDB.Slick))
       .to(classOf[SlickTransactionBuilder])

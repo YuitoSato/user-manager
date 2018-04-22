@@ -4,6 +4,6 @@ import usermanager.domain.result.Result
 
 trait TransactionRunner {
 
-  def execute[A](transaction: Transaction[A]): Result[A]
+  def run[A](transaction: Transaction[A]): Result[A]
 
 }

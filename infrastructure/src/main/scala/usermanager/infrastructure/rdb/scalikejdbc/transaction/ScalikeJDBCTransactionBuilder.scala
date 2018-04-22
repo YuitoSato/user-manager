@@ -10,12 +10,12 @@ import scalaz.{ \/, \/- }
 
 class ScalikeJDBCTransactionBuilder @Inject() extends TransactionBuilder {
 
-  override def execute[A](value: \/[DomainError, A]): Transaction[A] = {
+  override def build[A](value: \/[DomainError, A]): Transaction[A] = {
     def exec(dbSession: DBSession) = value
     ScalikeJDBCTransaction(exec)
   }
 
-  override def execute[A](value: A): Transaction[A] = {
+  override def build[A](value: A): Transaction[A] = {
     def exec(dbSession: DBSession) = \/-(value)
     ScalikeJDBCTransaction(exec)
   }

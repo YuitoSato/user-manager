@@ -9,6 +9,6 @@ import scala.concurrent.ExecutionContext
 
 class ShadeTransactionRunner @Inject()(implicit ec: ExecutionContext) extends TransactionRunner {
 
-  override def execute[A](transaction: Transaction[A]): Result[A]  = AsyncResult(transaction.asInstanceOf[ShadeTransaction[A]].execute())
+  override def run[A](transaction: Transaction[A]): Result[A]  = AsyncResult(transaction.asInstanceOf[ShadeTransaction[A]].execute())
 
 }

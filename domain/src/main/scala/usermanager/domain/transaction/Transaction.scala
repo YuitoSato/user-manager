@@ -10,6 +10,6 @@ trait Transaction[A] { self =>
 
   def foreach(f: A => Unit): Unit
 
-  def run(implicit runner: TransactionRunner): Result[A] = runner.execute(self)
+  def run(implicit runner: TransactionRunner): Result[A] = runner.run(self)
 
 }

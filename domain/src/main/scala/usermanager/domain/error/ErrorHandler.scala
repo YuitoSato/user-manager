@@ -10,11 +10,11 @@ trait ErrorHandler extends ToOptionOps {
 
   implicit class TransactionOptionErrorHandler[A](transactionOpt: Transaction[Option[A]]) {
     def ifNotExists(f: => DomainError)(implicit builder: TransactionBuilder): Transaction[A] = {
-      transactionOpt.flatMap(opt => builder.execute(opt \/> f))
+      transactionOpt.flatMap(opt => builder.build(opt \/> f))
     }
 
     def ifExists(f: => DomainError)(implicit builder: TransactionBuilder): Transaction[Unit] = {
-      transactionOpt.flatMap(opt => builder.execute(opt match {
+      transactionOpt.flatMap(opt => builder.build(opt match {
         case Some(_) => -\/(f)
         case None => \/-()
       }))
@@ -25,7 +25,7 @@ trait ErrorHandler extends ToOptionOps {
     def ifNotDeleted(f: => DomainError)(implicit builder: TransactionBuilder): Transaction[Unit] = {
       transactionDeleted.flatMap(deleted => {
         val either = if (deleted) \/-(()) else -\/(f)
-        builder.execute(either)
+        builder.build(either)
       })
     }
   }

@@ -11,13 +11,13 @@ import scalaz.{ \/, \/- }
 
 class ShadeTransactionBuilder @Inject()(implicit ec: ExecutionContext) extends TransactionBuilder with ToEitherOps {
 
-  override def execute[A](value: \/[DomainError, A]): Transaction[A] = {
+  override def build[A](value: \/[DomainError, A]): Transaction[A] = {
     val future: Future[DomainError \/ A] = Future.successful(value)
     val exec = () => future.et
     ShadeTransaction(exec)
   }
 
-  override def execute[A](value: A): Transaction[A] = {
+  override def build[A](value: A): Transaction[A] = {
     val future: Future[DomainError \/ A] = Future.successful(\/-(value))
     val exec = () => future.et
     ShadeTransaction(exec)

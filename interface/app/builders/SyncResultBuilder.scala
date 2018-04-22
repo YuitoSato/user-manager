@@ -10,11 +10,11 @@ import scalaz.{ \/, \/- }
 @Singleton
 class SyncResultBuilder extends ResultBuilder{
 
-  override def execute[A](value: \/[DomainError, A]): Result[A] = {
+  override def build[A](value: \/[DomainError, A]): Result[A] = {
     SyncResult(value)
   }
 
-  override def execute[A](value: A): Result[A] = {
+  override def build[A](value: A): Result[A] = {
     SyncResult(\/-(value))
   }
 

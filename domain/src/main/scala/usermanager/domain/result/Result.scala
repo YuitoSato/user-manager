@@ -19,9 +19,9 @@ sealed trait Result[A] {
 object Result {
 
   def apply[A](value: DomainError \/ A)(implicit builder: ResultBuilder): Result[A] =
-    builder.execute(value)
+    builder.build(value)
 
-  def apply[A](value: A)(implicit builder: ResultBuilder): Result[A] = builder.execute(value)
+  def apply[A](value: A)(implicit builder: ResultBuilder): Result[A] = builder.build(value)
 
 }
 

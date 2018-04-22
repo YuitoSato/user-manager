@@ -6,8 +6,8 @@ import scalaz.\/
 
 trait ResultBuilder {
 
-  def execute[A](value: DomainError \/ A): Result[A]
+  def build[A](value: DomainError \/ A): Result[A]
 
-  def execute[A](value: A): Result[A]
+  def build[A](value: A): Result[A]
 
 }

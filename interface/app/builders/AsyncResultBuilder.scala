@@ -14,11 +14,11 @@ class AsyncResultBuilder @Inject()(
   implicit val ec: ExecutionContext
 ) extends ResultBuilder with ToFutureOps with ToEitherOps {
 
-  override def execute[A](value: \/[DomainError, A]): Result[A] = {
+  override def build[A](value: \/[DomainError, A]): Result[A] = {
     AsyncResult(value.future.et)
   }
 
-  override def execute[A](value: A): Result[A] = {
+  override def build[A](value: A): Result[A] = {
     val either: DomainError \/ A = \/-(value)
     AsyncResult(either.future.et)
   }

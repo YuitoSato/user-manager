@@ -13,7 +13,7 @@ class ScalikeJDBCTransactionRunner @Inject()(
   implicit val ec: ExecutionContext
 ) extends TransactionRunner with ToEitherOps with ToFutureOps {
 
-  override def execute[A](transaction: Transaction[A]): Result[A] = AsyncResult {
+  override def run[A](transaction: Transaction[A]): Result[A] = AsyncResult {
     (DB localTx { session =>
       transaction.asInstanceOf[ScalikeJDBCTransaction[A]].execute(session)
     }).future.et

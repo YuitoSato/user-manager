@@ -12,6 +12,4 @@ import scala.concurrent.ExecutionContext
 class UserScenarioImpl @Inject()(
   val userService: UserService,
   @Named(RDB.Scalikejdbc) implicit val transactionRunner: TransactionRunner
-)(
-  implicit ec: ExecutionContext
 ) extends UserScenario

@@ -11,6 +11,4 @@ import scala.concurrent.ExecutionContext
 class SessionScenarioImpl @Inject()(
   val sessionService: SessionService,
   @Named(Cache.Shade) implicit val transactionRunner: TransactionRunner
-)(
-  implicit ec: ExecutionContext
 ) extends SessionScenario

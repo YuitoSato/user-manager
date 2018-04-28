@@ -11,6 +11,4 @@ import scala.concurrent.ExecutionContext
 class SessionServiceImpl @Inject()(
   @Named(Cache.Shade) val sessionRepository: SessionUserRepository,
   @Named(Cache.Shade) implicit val transactionBuilder: TransactionBuilder
-)(
-  implicit ec: ExecutionContext
 ) extends SessionService

@@ -45,7 +45,7 @@ object UserCreateCommand {
         email <- (json \ "email").validate[String]
         _ <- if (email.length <= 100) JsSuccess(()) else JsError(JsPath \ "email", "invalid format")
         password <- (json \ "password").validate[String]
-        _ <- if (password.length <= 8) JsSuccess(()) else JsError(JsPath \ "password", "invalid format")
+        _ <- if (password.length > 7) JsSuccess(()) else JsError(JsPath \ "password", "invalid format")
       } yield UserCreateCommand(
         userName = userName,
         email = email,

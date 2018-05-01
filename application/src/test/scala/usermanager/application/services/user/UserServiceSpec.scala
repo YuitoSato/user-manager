@@ -14,7 +14,7 @@ class UserServiceSpec extends FunSpec with MustMatchers {
   describe("findById") {
     describe("when user exists") {
       it("asserts that userName is 'Hoge'") {
-        val success = MockTransaction(\/-(MockUser()))
+        val success = MockTransaction(() => \/-(MockUser()))
         val transaction = service.findById("1")
         transaction mustBe success
       }
@@ -22,7 +22,7 @@ class UserServiceSpec extends FunSpec with MustMatchers {
 
     describe("when user does not exist") {
       it("returns NotFound error") {
-        val failure = MockTransaction(-\/(DomainError.NotFound(User.TYPE, "NotFoundId")))
+        val failure = MockTransaction(() => -\/(DomainError.NotFound(User.TYPE, "NotFoundId")))
         val transaction = service.findById("NotFoundId")
         transaction mustBe failure
       }
@@ -31,7 +31,7 @@ class UserServiceSpec extends FunSpec with MustMatchers {
 
   describe("create") {
     it("returns unit transaction") {
-      val success = MockTransaction(\/-(()))
+      val success = MockTransaction(() => \/-(()))
       val transaction = service.create(MockUser())
       transaction mustBe success
     }

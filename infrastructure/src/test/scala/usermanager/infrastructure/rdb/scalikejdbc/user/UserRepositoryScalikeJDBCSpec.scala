@@ -6,6 +6,7 @@ import org.scalatest.{ MustMatchers, fixture }
 import scalikejdbc.config._
 import scalikejdbc.scalatest.AutoRollback
 import usermanager.domain.aggregates.user.MockUser
+import usermanager.domain.helpers.UUIDGenerator
 
 class UserRepositoryScalikeJDBCSpec
   extends fixture.FunSpec
@@ -14,14 +15,16 @@ class UserRepositoryScalikeJDBCSpec
 
   DBs.setup()
 
+  val uuid = new UUIDGenerator
+
   describe("create") {
     it("create a user record") { implicit session =>
       val before = Users.countAll()
       val user = MockUser()
       Users.create(
-        userId = user.id,
-        userName = user.userName,
-        email = user.email,
+        userId = uuid.createId,
+        userName = uuid.createId,
+        email = "hogehoge",
         password = user.password,
         status = user.status,
         versionNo = user.versionNo,

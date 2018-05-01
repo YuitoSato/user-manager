@@ -8,22 +8,25 @@ import scalaz.\/-
 class MockUserRepository extends UserRepository {
 
   override def find(userId: Id[User]): Transaction[Option[User]] = {
-    userId match {
-      case Id("NotFoundId") => MockTransaction(\/-(None))
-      case _ => MockTransaction(\/-(Some(MockUser())))
+    MockTransaction { () =>
+      userId match {
+        case Id("NotFoundId") => \/-(None)
+        case _ => \/-(Some(MockUser()))
+      }
     }
-
   }
 
   override def findByEmail(email: Email[User]): Transaction[Option[User]] = {
-    email match {
-      case Email("notfound@example.com") => MockTransaction(\/-(None))
-      case _ => MockTransaction(\/-(Some(MockUser())))
+    MockTransaction { () =>
+      email match {
+        case Email("notfound@example.com") => \/-(None)
+        case _ => \/-(Some(MockUser()))
+      }
     }
   }
 
   override def create(user: User): Transaction[Unit] = {
-    MockTransaction(\/-(()))
+    MockTransaction.from(() => ())
   }
 
 }

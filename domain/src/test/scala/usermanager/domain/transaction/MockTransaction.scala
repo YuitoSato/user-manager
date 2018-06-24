@@ -1,12 +1,13 @@
 package usermanager.domain.transaction
 
 import usermanager.domain.error.DomainError
+import usermanager.domain.result.{ Result, SyncResult }
 
 import scalaz.{ \/, \/- }
 
 case class MockTransaction[A](
   execute: () => DomainError \/ A
-) extends Transaction[A] {
+) extends Transaction[A] { self =>
 
   override def map[B](f: A => B): Transaction[B] = {
     val exec = () => execute().map(f)
@@ -19,6 +20,10 @@ case class MockTransaction[A](
   }
 
   override def foreach(f: A => Unit): Unit = map(f)
+
+  override def run: Result[A] = SyncResult {
+    self.execute()
+  }
 
 }
 

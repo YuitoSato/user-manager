@@ -1,6 +1,7 @@
 package usermanager.infrastructure.cache.shade.transaction
 
 import usermanager.domain.error.DomainError
+import usermanager.domain.result.{ AsyncResult, Result }
 import usermanager.domain.syntax.ToEitherOps
 import usermanager.domain.transaction.Transaction
 
@@ -13,7 +14,7 @@ case class ShadeTransaction[A](
   execute: () => EitherT[Future, DomainError, A]
 )(
   implicit ec: ExecutionContext
-) extends Transaction[A] with FutureInstances {
+) extends Transaction[A] with FutureInstances { self =>
 
   override def map[B](f: A => B): Transaction[B] = {
     val exec = () => execute().map(f)
@@ -26,6 +27,8 @@ case class ShadeTransaction[A](
   }
 
   override def foreach(f: A => Unit): Unit = map(f)
+
+  override def run: Result[A] = AsyncResult(self.asInstanceOf[ShadeTransaction[A]].execute())
 
 }
 
@@ -43,4 +46,5 @@ object ShadeTransaction extends ToEitherOps {
     }
     ShadeTransaction(exec)
   }
+
 }

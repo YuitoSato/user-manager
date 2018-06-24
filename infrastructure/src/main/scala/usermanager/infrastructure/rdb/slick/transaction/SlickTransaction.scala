@@ -1,8 +1,11 @@
 package usermanager.infrastructure.rdb.slick.transaction
 
+import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
 import slick.dbio.DBIO
+import slick.jdbc.JdbcProfile
 import slick.jdbc.MySQLProfile.api._
 import usermanager.domain.error.DomainError
+import usermanager.domain.result.{ AsyncResult, Result }
 import usermanager.domain.syntax.ToEitherOps
 import usermanager.domain.transaction.Transaction
 import usermanager.infrastructure.rdb.slick.DBIOInstances
@@ -14,8 +17,9 @@ import scalaz.{ -\/, EitherT, \/, \/- }
 case class SlickTransaction[A](
   execute: () => EitherT[DBIO, DomainError, A]
 )(
-  implicit val ec: ExecutionContext
-) extends Transaction[A] with ToEitherOps with DBIOInstances {
+  implicit val ec: ExecutionContext,
+  implicit val dbConfigProvider: DatabaseConfigProvider
+) extends Transaction[A] with ToEitherOps with DBIOInstances with HasDatabaseConfigProvider[JdbcProfile] { self =>
 
   override def map[B](f: A => B): SlickTransaction[B] = {
     val exec = () => execute().map(f)
@@ -29,11 +33,16 @@ case class SlickTransaction[A](
 
   override def foreach(f: A => Unit): Unit = map(f)
 
+  override def run: Result[A] = AsyncResult {
+    val dbio = self.asInstanceOf[SlickTransaction[A]].execute().run
+    db.run(dbio.transactionally).et
+  }
+
 }
 
 object SlickTransaction extends ToEitherOps {
 
-  def from[A](execute: () => DBIO[A])(implicit ec: ExecutionContext): SlickTransaction[A] = {
+  def from[A](execute: () => DBIO[A])(implicit ec: ExecutionContext, dbConfigProvider: DatabaseConfigProvider): SlickTransaction[A] = {
     val exec = () => {
       val dbio: DBIO[DomainError \/ A] = Try {
         execute().transactionally

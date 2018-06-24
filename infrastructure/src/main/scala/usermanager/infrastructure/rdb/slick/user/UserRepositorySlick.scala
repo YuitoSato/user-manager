@@ -4,6 +4,7 @@ import java.sql.Timestamp
 import java.time.LocalDateTime
 import javax.inject.Inject
 
+import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.MySQLProfile.api._
 import usermanager.domain.aggregates.user.{ User, UserRepository }
 import usermanager.domain.syntax.ToEitherOps
@@ -15,7 +16,8 @@ import usermanager.infrastructure.rdb.slick.transaction.SlickTransaction
 import scala.concurrent.ExecutionContext
 
 class UserRepositorySlick @Inject()(
-  implicit val ec: ExecutionContext
+  implicit val ec: ExecutionContext,
+  implicit val dbConfigProvider: DatabaseConfigProvider
 ) extends UserRepository with RichUserSlick with ToEitherOps {
 
   override def find(userId: Id[User]): Transaction[Option[User]] = {

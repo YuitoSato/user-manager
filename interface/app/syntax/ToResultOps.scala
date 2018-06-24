@@ -70,6 +70,10 @@ trait ToResultOps extends Results with ToFutureOps with ToEitherOps {
           case \/-(a) => f(a)
           case -\/(e) => e.toResult
         }
+
+      val f = asyncResult.value.run
+
+      f.flatMap()
     }
   }
 

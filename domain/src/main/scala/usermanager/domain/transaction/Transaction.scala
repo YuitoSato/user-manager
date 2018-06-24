@@ -2,7 +2,7 @@ package usermanager.domain.transaction
 
 import usermanager.domain.result.Result
 
-trait Transaction[A] { self =>
+trait Transaction[A] {
 
   def map[B](f: A => B): Transaction[B]
 

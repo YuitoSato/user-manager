@@ -19,14 +19,14 @@ case class SlickTransaction[A](
 )(
   implicit val ec: ExecutionContext,
   implicit val dbConfigProvider: DatabaseConfigProvider
-) extends Transaction[A] with ToEitherOps with DBIOInstances with HasDatabaseConfigProvider[JdbcProfile] { self =>
+) extends Transaction[A, () => EitherT[DBIO, DomainError, _]] with ToEitherOps with DBIOInstances with HasDatabaseConfigProvider[JdbcProfile] { self =>
 
   override def map[B](f: A => B): SlickTransaction[B] = {
     val exec = () => execute().map(f)
     SlickTransaction(exec)
   }
 
-  override def flatMap[B](f: A => Transaction[B]): SlickTransaction[B] = {
+  override def flatMap[B](f: A => Transaction[B, () => EitherT[DBIO, DomainError, _]]): SlickTransaction[B] = {
     val exec = () => execute().map(f).flatMap(_.asInstanceOf[SlickTransaction[B]].execute())
     SlickTransaction(exec)
   }

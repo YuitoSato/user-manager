@@ -2,11 +2,13 @@ package usermanager.domain.transaction
 
 import usermanager.domain.result.Result
 
-trait Transaction[A] {
+trait Transaction[A, C] {
 
-  def map[B](f: A => B): Transaction[B]
+  val execute: C
 
-  def flatMap[B](f: A => Transaction[B]): Transaction[B]
+  def map[B](f: A => B): Transaction[B, C]
+
+  def flatMap[B](f: A => Transaction[B, C]): Transaction[B, C]
 
   def foreach(f: A => Unit): Unit
 

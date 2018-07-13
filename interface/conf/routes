@@ -11,8 +11,8 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 # Session
 +nocsrf
-POST    /api/session                controllers.session.SessionControllerImpl.create
+POST    /api/session                controllers.session.SessionController.create
 
 # User
 +nocsrf
-POST    /api/user                   controllers.user.UserControllerImpl.create
+POST    /api/user                   controllers.user.UserController.create

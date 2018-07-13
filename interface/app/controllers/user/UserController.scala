@@ -2,16 +2,26 @@ package controllers.user
 
 import commands.UserCreateCommand
 import controllers.ControllerBase
+import controllers.di.UserScenarioImpl
+import javax.inject.Inject
 import play.api.libs.json.JsValue
 import play.api.mvc._
-import usermanager.application.scenarios.user.UserScenario
+import usermanager.application.scenarios.session.SessionScenario
 import usermanager.domain.helpers.{ HashHelper, UUIDGenerator }
+import usermanager.domain.result.ResultBuilder
 
-trait UserController extends ControllerBase {
+import scala.concurrent.ExecutionContext
 
-  val userScenario: UserScenario
-  implicit val uuidGenerator: UUIDGenerator
+class UserController @Inject()(
+  val sessionScenario: SessionScenario
+)(
+  implicit val ec: ExecutionContext,
+  implicit val controllerComponents: ControllerComponents,
+  implicit val resultBuilder: ResultBuilder,
+  implicit val uuidGenerator: UUIDGenerator,
+  implicit val userScenario: UserScenarioImpl,
   implicit val hashHelper: HashHelper
+) extends ControllerBase {
 
   def create: Action[JsValue] = controllerComponents.actionBuilder.async(parse.json) { implicit req =>
     (for {
@@ -19,4 +29,5 @@ trait UserController extends ControllerBase {
       _ <- userScenario.create(user.toEntity)
     } yield ()).toResult
   }
+
 }

@@ -2,17 +2,25 @@ package controllers.session
 
 import commands.LoginCommand
 import controllers.ControllerBase
+import javax.inject.Inject
 import play.api.libs.json.JsValue
-import play.api.mvc.Action
+import play.api.mvc.{ Action, ControllerComponents }
+import usermanager.application.scenarios.session.SessionScenario
 import usermanager.application.scenarios.user.UserScenario
 import usermanager.domain.helpers.HashHelper
-import usermanager.domain.result.{ Result, ResultBuilder }
+import usermanager.domain.result.ResultBuilder
 
-trait SessionController extends ControllerBase {
+import scala.concurrent.ExecutionContext
 
-  val userScenario: UserScenario
+class SessionController @Inject()(
+  val sessionScenario: SessionScenario,
+  val userScenario: UserScenario,
+)(
+  implicit val ec: ExecutionContext,
+  implicit val controllerComponents: ControllerComponents,
+  implicit val resultBuilder: ResultBuilder,
   implicit val hashHelper: HashHelper
-  implicit val resultBuilder: ResultBuilder
+) extends ControllerBase {
 
   def create: Action[JsValue] = controllerComponents.actionBuilder.async(parse.json) { implicit req =>
     (for {

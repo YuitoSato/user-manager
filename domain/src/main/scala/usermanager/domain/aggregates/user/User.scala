@@ -4,8 +4,8 @@ import usermanager.domain.aggregates.sessionuser.SessionUser
 import usermanager.domain.error.Error
 import usermanager.domain.helpers.HashHelper
 import usermanager.domain.types._
-
 import scalaz.{ -\/, \/, \/- }
+import usermanager.domain.types.enums.Status
 
 case class User(
   id: Id[User],

@@ -1,7 +1,7 @@
 package usermanager.domain.result
 
 import scalaz.std.{ EitherInstances, FutureInstances }
-import scalaz.{ -\/, EitherT, \/ }
+import scalaz.{ -\/, EitherT, \/, \/- }
 import usermanager.domain.error.Error
 
 import scala.concurrent.duration.Duration
@@ -56,6 +56,18 @@ case class SyncResult[A](
   }
 
   override def leftMap(f: Error => Error): Result[A] = SyncResult(value.leftMap(f))
+
+}
+
+object SyncResult {
+
+  def apply[A](value: A): Result[A] = {
+    SyncResult(\/-(value))
+  }
+
+  def error[A](error: Error): Result[A] = {
+    SyncResult(-\/(error))
+  }
 
 }
 

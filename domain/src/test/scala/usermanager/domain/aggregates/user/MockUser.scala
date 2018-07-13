@@ -1,6 +1,7 @@
 package usermanager.domain.aggregates.user
 
 import usermanager.domain.types._
+import usermanager.domain.types.enums.Status
 
 object MockUser {
 

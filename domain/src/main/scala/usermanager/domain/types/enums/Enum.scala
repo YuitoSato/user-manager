@@ -1,10 +1,13 @@
-package usermanager.domain.types
+package usermanager.domain.types.enums
 
 trait Enum[A] {
+
   def value: A
+
 }
 
 trait EnumCompanion[A, B <: Enum[A]] {
+
   def values: Seq[B]
   def valueOf(value: A): B = values
     .find(_.value == value)
@@ -13,4 +16,5 @@ trait EnumCompanion[A, B <: Enum[A]] {
     .getOrElse({
     throw new Exception(s"$value is invalid for Enum.")
   })
+
 }

@@ -25,6 +25,8 @@ case class MockTransaction[A](
     self.execute()
   }
 
+  override def leftMap(f: Error => Error): Transaction[A] = MockTransaction(() => execute().leftMap(f))
+  
 }
 
 object MockTransaction {

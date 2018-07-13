@@ -3,7 +3,7 @@ package commands
 import play.api.libs.json._
 import usermanager.domain.aggregates.user.User
 import usermanager.domain.helpers.{ HashHelper, UUIDGenerator }
-import usermanager.domain.types.Status
+import usermanager.domain.types.enums.Status
 
 case class UserCreateCommand(
   userName: String,

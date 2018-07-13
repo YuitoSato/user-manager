@@ -85,7 +85,7 @@ object Infrastructure {
 
   lazy val project = Project(
     "infrastructure",
-    file("infrastructure")
+    file("modules/infrastructure")
   ).enablePlugins(
     PlayScala
   ).settings(

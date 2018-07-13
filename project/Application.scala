@@ -14,7 +14,7 @@ object Application {
 
   lazy val project = Project(
     "application",
-    file("application")
+    file("modules/application")
   ).settings(
     libraryDependencies ++= dependencies
   ).settings(

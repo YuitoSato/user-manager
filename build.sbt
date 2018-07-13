@@ -26,6 +26,8 @@ lazy val infrastructure = Infrastructure.project
 
 lazy val domain = Domain.project
 
+lazy val query = Query.project
+
 lazy val root = Project(
   "user-manager",
   file(".")
@@ -35,12 +37,14 @@ lazy val root = Project(
   interface,
   application,
   infrastructure,
-  domain
+  domain,
+  query
 ).aggregate(
   interface,
   application,
   infrastructure,
-  domain
+  domain,
+  query
 ).settings(
   dependencyOverrides ++= overrides
 )

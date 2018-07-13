@@ -13,7 +13,7 @@ object Domain {
 
   lazy val project = Project(
     "domain",
-    file("domain")
+    file("modules/domain")
   ).settings(
     libraryDependencies ++= dependencies
   ).settings(

@@ -30,7 +30,7 @@ object Interface {
 
   lazy val project = Project(
     "interface",
-    file("interface")
+    file("modules/interface")
   ).enablePlugins(
     PlayScala
   ).settings(
@@ -38,7 +38,7 @@ object Interface {
   ).settings(
     libraryDependencies ++= dependencies,
     dependencyOverrides ++= overrides,
-    unmanagedResourceDirectories in Compile += baseDirectory.value / "resources",
+    unmanagedResourceDirectories in Compile += baseDirectory.value / "resources"
   ).dependsOn(
     Application.project % "test->test;compile->compile",
     Domain.project % "test->test;compile->compile",

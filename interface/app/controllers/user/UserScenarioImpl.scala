@@ -1,7 +1,6 @@
-package controllers.di
+package controllers.user
 
 import javax.inject.{ Inject, Singleton }
-
 import usermanager.application.scenarios.user.UserScenario
 import usermanager.application.services.user.UserService
 

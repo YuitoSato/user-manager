@@ -1,7 +1,6 @@
-package controllers.di
+package controllers.session
 
 import javax.inject.Inject
-
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.application.services.session.SessionService
 

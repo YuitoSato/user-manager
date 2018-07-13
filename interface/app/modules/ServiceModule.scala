@@ -1,7 +1,8 @@
 package modules
 
 import com.google.inject.AbstractModule
-import controllers.di.{ SessionServiceImpl, UserServiceImpl }
+import controllers.session.SessionServiceImpl
+import controllers.user.UserServiceImpl
 import play.api.{ Configuration, Environment }
 import usermanager.application.services.session.SessionService
 import usermanager.application.services.user.UserService

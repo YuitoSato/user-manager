@@ -2,7 +2,6 @@ package controllers.user
 
 import commands.UserCreateCommand
 import controllers.ControllerBase
-import controllers.di.UserScenarioImpl
 import javax.inject.Inject
 import play.api.libs.json.JsValue
 import play.api.mvc._

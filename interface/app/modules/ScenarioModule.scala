@@ -1,7 +1,8 @@
 package modules
 
 import com.google.inject.AbstractModule
-import controllers.di.{ SessionScenarioImpl, UserScenarioImpl }
+import controllers.session.SessionScenarioImpl
+import controllers.user.UserScenarioImpl
 import play.api.{ Configuration, Environment }
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.application.scenarios.user.UserScenario

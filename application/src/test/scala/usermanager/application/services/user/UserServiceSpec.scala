@@ -2,7 +2,7 @@ package usermanager.application.services.user
 
 import org.scalatest.{ FunSpec, MustMatchers }
 import usermanager.domain.aggregates.user.{ MockUser, User }
-import usermanager.domain.error.DomainError
+import usermanager.domain.error.Error
 import usermanager.domain.transaction.MockTransaction
 
 import scalaz.{ -\/, \/- }

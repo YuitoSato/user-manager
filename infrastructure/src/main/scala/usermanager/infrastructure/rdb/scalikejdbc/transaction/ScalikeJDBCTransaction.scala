@@ -1,7 +1,7 @@
 package usermanager.infrastructure.rdb.scalikejdbc.transaction
 
 import scalikejdbc.{ DB, DBSession }
-import usermanager.domain.error.DomainError
+import usermanager.domain.error.Error
 import usermanager.domain.result.{ Result, SyncResult }
 import usermanager.domain.syntax.{ ToEitherOps, ToFutureOps }
 import usermanager.domain.transaction.Transaction
@@ -10,7 +10,7 @@ import scala.util.{ Failure, Success, Try }
 import scalaz.{ -\/, \/, \/- }
 
 case class ScalikeJDBCTransaction[A](
-  execute: DBSession => DomainError \/ A
+  execute: DBSession => Error \/ A
 ) extends Transaction[A] with ToEitherOps with ToFutureOps { self =>
 
   override def map[B](f: A => B): ScalikeJDBCTransaction[B] = {
@@ -31,6 +31,8 @@ case class ScalikeJDBCTransaction[A](
     }
   }
 
+  override def leftMap(f: Error => Error): Transaction[A] = ScalikeJDBCTransaction((session: DBSession)=> execute(session).leftMap(f))
+  
 }
 
 object ScalikeJDBCTransaction {
@@ -41,7 +43,7 @@ object ScalikeJDBCTransaction {
         execute(session)
       } match {
         case Success(r) => \/-(r)
-        case Failure(l) => -\/(DomainError.Unexpected(l))
+        case Failure(l) => -\/(Error.Unexpected(l))
       }
     }
     ScalikeJDBCTransaction(exec)

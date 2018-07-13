@@ -1,6 +1,6 @@
 package usermanager.infrastructure.cache.shade.transaction
 
-import usermanager.domain.error.DomainError
+import usermanager.domain.error.Error
 import usermanager.domain.result.{ AsyncResult, Result }
 import usermanager.domain.syntax.ToEitherOps
 import usermanager.domain.transaction.Transaction
@@ -11,7 +11,7 @@ import scalaz.{ -\/, EitherT, \/, \/- }
 import scalaz.std.FutureInstances
 
 case class ShadeTransaction[A](
-  execute: () => EitherT[Future, DomainError, A]
+  execute: () => EitherT[Future, Error, A]
 )(
   implicit ec: ExecutionContext
 ) extends Transaction[A] with FutureInstances { self =>
@@ -30,17 +30,19 @@ case class ShadeTransaction[A](
 
   override def run: Result[A] = AsyncResult(self.asInstanceOf[ShadeTransaction[A]].execute())
 
+  override def leftMap(f: Error => Error): Transaction[A] = ShadeTransaction(() => execute().leftMap(f))
+
 }
 
 object ShadeTransaction extends ToEitherOps {
 
   def from[A](execute: () => Future[A])(implicit ec: ExecutionContext): ShadeTransaction[A] = {
     val exec = () => {
-      val future: Future[DomainError \/ A] = Try {
+      val future: Future[Error \/ A] = Try {
         execute()
       } match {
         case Success(r) => r.map(\/-(_))
-        case Failure(l) => Future.successful(-\/(DomainError.Unexpected(l)))
+        case Failure(l) => Future.successful(-\/(Error.Unexpected(l)))
       }
       future.et
     }

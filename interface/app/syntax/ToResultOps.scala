@@ -3,7 +3,7 @@ package syntax
 import play.api.libs.json.{ Json, Writes }
 import play.api.mvc.Results
 import play.api.{ Logger, mvc }
-import usermanager.domain.error.DomainError
+import usermanager.domain.error.Error
 import usermanager.domain.result.{ AsyncResult, Result, SyncResult }
 import usermanager.domain.syntax.{ ToEitherOps, ToFutureOps }
 
@@ -14,7 +14,7 @@ trait ToResultOps extends Results with ToFutureOps with ToEitherOps {
 
   val logger = Logger(this.getClass)
 
-  implicit class ErrorToOps(error: DomainError) {
+  implicit class ErrorToOps(error: Error) {
 
     def toResult: mvc.Result = InternalServerError(Json.obj(
       "code" -> error.code,
@@ -41,7 +41,7 @@ trait ToResultOps extends Results with ToFutureOps with ToEitherOps {
 //    }
   }
 
-  implicit class EitherTToResultOps[A](either: EitherT[Future, DomainError, A]) {
+  implicit class EitherTToResultOps[A](either: EitherT[Future, Error, A]) {
 
     implicit def to(implicit ec: ExecutionContext): AsyncResult[A] = AsyncResult(either)
 
@@ -55,7 +55,7 @@ trait ToResultOps extends Results with ToFutureOps with ToEitherOps {
       }
     }
 
-    def toResult(f: A => mvc.Result)(implicit ec: ExecutionContext): Future[mvc.Result] = {
+    def toResult(fun: A => mvc.Result)(implicit ec: ExecutionContext): Future[mvc.Result] = {
       val asyncResult: AsyncResult[A] = result match {
         case sync: SyncResult[A] => AsyncResult(sync.value.future.et)
         case async: AsyncResult[A] => async
@@ -64,16 +64,13 @@ trait ToResultOps extends Results with ToFutureOps with ToEitherOps {
       asyncResult.value.run
         .recover {
           case t =>
-            -\/(DomainError.Unexpected(t))
+            -\/(Error.Unexpected(t))
         }
         .map {
-          case \/-(a) => f(a)
+          case \/-(a) => fun(a)
           case -\/(e) => e.toResult
         }
 
-      val f = asyncResult.value.run
-
-      f.flatMap()
     }
   }
 

@@ -3,14 +3,14 @@ package usermanager.infrastructure.rdb.scalikejdbc.transaction
 import javax.inject.Inject
 
 import scalikejdbc.DBSession
-import usermanager.domain.error.DomainError
+import usermanager.domain.error.Error
 import usermanager.domain.transaction.{ Transaction, TransactionBuilder }
 
 import scalaz.{ \/, \/- }
 
 class ScalikeJDBCTransactionBuilder @Inject() extends TransactionBuilder {
 
-  override def build[A](value: \/[DomainError, A]): Transaction[A] = {
+  override def build[A](value: \/[Error, A]): Transaction[A] = {
     def exec(dbSession: DBSession) = value
     ScalikeJDBCTransaction(exec)
   }

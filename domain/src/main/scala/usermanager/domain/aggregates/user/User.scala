@@ -1,7 +1,7 @@
 package usermanager.domain.aggregates.user
 
 import usermanager.domain.aggregates.sessionuser.SessionUser
-import usermanager.domain.error.DomainError
+import usermanager.domain.error.Error
 import usermanager.domain.helpers.HashHelper
 import usermanager.domain.types._
 
@@ -24,11 +24,11 @@ case class User(
     )
   }
 
-  def authenticate(plainPassword: String)(implicit hashHelper: HashHelper): DomainError \/ Unit = {
+  def authenticate(plainPassword: String)(implicit hashHelper: HashHelper): Error \/ Unit = {
     if (hashHelper.checkPassword(plainPassword, password)) {
       \/-(())
     } else {
-      -\/(DomainError.Unauthorized)
+      -\/(Error.Unauthorized)
     }
   }
 

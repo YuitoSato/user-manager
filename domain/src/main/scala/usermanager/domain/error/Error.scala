@@ -2,17 +2,17 @@ package usermanager.domain.error
 
 import usermanager.domain.types.{ Email, Id }
 
-sealed trait DomainError {
+sealed trait Error {
 
   val code: String
   val message: String
 
 }
 
-object DomainError {
+object Error {
 
 //  trait Unexpected extends Errors
-  case class Unexpected(msg: String) extends DomainError {
+  case class Unexpected(msg: String) extends Error {
     val code = "error.unexpected"
     val message: String = msg
   }
@@ -21,17 +21,17 @@ object DomainError {
     def apply(t: Throwable): Unexpected = new Unexpected(t.toString)
   }
 
-  case class NotFound(entityType: String, entityId: Id[_]) extends DomainError {
+  case class NotFound(entityType: String, entityId: Id[_]) extends Error {
     val code = "error.notFound"
     val message = s"type: $entityType, id: $entityId is not found"
   }
 
-  case class EmailNotFound(email: Email[_]) extends DomainError {
+  case class EmailNotFound(email: Email[_]) extends Error {
     val code = "error.emailNotFound"
     val message = s"$email is not found"
   }
 
-  case class BadRequest(msg: String) extends DomainError {
+  case class BadRequest(msg: String) extends Error {
     val code = "error.badRequest"
     val message: String = msg
   }
@@ -41,12 +41,12 @@ object DomainError {
     val message = "DI Setting is invalid"
   }
 
-  case class JsonError(msg: String) extends DomainError {
+  case class JsonError(msg: String) extends Error {
     val code = "error.json"
     val message = s"Json error occured. error=$msg"
   }
 
-  case class EmailExists(email: Email[_]) extends DomainError {
+  case class EmailExists(email: Email[_]) extends Error {
     val code = "error.emailExists"
     val message = s"$email already exists"
   }
@@ -76,7 +76,7 @@ object DomainError {
 //    val message = "Initial account following record cannot be deleted."
 //  }
 
-  case object Unauthorized extends DomainError {
+  case object Unauthorized extends Error {
     val code = "error.unauthorized"
     val message = s"Please login."
   }

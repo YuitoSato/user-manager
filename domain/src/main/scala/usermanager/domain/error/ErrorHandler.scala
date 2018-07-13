@@ -9,11 +9,11 @@ import scalaz.{ -\/, \/- }
 trait ErrorHandler extends ToOptionOps {
 
   implicit class TransactionOptionErrorHandler[A](transactionOpt: Transaction[Option[A]]) {
-    def ifNotExists(f: => DomainError)(implicit builder: TransactionBuilder): Transaction[A] = {
+    def assertNotExists(f: => Error)(implicit builder: TransactionBuilder): Transaction[A] = {
       transactionOpt.flatMap(opt => builder.build(opt \/> f))
     }
 
-    def ifExists(f: => DomainError)(implicit builder: TransactionBuilder): Transaction[Unit] = {
+    def assertExists(f: => Error)(implicit builder: TransactionBuilder): Transaction[Unit] = {
       transactionOpt.flatMap(opt => builder.build(opt match {
         case Some(_) => -\/(f)
         case None => \/-()
@@ -22,7 +22,7 @@ trait ErrorHandler extends ToOptionOps {
   }
 
   implicit class TransactionBooleanErrorHandler(transactionDeleted: Transaction[Deleted]) {
-    def ifNotDeleted(f: => DomainError)(implicit builder: TransactionBuilder): Transaction[Unit] = {
+    def assertNotDeleted(f: => Error)(implicit builder: TransactionBuilder): Transaction[Unit] = {
       transactionDeleted.flatMap(deleted => {
         val either = if (deleted) \/-(()) else -\/(f)
         builder.build(either)

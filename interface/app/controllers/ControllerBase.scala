@@ -6,7 +6,7 @@ import play.api.mvc.{ BaseController, ControllerComponents, Request }
 import syntax.ToResultOps
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.domain.aggregates.sessionuser.SessionUser
-import usermanager.domain.error.DomainError
+import usermanager.domain.error.Error
 import usermanager.domain.result.{ AsyncResult, Result, ResultBuilder }
 import usermanager.domain.syntax.ToEitherOps
 
@@ -35,9 +35,9 @@ trait ControllerBase
 
   implicit val SecureAction: SecureAction = new SecureAction(sessionScenario = self.sessionScenario)
 
-  private def deserializeFuture[A](implicit req: Request[JsValue], reads: Reads[A], monad: Monad[Future]): Future[DomainError \/ A] = {
+  private def deserializeFuture[A](implicit req: Request[JsValue], reads: Reads[A], monad: Monad[Future]): Future[Error \/ A] = {
     val either = req.body.validate[A] match {
-      case e: JsError => \/.left(DomainError.JsonError(e.toString))
+      case e: JsError => \/.left(Error.JsonError(e.toString))
       case s: JsSuccess[A] => \/.right(s.value)
     }
     monad.point(either)

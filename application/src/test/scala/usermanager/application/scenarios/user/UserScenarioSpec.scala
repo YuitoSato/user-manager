@@ -2,7 +2,7 @@ package usermanager.application.scenarios.user
 
 import org.scalatest.{ FunSpec, MustMatchers }
 import usermanager.domain.aggregates.user.{ MockUser, User }
-import usermanager.domain.error.DomainError
+import usermanager.domain.error.Error
 import usermanager.domain.result.SyncResult
 
 import scalaz.{ -\/, \/- }
@@ -22,7 +22,7 @@ class UserScenarioSpec extends FunSpec with MustMatchers {
 
     describe("when user does not exist") {
       it("returns NotFound error") {
-        val failure = SyncResult.error(DomainError.NotFound(User.TYPE, "NotFoundId"))
+        val failure = SyncResult.error(Error.NotFound(User.TYPE, "NotFoundId"))
         val result = scenario.findById("NotFoundId")
         result mustBe failure
       }
@@ -39,7 +39,7 @@ class UserScenarioSpec extends FunSpec with MustMatchers {
 
       describe("when email already exists") {
         it("returns EmailExists error") {
-          val failure = SyncResult.error(DomainError.EmailExists("hoge@example.com"))
+          val failure = SyncResult.error(Error.EmailExists("hoge@example.com"))
           val result = scenario.create(MockUser())
           result mustBe failure
         }

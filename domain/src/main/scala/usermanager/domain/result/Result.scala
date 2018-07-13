@@ -1,34 +1,48 @@
 package usermanager.domain.result
 
-import usermanager.domain.error.DomainError
-import usermanager.domain.syntax.{ ToEitherOps, ToFutureOps }
+import scalaz.std.{ EitherInstances, FutureInstances }
+import scalaz.{ -\/, EitherT, \/ }
+import usermanager.domain.error.Error
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ Await, ExecutionContext, Future }
-import scalaz.std.FutureInstances
-import scalaz.{ -\/, EitherT, \/, \/- }
 
-sealed trait Result[A] {
+trait Result[A] { self =>
 
   def map[B](f: A => B): Result[B]
 
   def flatMap[B](f: A => Result[B]): Result[B]
 
+  def leftMap(f: Error => Error): Result[A]
+
+  def foreach(f: A => Unit): Unit = map(f)
+
+  def zipWith[U, R](that: Result[U])(f: (A, U) => R): Result[R] = flatMap(a => that.map(u => f(a, u)))
+
+  def assert(p: A => Boolean, error: => Error)(implicit builder: ResultBuilder): Result[A] = {
+    flatMap(a =>
+      if (p(a))
+        self
+      else
+        builder.build(-\/(error))
+    )
+  }
+
+  def assertWithA(p: A => Boolean, error: A => Error)(implicit builder: ResultBuilder): Result[A] = {
+    flatMap(a =>
+      if (p(a))
+        self
+      else
+        builder.build(-\/(error(a)))
+    )
+  }
+
+
 }
-
-object Result {
-
-  def apply[A](value: DomainError \/ A)(implicit builder: ResultBuilder): Result[A] =
-    builder.build(value)
-
-  def apply[A](value: A)(implicit builder: ResultBuilder): Result[A] = builder.build(value)
-
-}
-
 
 case class SyncResult[A](
-  value: DomainError \/ A
-) extends Result[A] {
+  value: Error \/ A
+) extends Result[A] with EitherInstances { self =>
 
   override def map[B](f: A => B): Result[B] = SyncResult(value.map(f))
 
@@ -40,26 +54,17 @@ case class SyncResult[A](
       })
     )
   }
-}
 
-object SyncResult extends ToEitherOps {
-
-  def apply[A](value: A): SyncResult[A] = {
-    SyncResult(\/-(value))
-  }
-
-  def error[A](error: DomainError): SyncResult[A] = {
-    SyncResult(-\/(error))
-  }
+  override def leftMap(f: Error => Error): Result[A] = SyncResult(value.leftMap(f))
 
 }
 
 
 case class AsyncResult[A](
-  value: EitherT[Future, DomainError, A]
+  value: EitherT[Future, Error, A]
 )(
   implicit ec: ExecutionContext
-) extends FutureInstances with Result[A] with ToFutureOps with ToEitherOps {
+) extends Result[A] with FutureInstances with EitherInstances {
 
   override def map[B](f: A => B): Result[B] = AsyncResult(value.map(f))
 
@@ -67,27 +72,11 @@ case class AsyncResult[A](
     AsyncResult(
       value.flatMap(f(_) match {
         case async: AsyncResult[B] => async.value
-        case sync: SyncResult[B] => sync.value.future.et
+        case sync: SyncResult[B] => EitherT(Future.successful(sync.value))
       })
     )
   }
 
-}
-
-object AsyncResult extends ToEitherOps {
-
-  def apply[A](value: DomainError \/ A)(implicit ec: ExecutionContext): AsyncResult[A] = {
-    AsyncResult(Future.successful(value).et)
-  }
-
-  def apply[A](value: A)(implicit ec: ExecutionContext): AsyncResult[A] = {
-    val either: DomainError \/ A = \/-(value)
-    AsyncResult(Future.successful(either).et)
-  }
-
-  def error[A](error: DomainError)(implicit ec: ExecutionContext): AsyncResult[A] = {
-    val either: DomainError \/ A = -\/(error)
-    AsyncResult(Future.successful(either).et)
-  }
+  override def leftMap(f: Error => Error): Result[A] = AsyncResult(value.leftMap(f))
 
 }

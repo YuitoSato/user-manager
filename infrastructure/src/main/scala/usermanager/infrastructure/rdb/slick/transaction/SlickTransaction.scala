@@ -4,7 +4,7 @@ import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
 import slick.dbio.DBIO
 import slick.jdbc.JdbcProfile
 import slick.jdbc.MySQLProfile.api._
-import usermanager.domain.error.DomainError
+import usermanager.domain.error.Error
 import usermanager.domain.result.{ AsyncResult, Result }
 import usermanager.domain.syntax.ToEitherOps
 import usermanager.domain.transaction.Transaction
@@ -15,7 +15,7 @@ import scala.util.{ Failure, Success, Try }
 import scalaz.{ -\/, EitherT, \/, \/- }
 
 case class SlickTransaction[A](
-  execute: () => EitherT[DBIO, DomainError, A]
+  execute: () => EitherT[DBIO, Error, A]
 )(
   implicit val ec: ExecutionContext,
   implicit val dbConfigProvider: DatabaseConfigProvider
@@ -38,17 +38,19 @@ case class SlickTransaction[A](
     db.run(dbio.transactionally).et
   }
 
+  override def leftMap(f: Error => Error): Transaction[A] = SlickTransaction(() => execute().leftMap(f))
+
 }
 
 object SlickTransaction extends ToEitherOps {
 
   def from[A](execute: () => DBIO[A])(implicit ec: ExecutionContext, dbConfigProvider: DatabaseConfigProvider): SlickTransaction[A] = {
     val exec = () => {
-      val dbio: DBIO[DomainError \/ A] = Try {
+      val dbio: DBIO[Error \/ A] = Try {
         execute().transactionally
       } match {
         case Success(r) => r.map(\/-(_))
-        case Failure(l) => DBIO.successful(-\/(DomainError.Unexpected(l)))
+        case Failure(l) => DBIO.successful(-\/(Error.Unexpected(l)))
       }
       dbio.et
     }

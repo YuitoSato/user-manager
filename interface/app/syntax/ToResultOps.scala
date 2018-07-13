@@ -7,8 +7,10 @@ import usermanager.domain.error.Error
 import usermanager.domain.result.{ AsyncResult, Result, SyncResult }
 import usermanager.domain.syntax.{ ToEitherOps, ToFutureOps }
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ Await, ExecutionContext, Future }
 import scalaz.{ -\/, EitherT, \/- }
+
+import scala.concurrent.duration.Duration
 
 trait ToResultOps extends Results with ToFutureOps with ToEitherOps {
 
@@ -49,13 +51,13 @@ trait ToResultOps extends Results with ToFutureOps with ToEitherOps {
 
   implicit class ResultToResultOpts[A](result: Result[A]) {
 
-    def toResult(implicit ec: ExecutionContext, writes: Writes[A]): Future[mvc.Result] = {
-      toResult { value =>
+    def toAsyncMvcResult(implicit ec: ExecutionContext, writes: Writes[A]): Future[mvc.Result] = {
+      handleErrorAsync { value =>
         Ok(Json.toJson(value))
       }
     }
 
-    def toResult(fun: A => mvc.Result)(implicit ec: ExecutionContext): Future[mvc.Result] = {
+    def handleErrorAsync(fun: A => mvc.Result)(implicit ec: ExecutionContext): Future[mvc.Result] = {
       val asyncResult: AsyncResult[A] = result match {
         case sync: SyncResult[A] => AsyncResult(sync.value.future.et)
         case async: AsyncResult[A] => async
@@ -70,8 +72,27 @@ trait ToResultOps extends Results with ToFutureOps with ToEitherOps {
           case \/-(a) => fun(a)
           case -\/(e) => e.toResult
         }
-
     }
+
+    def toSyncMvcResult(implicit writes: Writes[A]): mvc.Result = {
+      handleErrorSync { value =>
+        Ok(Json.toJson(value))
+      }
+    }
+
+    def handleErrorSync(fun: A => mvc.Result): mvc.Result = {
+      val syncResult: SyncResult[A] = result match {
+        case sync: SyncResult[A] => sync
+        case async: AsyncResult[A] => SyncResult(Await.result(async.value.run, Duration.Inf))
+      }
+
+      syncResult.value
+        match {
+          case \/-(a) => fun(a)
+          case -\/(e) => e.toResult
+        }
+    }
+
   }
 
 }

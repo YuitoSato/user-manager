@@ -28,7 +28,7 @@ class SessionController @Inject()(
       user <- userScenario.findByEmail(login.email)
       _ <- resultBuilder.build(user.authenticate(login.password))
       _ <- sessionScenario.create(user.toSessionUser)
-    } yield()).toResult
+    } yield()).toAsyncMvcResult
   }
 
 }

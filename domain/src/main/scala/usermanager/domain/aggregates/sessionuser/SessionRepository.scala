@@ -4,7 +4,7 @@ import usermanager.domain.transaction.Transaction
 import usermanager.domain.transaction.delete.Deleted
 import usermanager.domain.types.Id
 
-trait SessionUserRepository {
+trait SessionRepository {
 
   def find(sessionId: Id[SessionUser]): Transaction[Option[SessionUser]]
 

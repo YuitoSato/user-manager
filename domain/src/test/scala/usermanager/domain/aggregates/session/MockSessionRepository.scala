@@ -1,6 +1,6 @@
 package usermanager.domain.aggregates.session
 
-import usermanager.domain.aggregates.sessionuser.{ SessionUser, SessionUserRepository }
+import usermanager.domain.aggregates.sessionuser.{ SessionUser, SessionRepository }
 import usermanager.domain.error.Error
 import usermanager.domain.transaction.MockTransaction
 import usermanager.domain.transaction.delete.Deleted
@@ -8,7 +8,7 @@ import usermanager.domain.types.Id
 
 import scalaz.{ -\/, \/- }
 
-class MockSessionUserRepository extends SessionUserRepository {
+class MockSessionRepository extends SessionRepository {
 
   override def find(sessionId: Id[SessionUser]): MockTransaction[Option[SessionUser]] = {
     MockTransaction { () =>

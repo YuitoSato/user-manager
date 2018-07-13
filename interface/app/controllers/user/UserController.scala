@@ -26,7 +26,7 @@ class UserController @Inject()(
     (for {
       user <- deserializeAsync[UserCreateCommand]
       _ <- userScenario.create(user.toEntity)
-    } yield ()).toResult
+    } yield ()).toAsyncMvcResult
   }
 
 }

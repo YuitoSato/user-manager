@@ -3,9 +3,9 @@ package modules
 import com.google.inject.AbstractModule
 import com.google.inject.name.Names
 import play.api.{ Configuration, Environment }
-import usermanager.domain.aggregates.sessionuser.SessionUserRepository
+import usermanager.domain.aggregates.sessionuser.SessionRepository
 import usermanager.domain.aggregates.user.UserRepository
-import usermanager.infrastructure.cache.shade.session.SessionUserRepositoryCache
+import usermanager.infrastructure.cache.shade.session.SessionRepositoryCache
 import usermanager.infrastructure.rdb.scalikejdbc.user.UserRepositoryScalikeJDBC
 import usermanager.infrastructure.rdb.slick.user.UserRepositorySlick
 
@@ -21,9 +21,9 @@ class RepositoryModule(environment: Environment, configuration: Configuration) e
       .to(classOf[UserRepositorySlick])
 
     // SessionUserRepository
-    bind(classOf[SessionUserRepository])
+    bind(classOf[SessionRepository])
       .annotatedWith(Names.named("cache.shade"))
-      .to(classOf[SessionUserRepositoryCache])
+      .to(classOf[SessionRepositoryCache])
   }
 
 }

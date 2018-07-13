@@ -1,14 +1,14 @@
 package usermanager.application.services.session
 
 import usermanager.application.services.ServiceBase
-import usermanager.domain.aggregates.sessionuser.{ SessionUser, SessionUserRepository }
+import usermanager.domain.aggregates.sessionuser.{ SessionUser, SessionRepository }
 import usermanager.domain.error.Error
 import usermanager.domain.transaction.Transaction
 import usermanager.domain.types.Id
 
 trait SessionService extends ServiceBase {
 
-  val sessionRepository: SessionUserRepository
+  val sessionRepository: SessionRepository
 
   def findById(sessionId: Id[SessionUser]): Transaction[SessionUser] = {
     sessionRepository.find(sessionId) assertNotExists Error.NotFound(SessionUser.TYPE, sessionId)

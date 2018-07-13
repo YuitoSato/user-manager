@@ -1,10 +1,8 @@
 package usermanager.domain.types.enums
 
-import usermanager.domain.types.base.Isomorphism
-
 sealed abstract class Status(val value: String) extends Enum[String]
 
-object Status extends EnumCompanion[String, Status] with Isomorphism[String, Status]{
+object Status extends EnumCompanion[String, Status] {
 
   val values = Seq(Status.Enable, Status.Disable)
 

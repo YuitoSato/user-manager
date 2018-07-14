@@ -1,4 +1,4 @@
-package usermanager.domain.transaction.delete
+package usermanager.lib.error.transaction.delete
 
 case class Deleted(value: Boolean) extends AnyVal
 

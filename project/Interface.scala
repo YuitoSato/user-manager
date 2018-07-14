@@ -42,6 +42,7 @@ object Interface {
   ).dependsOn(
     Application.project % "test->test;compile->compile",
     Domain.project % "test->test;compile->compile",
-    Infrastructure.project % "test->test;compile->compile"
+    Infrastructure.project % "test->test;compile->compile",
+    Lib.project % "test->test;compile->compile"
   )
 }

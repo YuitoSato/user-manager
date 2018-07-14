@@ -1,8 +1,8 @@
-package usermanager.domain.transaction
+package usermanager.lib.transaction
 
 import scalaz.-\/
-import usermanager.domain.result.Result
-import usermanager.domain.error.Error
+import usermanager.lib.error.Error
+import usermanager.lib.result.Result
 
 trait Transaction[A] { self =>
 

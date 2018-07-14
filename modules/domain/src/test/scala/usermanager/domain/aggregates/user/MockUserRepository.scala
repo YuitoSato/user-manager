@@ -1,9 +1,9 @@
 package usermanager.domain.aggregates.user
 
-import usermanager.domain.transaction.{ MockTransaction, Transaction }
+import usermanager.domain.transaction.MockTransaction
 import usermanager.domain.types.{ Email, Id }
-
 import scalaz.\/-
+import usermanager.lib.error.transaction.Transaction
 
 class MockUserRepository extends UserRepository {
 

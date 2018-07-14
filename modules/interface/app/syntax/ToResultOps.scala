@@ -3,12 +3,12 @@ package syntax
 import play.api.libs.json.{ Json, Writes }
 import play.api.mvc.Results
 import play.api.{ Logger, mvc }
-import usermanager.domain.error.Error
 import usermanager.domain.result.{ AsyncResult, Result, SyncResult }
 import usermanager.domain.syntax.{ ToEitherOps, ToFutureOps }
 
 import scala.concurrent.{ Await, ExecutionContext, Future }
 import scalaz.{ -\/, EitherT, \/- }
+import usermanager.lib.error.Error
 
 import scala.concurrent.duration.Duration
 

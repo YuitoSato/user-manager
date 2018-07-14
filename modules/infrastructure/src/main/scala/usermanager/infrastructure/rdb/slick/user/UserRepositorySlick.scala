@@ -2,16 +2,16 @@ package usermanager.infrastructure.rdb.slick.user
 
 import java.sql.Timestamp
 import java.time.LocalDateTime
-import javax.inject.Inject
 
+import javax.inject.Inject
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.MySQLProfile.api._
 import usermanager.domain.aggregates.user.{ User, UserRepository }
 import usermanager.domain.syntax.ToEitherOps
-import usermanager.domain.transaction.Transaction
 import usermanager.domain.types.{ Email, Id }
 import usermanager.infrastructure.rdb.slick.Tables._
 import usermanager.infrastructure.rdb.slick.transaction.SlickTransaction
+import usermanager.lib.error.transaction.Transaction
 
 import scala.concurrent.ExecutionContext
 

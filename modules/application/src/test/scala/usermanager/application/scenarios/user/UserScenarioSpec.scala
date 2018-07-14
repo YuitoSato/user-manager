@@ -2,10 +2,9 @@ package usermanager.application.scenarios.user
 
 import org.scalatest.{ FunSpec, MustMatchers }
 import usermanager.domain.aggregates.user.{ MockUser, User }
-import usermanager.domain.error.Error
 import usermanager.domain.result.SyncResult
-
 import scalaz.{ -\/, \/- }
+import usermanager.lib.error.Error
 
 class UserScenarioSpec extends FunSpec with MustMatchers {
 

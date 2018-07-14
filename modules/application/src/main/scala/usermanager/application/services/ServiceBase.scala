@@ -1,7 +1,7 @@
 package usermanager.application.services
 
-import usermanager.domain.error.ErrorHandler
-import usermanager.domain.transaction.TransactionBuilder
+import usermanager.lib.error.ErrorHandler
+import usermanager.lib.error.transaction.TransactionBuilder
 
 trait ServiceBase extends ErrorHandler {
 

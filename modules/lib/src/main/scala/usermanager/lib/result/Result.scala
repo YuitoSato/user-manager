@@ -1,8 +1,8 @@
-package usermanager.domain.result
+package usermanager.lib.result
 
 import scalaz.std.{ EitherInstances, FutureInstances }
 import scalaz.{ -\/, EitherT, \/, \/- }
-import usermanager.domain.error.Error
+import usermanager.lib.error.Error
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ Await, ExecutionContext, Future }

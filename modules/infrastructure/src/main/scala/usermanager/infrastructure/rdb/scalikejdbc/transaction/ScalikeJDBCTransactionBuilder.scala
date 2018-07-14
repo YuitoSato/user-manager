@@ -1,12 +1,11 @@
 package usermanager.infrastructure.rdb.scalikejdbc.transaction
 
 import javax.inject.Inject
-
 import scalikejdbc.DBSession
-import usermanager.domain.error.Error
-import usermanager.domain.transaction.{ Transaction, TransactionBuilder }
-
+import usermanager.domain.transaction.Transaction
 import scalaz.{ \/, \/- }
+import usermanager.lib.error.Error
+import usermanager.lib.error.transaction.{ Transaction, TransactionBuilder }
 
 class ScalikeJDBCTransactionBuilder @Inject() extends TransactionBuilder {
 

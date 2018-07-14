@@ -1,12 +1,11 @@
 package usermanager.domain.aggregates.session
 
-import usermanager.domain.aggregates.sessionuser.{ SessionUser, SessionRepository }
-import usermanager.domain.error.Error
+import usermanager.domain.aggregates.sessionuser.{ SessionRepository, SessionUser }
 import usermanager.domain.transaction.MockTransaction
-import usermanager.domain.transaction.delete.Deleted
 import usermanager.domain.types.Id
-
 import scalaz.{ -\/, \/- }
+import usermanager.lib.error.Error
+import usermanager.lib.error.transaction.delete.Deleted
 
 class MockSessionRepository extends SessionRepository {
 

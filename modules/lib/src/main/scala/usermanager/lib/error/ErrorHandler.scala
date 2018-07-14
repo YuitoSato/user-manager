@@ -1,10 +1,9 @@
-package usermanager.domain.error
-
-import usermanager.domain.transaction.delete.Deleted
-import usermanager.domain.transaction.{ Transaction, TransactionBuilder }
+package usermanager.lib.error
 
 import scalaz.syntax.std.ToOptionOps
 import scalaz.{ -\/, \/- }
+import usermanager.lib.error.transaction.delete.Deleted
+import usermanager.lib.transaction.{ Transaction, TransactionBuilder }
 
 trait ErrorHandler extends ToOptionOps {
 

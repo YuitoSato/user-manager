@@ -5,7 +5,7 @@ import javax.inject.{ Inject, Named }
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.application.services.session.SessionService
 import usermanager.domain.aggregates.sessionuser.SessionRepository
-import usermanager.domain.transaction.TransactionBuilder
+import usermanager.lib.error.transaction.TransactionBuilder
 
 class SessionScenarioImpl @Inject()(
   @Named(Cache.Shade) val sessionRepositoryImpl: SessionRepository,

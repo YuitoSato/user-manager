@@ -1,8 +1,8 @@
 package usermanager.domain.aggregates.sessionuser
 
-import usermanager.domain.transaction.Transaction
-import usermanager.domain.transaction.delete.Deleted
 import usermanager.domain.types.Id
+import usermanager.lib.error.transaction.delete.Deleted
+import usermanager.lib.transaction.Transaction
 
 trait SessionRepository {
 

@@ -1,10 +1,10 @@
 package usermanager.application.services.session
 
 import usermanager.application.services.ServiceBase
-import usermanager.domain.aggregates.sessionuser.{ SessionUser, SessionRepository }
-import usermanager.domain.error.Error
-import usermanager.domain.transaction.Transaction
+import usermanager.domain.aggregates.sessionuser.{ SessionRepository, SessionUser }
 import usermanager.domain.types.Id
+import usermanager.lib.error.Error
+import usermanager.lib.error.transaction.Transaction
 
 trait SessionService extends ServiceBase {
 

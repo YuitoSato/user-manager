@@ -1,14 +1,12 @@
 package usermanager.domain.syntax
 
-import usermanager.domain.error.Error
-
-import scala.concurrent.Future
-import scalaz.{ EitherT, \/, \/- }
-import scalaz.syntax.std.ToOptionOps
+import scalaz.{ EitherT, \/ }
+import usermanager.lib.error
+import usermanager.lib.error.Error
 
 trait ToEitherOps {
 
-  implicit class DisjunctionToEitherOps[F[_], A](fa: F[Error \/ A]) {
+  implicit class DisjunctionToEitherOps[F[_], A](fa: F[error.Error \/ A]) {
     def et: EitherT[F, Error, A] = {
       EitherT(fa)
     }

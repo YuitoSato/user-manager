@@ -5,7 +5,7 @@ import javax.inject.{ Inject, Named, Singleton }
 import usermanager.application.scenarios.user.UserScenario
 import usermanager.application.services.user.UserService
 import usermanager.domain.aggregates.user.UserRepository
-import usermanager.domain.transaction.TransactionBuilder
+import usermanager.lib.error.transaction.TransactionBuilder
 
 @Singleton
 class UserScenarioImpl @Inject()(

@@ -1,7 +1,8 @@
 package usermanager.domain.transaction
-import usermanager.domain.error.Error
 
 import scalaz.{ \/, \/- }
+import usermanager.lib.error.Error
+import usermanager.lib.error.transaction.{ Transaction, TransactionBuilder }
 
 class MockTransactionBuilder extends TransactionBuilder {
 

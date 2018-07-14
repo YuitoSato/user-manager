@@ -2,9 +2,9 @@ package usermanager.application.services.user
 
 import usermanager.application.services.ServiceBase
 import usermanager.domain.aggregates.user.{ User, UserRepository }
-import usermanager.domain.error.Error
-import usermanager.domain.transaction.Transaction
 import usermanager.domain.types.{ Email, Id }
+import usermanager.lib.error.Error
+import usermanager.lib.error.transaction.Transaction
 
 trait UserService extends ServiceBase {
 

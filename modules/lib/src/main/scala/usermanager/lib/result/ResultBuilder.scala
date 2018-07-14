@@ -1,7 +1,7 @@
-package usermanager.domain.result
+package usermanager.lib.result
 
-import usermanager.domain.error.Error
 import scalaz.\/
+import usermanager.lib.error.Error
 
 trait ResultBuilder {
 

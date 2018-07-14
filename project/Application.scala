@@ -23,7 +23,8 @@ object Application {
     resourceDirectory in Compile := baseDirectory.value / "src" / "main" / "resources",
     resourceDirectory in Test := baseDirectory.value / "src" / "test" / "resources"
   ).dependsOn(
-    Domain.project % "test->test;compile->compile"
+    Domain.project % "test->test;compile->compile",
+    Lib.project % "test->test;compile->compile"
   )
 
 }

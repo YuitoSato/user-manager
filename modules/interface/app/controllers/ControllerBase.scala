@@ -6,13 +6,13 @@ import play.api.mvc.{ BaseController, ControllerComponents, Request }
 import syntax.ToResultOps
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.domain.aggregates.sessionuser.SessionUser
-import usermanager.domain.error.Error
 import usermanager.domain.result.{ AsyncResult, Result, ResultBuilder }
 import usermanager.domain.syntax.ToEitherOps
 
 import scala.concurrent.{ ExecutionContext, Future }
 import scalaz.std.FutureInstances
 import scalaz.{ Monad, \/ }
+import usermanager.lib.error.Error
 
 trait ControllerBase
   extends BaseController

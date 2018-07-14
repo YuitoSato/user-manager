@@ -1,7 +1,7 @@
-package usermanager.domain.transaction
+package usermanager.lib.transaction
 
-import usermanager.domain.error.Error
 import scalaz.\/
+import usermanager.lib.error.Error
 
 trait TransactionBuilder {
 

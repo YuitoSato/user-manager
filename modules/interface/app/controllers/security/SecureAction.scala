@@ -9,9 +9,9 @@ import syntax.ToResultOps
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.domain
 import usermanager.domain.aggregates.sessionuser.SessionUser
-import usermanager.domain.error.Error
 import usermanager.domain.result.{ AsyncResult, ResultBuilder }
 import usermanager.domain.syntax.ToEitherOps
+import usermanager.lib.error.Error
 
 import scala.concurrent.{ ExecutionContext, Future }
 

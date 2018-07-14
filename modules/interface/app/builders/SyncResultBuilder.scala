@@ -1,11 +1,9 @@
 package builders
 
 import javax.inject.Singleton
-
-import usermanager.domain.error.Error
 import usermanager.domain.result.{ Result, ResultBuilder, SyncResult }
-
 import scalaz.{ \/, \/- }
+import usermanager.lib.error.Error
 
 @Singleton
 class SyncResultBuilder extends ResultBuilder{

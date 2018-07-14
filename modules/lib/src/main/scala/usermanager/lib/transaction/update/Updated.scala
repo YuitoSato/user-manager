@@ -1,4 +1,4 @@
-package usermanager.domain.transaction.update
+package usermanager.lib.error.transaction.update
 
 case class Updated(value: Boolean) extends AnyVal
 

@@ -1,14 +1,14 @@
 package usermanager.infrastructure.cache.shade.session
 
 import javax.inject.Inject
-
-import usermanager.domain.aggregates.sessionuser.{ SessionUser, SessionRepository }
+import usermanager.domain.aggregates.sessionuser.{ SessionRepository, SessionUser }
 import usermanager.domain.syntax.ToEitherOps
 import usermanager.domain.transaction.Transaction
-import usermanager.domain.transaction.delete.Deleted
 import usermanager.domain.types.Id
 import usermanager.infrastructure.cache.shade.ShadeCache
 import usermanager.infrastructure.cache.shade.transaction.ShadeTransaction
+import usermanager.lib.error.transaction.Transaction
+import usermanager.lib.error.transaction.delete.Deleted
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._

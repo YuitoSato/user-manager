@@ -1,12 +1,13 @@
 package usermanager.domain.transaction
 
-import usermanager.domain.error.Error
 import usermanager.domain.result.{ Result, SyncResult }
-
 import scalaz.{ \/, \/- }
+import usermanager.lib.error
+import usermanager.lib.error.Error
+import usermanager.lib.error.transaction.Transaction
 
 case class MockTransaction[A](
-  execute: () => Error \/ A
+  execute: () => error.Error \/ A
 ) extends Transaction[A] { self =>
 
   override def map[B](f: A => B): Transaction[B] = {
@@ -25,7 +26,7 @@ case class MockTransaction[A](
     self.execute()
   }
 
-  override def leftMap(f: Error => Error): Transaction[A] = MockTransaction(() => execute().leftMap(f))
+  override def leftMap(f: error.Error => Error): Transaction[A] = MockTransaction(() => execute().leftMap(f))
   
 }
 

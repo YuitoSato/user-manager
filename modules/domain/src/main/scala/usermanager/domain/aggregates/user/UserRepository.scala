@@ -1,7 +1,7 @@
 package usermanager.domain.aggregates.user
 
-import usermanager.domain.transaction.Transaction
 import usermanager.domain.types.{ Email, Id }
+import usermanager.lib.transaction.Transaction
 
 trait UserRepository {
 

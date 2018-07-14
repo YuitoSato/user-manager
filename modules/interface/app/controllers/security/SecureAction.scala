@@ -1,17 +1,17 @@
 package controllers.security
 
+import error.InterfaceError
 import javax.inject.Inject
 import play.api.mvc._
 import scalaz.std.FutureInstances
 import scalaz.syntax.std.ToOptionOps
 import scalaz.{ -\/, \/- }
 import syntax.ToResultOps
+import usermanager._
 import usermanager.application.scenarios.session.SessionScenario
-import usermanager.domain
 import usermanager.domain.aggregates.sessionuser.SessionUser
-import usermanager.domain.result.{ AsyncResult, ResultBuilder }
 import usermanager.domain.syntax.ToEitherOps
-import usermanager.lib.error.Error
+import usermanager.lib.result.{ AsyncResult, ResultBuilder }
 
 import scala.concurrent.{ ExecutionContext, Future }
 
@@ -23,9 +23,9 @@ case class SecureAction @Inject() (
   implicit val resultBuilder: ResultBuilder
 ) extends ToResultOps with ToEitherOps with ToOptionOps with BaseControllerHelpers with FutureInstances {
 
-  def findUserBySession(req: Request[_]): domain.result.Result[SessionUser] = {
+  def findUserBySession(req: Request[_]): lib.result.Result[SessionUser] = {
     for {
-      key <- resultBuilder.build(req.session.get("session") \/> Error.BadRequest("session key is not found"))
+      key <- resultBuilder.build(req.session.get("session") \/> InterfaceError.SessionKeyNotFound)
       user <- sessionScenario.findById(key)
     } yield user
   }
@@ -39,8 +39,7 @@ case class SecureAction @Inject() (
       // TODO asInstanceOfは使いたくない
       findUserBySession(req).asInstanceOf[AsyncResult[SessionUser]].value.run.flatMap {
         case \/-(user) => requestHandler(SecureRequest(user, req))
-        case -\/(e: Error.BadRequest) => Future.successful(e.toResult)
-        case -\/(_) => Future.successful(Error.Unauthorized.toResult)
+        case -\/(e) => Future.successful(e.toResult)
       }
     }
   }

@@ -1,11 +1,13 @@
 package usermanager.application.scenarios.session
 
 import org.scalatest.{ FunSpec, MustMatchers }
+import usermanager.application.error.ApplicationError
 import usermanager.domain.aggregates.session.MockSessionUser
 import usermanager.domain.aggregates.sessionuser.SessionUser
 import usermanager.domain.result.SyncResult
 import usermanager.lib.error.Error
 import usermanager.lib.error.transaction.delete.Deleted
+import usermanager.lib.result.SyncResult
 
 class SessionScenarioSpec extends FunSpec with MustMatchers {
 
@@ -23,7 +25,7 @@ class SessionScenarioSpec extends FunSpec with MustMatchers {
 
     describe("when session does not exist") {
       it("returns not found error") {
-        val failure = SyncResult.error(Error.NotFound(SessionUser.TYPE, "NotFoundId"))
+        val failure = SyncResult.error(ApplicationError.NotFound(SessionUser.TYPE, "NotFoundId"))
         val result = scenario.findById("NotFoundId")
 
         result mustBe failure
@@ -46,7 +48,7 @@ class SessionScenarioSpec extends FunSpec with MustMatchers {
     }
     describe("when session does not exist") {
       it("returns failure deleted result") {
-        val failure = SyncResult.error(Error.NotFound(SessionUser.TYPE, "NotFoundId"))
+        val failure = SyncResult.error(ApplicationError.NotFound(SessionUser.TYPE, "NotFoundId"))
         scenario.delete("NotFoundId") mustBe failure
       }
     }

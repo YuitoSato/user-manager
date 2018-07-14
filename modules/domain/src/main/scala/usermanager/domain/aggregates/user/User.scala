@@ -1,12 +1,12 @@
 package usermanager.domain.aggregates.user
 
+import scalaz.{ -\/, \/, \/- }
 import usermanager.domain.aggregates.sessionuser.SessionUser
+import usermanager.domain.error.DomainError
 import usermanager.domain.helpers.HashHelper
 import usermanager.domain.types._
-import scalaz.{ -\/, \/, \/- }
 import usermanager.domain.types.enums.Status
 import usermanager.lib.error
-import usermanager.lib.error.Error
 
 case class User(
   id: Id[User],
@@ -29,7 +29,7 @@ case class User(
     if (hashHelper.checkPassword(plainPassword, password)) {
       \/-(())
     } else {
-      -\/(Error.Unauthorized)
+      -\/(DomainError.Unauthorized)
     }
   }
 

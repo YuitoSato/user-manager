@@ -1,19 +1,19 @@
 package usermanager.infrastructure.rdb.slick.transaction
 
 import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
+import scalaz.{ -\/, EitherT, \/, \/- }
 import slick.dbio.DBIO
 import slick.jdbc.JdbcProfile
 import slick.jdbc.MySQLProfile.api._
-import usermanager.domain.result.{ AsyncResult, Result }
 import usermanager.domain.syntax.ToEitherOps
 import usermanager.infrastructure.rdb.slick.DBIOInstances
+import usermanager.lib.error
+import usermanager.lib.error.Error
+import usermanager.lib.result.{ AsyncResult, Result }
+import usermanager.lib.transaction.Transaction
 
 import scala.concurrent.ExecutionContext
 import scala.util.{ Failure, Success, Try }
-import scalaz.{ -\/, EitherT, \/, \/- }
-import usermanager.lib.error
-import usermanager.lib.error.Error
-import usermanager.lib.error.transaction.Transaction
 
 case class SlickTransaction[A](
   execute: () => EitherT[DBIO, error.Error, A]

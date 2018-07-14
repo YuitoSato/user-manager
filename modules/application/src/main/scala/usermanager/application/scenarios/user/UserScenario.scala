@@ -1,12 +1,11 @@
 package usermanager.application.scenarios.user
 
-import usermanager.application.scenarios.ScenarioBase
 import usermanager.application.services.user.UserService
 import usermanager.domain.aggregates.user.User
-import usermanager.domain.result.Result
 import usermanager.domain.types.{ Email, Id }
+import usermanager.lib.result.Result
 
-trait UserScenario extends ScenarioBase {
+trait UserScenario {
 
   val userService: UserService
 

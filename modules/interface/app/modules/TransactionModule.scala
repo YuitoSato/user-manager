@@ -7,7 +7,7 @@ import play.api.{ Configuration, Environment }
 import usermanager.infrastructure.cache.shade.transaction.ShadeTransactionBuilder
 import usermanager.infrastructure.rdb.scalikejdbc.transaction.ScalikeJDBCTransactionBuilder
 import usermanager.infrastructure.rdb.slick.transaction.SlickTransactionBuilder
-import usermanager.lib.error.transaction.TransactionBuilder
+import usermanager.lib.transaction.TransactionBuilder
 
 class TransactionModule(environment: Environment, configuration: Configuration) extends AbstractModule {
 

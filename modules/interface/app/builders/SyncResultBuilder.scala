@@ -1,12 +1,12 @@
 package builders
 
 import javax.inject.Singleton
-import usermanager.domain.result.{ Result, ResultBuilder, SyncResult }
 import scalaz.{ \/, \/- }
 import usermanager.lib.error.Error
+import usermanager.lib.result.{ Result, ResultBuilder, SyncResult }
 
 @Singleton
-class SyncResultBuilder extends ResultBuilder{
+class SyncResultBuilder extends ResultBuilder {
 
   override def build[A](value: \/[Error, A]): Result[A] = {
     SyncResult(value)

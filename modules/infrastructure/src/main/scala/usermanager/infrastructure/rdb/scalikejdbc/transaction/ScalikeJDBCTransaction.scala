@@ -1,14 +1,14 @@
 package usermanager.infrastructure.rdb.scalikejdbc.transaction
 
-import scalikejdbc.{ DB, DBSession }
-import usermanager.domain.result.{ Result, SyncResult }
-import usermanager.domain.syntax.{ ToEitherOps, ToFutureOps }
-
-import scala.util.{ Failure, Success, Try }
 import scalaz.{ -\/, \/, \/- }
+import scalikejdbc.{ DB, DBSession }
+import usermanager.domain.syntax.{ ToEitherOps, ToFutureOps }
 import usermanager.lib.error
 import usermanager.lib.error.Error
-import usermanager.lib.error.transaction.Transaction
+import usermanager.lib.result.{ Result, SyncResult }
+import usermanager.lib.transaction.Transaction
+
+import scala.util.{ Failure, Success, Try }
 
 case class ScalikeJDBCTransaction[A](
   execute: DBSession => error.Error \/ A

@@ -3,14 +3,13 @@ package syntax
 import play.api.libs.json.{ Json, Writes }
 import play.api.mvc.Results
 import play.api.{ Logger, mvc }
-import usermanager.domain.result.{ AsyncResult, Result, SyncResult }
-import usermanager.domain.syntax.{ ToEitherOps, ToFutureOps }
-
-import scala.concurrent.{ Await, ExecutionContext, Future }
 import scalaz.{ -\/, EitherT, \/- }
+import usermanager.domain.syntax.{ ToEitherOps, ToFutureOps }
 import usermanager.lib.error.Error
+import usermanager.lib.result.{ AsyncResult, Result, SyncResult }
 
 import scala.concurrent.duration.Duration
+import scala.concurrent.{ Await, ExecutionContext, Future }
 
 trait ToResultOps extends Results with ToFutureOps with ToEitherOps {
 

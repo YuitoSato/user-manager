@@ -1,9 +1,9 @@
 package modules
 
+import builders.AsyncResultBuilder
 import com.google.inject.AbstractModule
 import play.api.{ Configuration, Environment }
-import builders.AsyncResultBuilder
-import usermanager.domain.result.ResultBuilder
+import usermanager.lib.result.ResultBuilder
 
 class ResultModule(environment: Environment, configuration: Configuration) extends AbstractModule {
 
@@ -11,4 +11,5 @@ class ResultModule(environment: Environment, configuration: Configuration) exten
     bind(classOf[ResultBuilder])
       .to(classOf[AsyncResultBuilder])
   }
+
 }

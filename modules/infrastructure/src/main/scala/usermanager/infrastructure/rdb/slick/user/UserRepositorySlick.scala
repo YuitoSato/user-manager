@@ -11,7 +11,7 @@ import usermanager.domain.syntax.ToEitherOps
 import usermanager.domain.types.{ Email, Id }
 import usermanager.infrastructure.rdb.slick.Tables._
 import usermanager.infrastructure.rdb.slick.transaction.SlickTransaction
-import usermanager.lib.error.transaction.Transaction
+import usermanager.lib.transaction.Transaction
 
 import scala.concurrent.ExecutionContext
 

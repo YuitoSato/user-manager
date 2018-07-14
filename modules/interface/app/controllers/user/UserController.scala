@@ -7,7 +7,7 @@ import play.api.libs.json.JsValue
 import play.api.mvc._
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.domain.helpers.{ HashHelper, UUIDGenerator }
-import usermanager.domain.result.ResultBuilder
+import usermanager.lib.result.ResultBuilder
 
 import scala.concurrent.ExecutionContext
 

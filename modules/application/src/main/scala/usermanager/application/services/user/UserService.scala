@@ -1,25 +1,25 @@
 package usermanager.application.services.user
 
+import usermanager.application.error.ApplicationError
 import usermanager.application.services.ServiceBase
 import usermanager.domain.aggregates.user.{ User, UserRepository }
 import usermanager.domain.types.{ Email, Id }
-import usermanager.lib.error.Error
-import usermanager.lib.error.transaction.Transaction
+import usermanager.lib.transaction.Transaction
 
 trait UserService extends ServiceBase {
 
   val userRepository: UserRepository
 
   def findById(userId: Id[User]): Transaction[User] = {
-    userRepository.find(userId) assertNotExists Error.NotFound(User.TYPE, userId)
+    userRepository.find(userId) assertNotExists ApplicationError.NotFound(User.TYPE, userId)
   }
 
   def findByEmail(email: Email[User]): Transaction[User] = {
-    userRepository.findByEmail(email) assertNotExists Error.EmailNotFound(email)
+    userRepository.findByEmail(email) assertNotExists ApplicationError.EmailNotFound
   }
 
   def assertEmailNotExists(email: Email[User]): Transaction[Unit] = {
-    userRepository.findByEmail(email) assertExists Error.EmailExists(email)
+    userRepository.findByEmail(email) assertExists ApplicationError.EmailExists
   }
 
   def create(user: User): Transaction[Unit] = {

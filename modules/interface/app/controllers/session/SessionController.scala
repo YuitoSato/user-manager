@@ -8,7 +8,7 @@ import play.api.mvc.{ Action, ControllerComponents }
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.application.scenarios.user.UserScenario
 import usermanager.domain.helpers.HashHelper
-import usermanager.domain.result.ResultBuilder
+import usermanager.lib.result.ResultBuilder
 
 import scala.concurrent.ExecutionContext
 

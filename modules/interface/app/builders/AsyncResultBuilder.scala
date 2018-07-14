@@ -1,12 +1,12 @@
 package builders
 
 import javax.inject.{ Inject, Singleton }
-import usermanager.domain.result.{ AsyncResult, Result, ResultBuilder }
+import scalaz.{ \/, \/- }
 import usermanager.domain.syntax.{ ToEitherOps, ToFutureOps }
+import usermanager.lib.error.Error
+import usermanager.lib.result.{ AsyncResult, Result, ResultBuilder }
 
 import scala.concurrent.ExecutionContext
-import scalaz.{ \/, \/- }
-import usermanager.lib.error.Error
 
 @Singleton
 class AsyncResultBuilder @Inject()(

@@ -1,15 +1,15 @@
 package usermanager.infrastructure.cache.shade.transaction
 
-import usermanager.domain.result.{ AsyncResult, Result }
+import scalaz.std.FutureInstances
+import scalaz.{ -\/, EitherT, \/, \/- }
 import usermanager.domain.syntax.ToEitherOps
+import usermanager.lib.error
+import usermanager.lib.error.Error
+import usermanager.lib.result.{ AsyncResult, Result }
+import usermanager.lib.transaction.Transaction
 
 import scala.concurrent.{ ExecutionContext, Future }
 import scala.util.{ Failure, Success, Try }
-import scalaz.{ -\/, EitherT, \/, \/- }
-import scalaz.std.FutureInstances
-import usermanager.lib.error
-import usermanager.lib.error.Error
-import usermanager.lib.error.transaction.Transaction
 
 case class ShadeTransaction[A](
   execute: () => EitherT[Future, error.Error, A]

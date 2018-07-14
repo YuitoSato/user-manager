@@ -1,14 +1,13 @@
 package usermanager.infrastructure.cache.shade.transaction
 
 import javax.inject.Inject
-import usermanager.domain.syntax.ToEitherOps
-import usermanager.domain.transaction.Transaction
-
-import scala.concurrent.{ ExecutionContext, Future }
 import scalaz.{ \/, \/- }
+import usermanager.domain.syntax.ToEitherOps
 import usermanager.lib.error
 import usermanager.lib.error.Error
-import usermanager.lib.error.transaction.{ Transaction, TransactionBuilder }
+import usermanager.lib.transaction.{ Transaction, TransactionBuilder }
+
+import scala.concurrent.{ ExecutionContext, Future }
 
 class ShadeTransactionBuilder @Inject()(implicit ec: ExecutionContext) extends TransactionBuilder with ToEitherOps {
 

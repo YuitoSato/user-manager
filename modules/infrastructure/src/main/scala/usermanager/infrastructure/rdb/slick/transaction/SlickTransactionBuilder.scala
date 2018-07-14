@@ -2,14 +2,14 @@ package usermanager.infrastructure.rdb.slick.transaction
 
 import javax.inject.Inject
 import play.api.db.slick.DatabaseConfigProvider
+import scalaz.{ \/, \/- }
 import slick.dbio.DBIO
 import usermanager.domain.syntax.ToEitherOps
-
-import scala.concurrent.ExecutionContext
-import scalaz.{ \/, \/- }
 import usermanager.lib.error
 import usermanager.lib.error.Error
-import usermanager.lib.error.transaction.TransactionBuilder
+import usermanager.lib.transaction.TransactionBuilder
+
+import scala.concurrent.ExecutionContext
 
 class SlickTransactionBuilder @Inject()(
   implicit ec: ExecutionContext,

@@ -4,9 +4,6 @@ import org.scalatest.{ FunSpec, MustMatchers }
 import usermanager.application.error.ApplicationError
 import usermanager.domain.aggregates.session.MockSessionUser
 import usermanager.domain.aggregates.sessionuser.SessionUser
-import usermanager.domain.result.SyncResult
-import usermanager.lib.error.Error
-import usermanager.lib.error.transaction.delete.Deleted
 import usermanager.lib.result.SyncResult
 
 class SessionScenarioSpec extends FunSpec with MustMatchers {

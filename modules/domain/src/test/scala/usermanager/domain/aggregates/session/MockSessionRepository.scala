@@ -4,6 +4,7 @@ import usermanager.domain.aggregates.sessionuser.{ SessionRepository, SessionUse
 import usermanager.domain.transaction.MockTransaction
 import usermanager.domain.types.Id
 import scalaz.{ -\/, \/- }
+import usermanager.domain.error.DomainError
 import usermanager.lib.error.Error
 import usermanager.lib.error.transaction.delete.Deleted
 
@@ -12,7 +13,7 @@ class MockSessionRepository extends SessionRepository {
   override def find(sessionId: Id[SessionUser]): MockTransaction[Option[SessionUser]] = {
     MockTransaction { () =>
       sessionId match {
-        case Id("NotFoundId") => -\/(Error.NotFound(SessionUser.TYPE, sessionId))
+        case Id("NotFoundId") => \/-(None)
         case _ => \/-(Some(MockSessionUser()))
       }
     }

@@ -11,7 +11,7 @@ trait SessionService extends ServiceBase {
   val sessionRepository: SessionRepository
 
   def findById(sessionId: Id[SessionUser]): Transaction[SessionUser] = {
-    sessionRepository.find(sessionId) assertNotExists ApplicationError.NotFound(SessionUser.TYPE, sessionId)
+    sessionRepository.find(sessionId) assertExists ApplicationError.NotFound(SessionUser.TYPE, sessionId)
   }
 
   def create(session: SessionUser): Transaction[Unit] = {

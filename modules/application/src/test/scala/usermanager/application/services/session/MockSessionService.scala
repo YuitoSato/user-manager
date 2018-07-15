@@ -2,7 +2,7 @@ package usermanager.application.services.session
 import usermanager.domain.aggregates.session.MockSessionRepository
 import usermanager.domain.aggregates.sessionuser.SessionRepository
 import usermanager.domain.transaction.MockTransactionBuilder
-import usermanager.lib.error.transaction.TransactionBuilder
+import usermanager.lib.transaction.TransactionBuilder
 
 class MockSessionService extends SessionService {
 

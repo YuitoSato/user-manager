@@ -8,11 +8,11 @@ import usermanager.lib.transaction.{ Transaction, TransactionBuilder }
 trait ErrorHandler extends ToOptionOps {
 
   implicit class TransactionOptionErrorHandler[A](transactionOpt: Transaction[Option[A]]) {
-    def assertNotExists(f: => Error)(implicit builder: TransactionBuilder): Transaction[A] = {
+    def assertExists(f: => Error)(implicit builder: TransactionBuilder): Transaction[A] = {
       transactionOpt.flatMap(opt => builder.build(opt \/> f))
     }
 
-    def assertExists(f: => Error)(implicit builder: TransactionBuilder): Transaction[Unit] = {
+    def assertNotExists(f: => Error)(implicit builder: TransactionBuilder): Transaction[Unit] = {
       transactionOpt.flatMap(opt => builder.build(opt match {
         case Some(_) => -\/(f)
         case None => \/-()

@@ -1,10 +1,10 @@
 package usermanager.domain.transaction
 
-import usermanager.domain.result.{ Result, SyncResult }
 import scalaz.{ \/, \/- }
 import usermanager.lib.error
 import usermanager.lib.error.Error
-import usermanager.lib.error.transaction.Transaction
+import usermanager.lib.result.{ Result, SyncResult }
+import usermanager.lib.transaction.Transaction
 
 case class MockTransaction[A](
   execute: () => error.Error \/ A

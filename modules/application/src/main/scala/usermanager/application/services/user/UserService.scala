@@ -11,15 +11,15 @@ trait UserService extends ServiceBase {
   val userRepository: UserRepository
 
   def findById(userId: Id[User]): Transaction[User] = {
-    userRepository.find(userId) assertNotExists ApplicationError.NotFound(User.TYPE, userId)
+    userRepository.find(userId) assertExists ApplicationError.NotFound(User.TYPE, userId)
   }
 
   def findByEmail(email: Email[User]): Transaction[User] = {
-    userRepository.findByEmail(email) assertNotExists ApplicationError.EmailExists
+    userRepository.findByEmail(email) assertExists ApplicationError.EmailNotFound
   }
 
   def assertEmailNotExists(email: Email[User]): Transaction[Unit] = {
-    userRepository.findByEmail(email) assertExists ApplicationError.EmailNotFound
+    userRepository.findByEmail(email) assertNotExists ApplicationError.EmailExists
   }
 
   def create(user: User): Transaction[Unit] = {

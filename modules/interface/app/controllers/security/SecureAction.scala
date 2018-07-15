@@ -11,6 +11,7 @@ import usermanager._
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.domain.aggregates.sessionuser.SessionUser
 import usermanager.domain.syntax.ToEitherOps
+import usermanager.domain.types.Id
 import usermanager.lib.result.{ AsyncResult, ResultBuilder }
 
 import scala.concurrent.{ ExecutionContext, Future }
@@ -24,8 +25,9 @@ case class SecureAction @Inject() (
 ) extends ToResultOps with ToEitherOps with ToOptionOps with BaseControllerHelpers with FutureInstances {
 
   def findUserBySession(req: Request[_]): lib.result.Result[SessionUser] = {
+    val either = req.session.get("session").map(Id(_)) \/> InterfaceError.SessionKeyNotFound
     for {
-      key <- resultBuilder.build(req.session.get("session") \/> InterfaceError.SessionKeyNotFound)
+      key <- resultBuilder.build(either)
       user <- sessionScenario.findById(key)
     } yield user
   }

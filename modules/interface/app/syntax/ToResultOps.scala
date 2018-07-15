@@ -1,9 +1,12 @@
 package syntax
 
-import play.api.libs.json.{ Json, Writes }
+import error.InterfaceError
+import play.api.libs.json.{ JsObject, Json, Writes }
 import play.api.mvc.Results
 import play.api.{ Logger, mvc }
 import scalaz.{ -\/, EitherT, \/- }
+import usermanager.application.error.ApplicationError
+import usermanager.domain.error.DomainError
 import usermanager.domain.syntax.{ ToEitherOps, ToFutureOps }
 import usermanager.lib.error.Error
 import usermanager.lib.result.{ AsyncResult, Result, SyncResult }
@@ -16,30 +19,20 @@ trait ToResultOps extends Results with ToFutureOps with ToEitherOps {
   val logger = Logger(this.getClass)
 
   implicit class ErrorToOps(error: Error) {
+    def toResult: mvc.Result = error match {
+      case InterfaceError.SessionKeyNotFound => BadRequest(toJson)
+      case _: InterfaceError.JsonReadsError  => BadRequest(toJson)
+      case DomainError.Unauthorized          => Unauthorized(toJson)
+      case _: ApplicationError.NotFound      => NotFound(toJson)
+      case ApplicationError.EmailExists      => Conflict(toJson)
+      case ApplicationError.EmailNotFound    => Unauthorized(toJson)
+      case _                                 => InternalServerError(toJson)
+    }
 
-    def toResult: mvc.Result = InternalServerError(Json.obj(
+    private def toJson: JsObject = Json.obj(
       "code" -> error.code,
       "message" -> error.message
-    ))
-//      case Error.Unexpected(_) =>
-//        logger.error(error.message)
-//        InternalServerError(Json.obj(
-//          "code" -> error.code,
-//          "message" -> error.message
-//        ))
-//      case Error.Unauthorized => Unauthorized(Json.obj(
-//        "code" -> Error.Unauthorized.code,
-//        "message" -> Error.Unauthorized.message
-//      ))
-//      case Error.RecordNotFound(_) => NotFound(Json.obj(
-//        "code" -> error.code,
-//        "message" -> error.message
-//      ))
-//      case _ => BadRequest(Json.obj(
-//        "code" -> error.code,
-//        "message" -> error.message
-//      ))
-//    }
+    )
   }
 
   implicit class EitherTToResultOps[A](either: EitherT[Future, Error, A]) {

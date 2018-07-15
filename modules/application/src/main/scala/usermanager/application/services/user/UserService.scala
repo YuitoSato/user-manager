@@ -15,11 +15,11 @@ trait UserService extends ServiceBase {
   }
 
   def findByEmail(email: Email[User]): Transaction[User] = {
-    userRepository.findByEmail(email) assertNotExists ApplicationError.EmailNotFound
+    userRepository.findByEmail(email) assertNotExists ApplicationError.EmailExists
   }
 
   def assertEmailNotExists(email: Email[User]): Transaction[Unit] = {
-    userRepository.findByEmail(email) assertExists ApplicationError.EmailExists
+    userRepository.findByEmail(email) assertExists ApplicationError.EmailNotFound
   }
 
   def create(user: User): Transaction[Unit] = {

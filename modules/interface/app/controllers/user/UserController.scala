@@ -5,7 +5,7 @@ import controllers.ControllerBase
 import javax.inject.Inject
 import play.api.libs.json.JsValue
 import play.api.mvc._
-import serializers.{ TypeSerializer, UserViewSerializer }
+import serializers.UserViewSerializer
 import usermanager.application.scenarios.session.SessionScenario
 import usermanager.domain.helpers.{ HashHelper, UUIDGenerator }
 import usermanager.lib.result.ResultBuilder

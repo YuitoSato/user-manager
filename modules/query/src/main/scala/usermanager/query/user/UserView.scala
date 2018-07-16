@@ -10,3 +10,9 @@ case class UserView(
   status: Status,
   versionNo: VersionNo[UserView],
 )
+
+object UserView {
+
+  val TYPE: String = "UserView"
+
+}

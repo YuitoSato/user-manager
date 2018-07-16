@@ -21,6 +21,8 @@ object Query {
     scalaSource in Test := baseDirectory.value / "src" / "test" / "scala",
     resourceDirectory in Compile := baseDirectory.value / "src" / "main" / "resources",
     resourceDirectory in Test := baseDirectory.value / "src" / "test" / "resources"
+  ).dependsOn(
+    Lib.project % "test->test;compile->compile"
   )
 
 }

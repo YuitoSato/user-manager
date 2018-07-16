@@ -101,7 +101,8 @@ object Infrastructure {
     scalikejdbc.mapper.SbtPlugin.scalikejdbcSettings
   ).dependsOn(
     Domain.project % "test->test;compile->compile",
-    Lib.project % "test->test;compile->compile"
+    Lib.project % "test->test;compile->compile",
+    Query.project % "test->test;compile->compile"
   )
 
 }

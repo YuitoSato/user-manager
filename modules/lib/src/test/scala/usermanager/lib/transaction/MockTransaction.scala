@@ -1,13 +1,11 @@
-package usermanager.domain.transaction
+package usermanager.lib.transaction
 
 import scalaz.{ \/, \/- }
-import usermanager.lib.error
 import usermanager.lib.error.Error
-import usermanager.lib.result.{ Result, SyncResult }
-import usermanager.lib.transaction.Transaction
+import usermanager.lib.result.{ MockResult, Result }
 
 case class MockTransaction[A](
-  execute: () => error.Error \/ A
+  execute: () => Error \/ A
 ) extends Transaction[A] { self =>
 
   override def map[B](f: A => B): Transaction[B] = {
@@ -22,11 +20,11 @@ case class MockTransaction[A](
 
   override def foreach(f: A => Unit): Unit = map(f)
 
-  override def run: Result[A] = SyncResult {
+  override def run: Result[A] = MockResult {
     self.execute()
   }
 
-  override def leftMap(f: error.Error => Error): Transaction[A] = MockTransaction(() => execute().leftMap(f))
+  override def leftMap(f: Error => Error): Transaction[A] = MockTransaction(() => execute().leftMap(f))
   
 }
 

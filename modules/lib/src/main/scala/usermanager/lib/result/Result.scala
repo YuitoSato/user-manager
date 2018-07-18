@@ -37,7 +37,6 @@ trait Result[A] { self =>
     )
   }
 
-
 }
 
 case class SyncResult[A](

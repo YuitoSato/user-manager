@@ -1,7 +1,6 @@
 package usermanager.application.services.user
 import usermanager.domain.aggregates.user.{ MockUserRepository, UserRepository }
-import usermanager.domain.transaction.MockTransactionBuilder
-import usermanager.lib.transaction.TransactionBuilder
+import usermanager.lib.transaction.{ MockTransactionBuilder, TransactionBuilder }
 
 class MockUserService extends UserService {
 

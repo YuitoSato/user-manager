@@ -4,7 +4,7 @@ import org.scalatest.{ FunSpec, MustMatchers }
 import usermanager.application.error.ApplicationError
 import usermanager.domain.aggregates.session.MockSessionUser
 import usermanager.domain.aggregates.sessionuser.SessionUser
-import usermanager.lib.result.SyncResult
+import usermanager.lib.result.MockResult
 
 class SessionScenarioSpec extends FunSpec with MustMatchers {
 
@@ -13,7 +13,7 @@ class SessionScenarioSpec extends FunSpec with MustMatchers {
   describe("findById") {
     describe("when session exists") {
       it("returns session user") {
-        val success = SyncResult(MockSessionUser())
+        val success = MockResult(MockSessionUser())
         val result = scenario.findById("1")
 
         result mustBe success
@@ -22,7 +22,7 @@ class SessionScenarioSpec extends FunSpec with MustMatchers {
 
     describe("when session does not exist") {
       it("returns not found error") {
-        val failure = SyncResult.error(ApplicationError.NotFound(SessionUser.TYPE, "NotFoundId"))
+        val failure = MockResult.error(ApplicationError.NotFound(SessionUser.TYPE, "NotFoundId"))
         val result = scenario.findById("NotFoundId")
 
         result mustBe failure
@@ -32,20 +32,20 @@ class SessionScenarioSpec extends FunSpec with MustMatchers {
 
   describe("create") {
     it("returns unit") {
-      scenario.create(MockSessionUser()) mustBe SyncResult(())
+      scenario.create(MockSessionUser()) mustBe MockResult(())
     }
   }
 
   describe("delete") {
     describe("when session exists") {
       it("returns success deleted result") {
-        val success = SyncResult(())
+        val success = MockResult(())
         scenario.delete("1") mustBe success
       }
     }
     describe("when session does not exist") {
       it("returns failure deleted result") {
-        val failure = SyncResult.error(ApplicationError.NotFound(SessionUser.TYPE, "NotFoundId"))
+        val failure = MockResult.error(ApplicationError.NotFound(SessionUser.TYPE, "NotFoundId"))
         scenario.delete("NotFoundId") mustBe failure
       }
     }

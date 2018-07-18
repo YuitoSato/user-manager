@@ -1,4 +1,4 @@
-package usermanager.domain.transaction
+package usermanager.lib.transaction
 
 import scalaz.{ \/, \/- }
 import usermanager.lib.error.Error

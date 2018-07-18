@@ -9,7 +9,8 @@ object Application {
 
     // For Test
     "org.scalatest" %% "scalatest"                 % "3.0.1"  % "test",
-    "org.mockito"   % "mockito-core"               % "2.8.9"  % "test"
+    "org.mockito"   % "mockito-core"               % "2.8.9"  % "test",
+    "org.typelevel" %% "scalaz-scalatest"          % "1.1.1"  % "test"
   )
 
   lazy val project = Project(
